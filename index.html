@@ -3017,42 +3017,23 @@ async function submitForm() {
 
   if (products.length === 0) { showToast('⚠️ Не указано ни одного количества'); return; }
 
-  // Проверяем что URL настроен
-  if (!GOOGLE_SCRIPT_URL) {
-    // Fallback: скачиваем JSON файл
-    const payload = buildPayload(products);
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `заявка_${company}_${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('📎 Заявка скачана как JSON (бэкенд не настроен)');
-    return;
-  }
-
-  // Отправляем
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.innerHTML = '⏳ Отправка...';
 
+  const payload = buildPayload(products);
+
   try {
-    const payload = buildPayload(products);
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
+    await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(payload)
     });
-
-    // Google Apps Script с no-cors всегда возвращает opaque response
     showToast('✅ Заявка отправлена! ' + products.length + ' позиций');
     btn.innerHTML = '✅ Отправлено!';
     setTimeout(() => { btn.disabled = false; btn.innerHTML = '📨 Отправить заявку'; }, 5000);
-
   } catch (err) {
-    showToast('❌ Ошибка отправки: ' + err.message);
+    showToast('❌ Ошибка: ' + err.message);
     btn.disabled = false;
     btn.innerHTML = '📨 Отправить заявку';
   }
