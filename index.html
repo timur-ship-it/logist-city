@@ -3027,18 +3027,48 @@ async function submitForm() {
   const payload = buildPayload(products);
 
   try {
-    await fetch(GOOGLE_SCRIPT_URL, {
+    // Google Apps Script требует redirect: follow для CORS
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      redirect: 'follow'
     });
-    showToast('✅ Заявка отправлена! ' + products.length + ' позиций');
-    btn.innerHTML = '✅ Отправлено!';
+    const result = await response.json();
+    if (result.success) {
+      showToast('✅ Заявка ' + result.reqId + ' отправлена! ' + products.length + ' позиций');
+      btn.innerHTML = '✅ Отправлено!';
+    } else {
+      showToast('❌ Ошибка сервера: ' + (result.error || 'неизвестная'));
+      btn.innerHTML = '📨 Отправить заявку';
+    }
     setTimeout(() => { btn.disabled = false; btn.innerHTML = '📨 Отправить заявку'; }, 5000);
   } catch (err) {
-    showToast('❌ Ошибка: ' + err.message);
-    btn.disabled = false;
-    btn.innerHTML = '📨 Отправить заявку';
+    // Fallback: если CORS блокирует — отправляем через скрытый form
+    try {
+      const iframe = document.createElement('iframe');
+      iframe.name = 'submitFrame';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = GOOGLE_SCRIPT_URL;
+      form.target = 'submitFrame';
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'payload';
+      input.value = JSON.stringify(payload);
+      form.appendChild(input);
+      document.body.appendChild(form);
+      form.submit();
+      setTimeout(() => { iframe.remove(); form.remove(); }, 5000);
+      showToast('✅ Заявка отправлена! ' + products.length + ' позиций');
+      btn.innerHTML = '✅ Отправлено!';
+    } catch(e2) {
+      showToast('❌ Ошибка: ' + err.message);
+      btn.innerHTML = '📨 Отправить заявку';
+    }
+    setTimeout(() => { btn.disabled = false; btn.innerHTML = '📨 Отправить заявку'; }, 5000);
   }
 }
 
