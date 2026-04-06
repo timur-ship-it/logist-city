@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Заявка на снабжение — KONEX</title>
+<title>Заявка на снабжение — Logist City</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
@@ -127,7 +127,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 
 <!-- TOPBAR NAV -->
 <div class="topbar">
-  <span class="logo">KONEX</span>
+  <span class="logo">Logist City</span>
   <div class="nav-cats" id="navCats"></div>
   <div class="counter" id="itemCounter">0 позиций выбрано</div>
 </div>
@@ -2788,9 +2788,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 <!-- FLOATING ACTIONS -->
 <div class="fab-bar">
   <button class="fab-btn secondary" onclick="saveState(); showToast('💾 Черновик сохранён')">💾 Сохранить</button>
-  <button class="fab-btn secondary" onclick="exportCSV()">📊 Экспорт CSV</button>
-  <button class="fab-btn primary" onclick="printForm()">🖨️ PDF / Печать</button>
-  <button class="fab-btn danger" onclick="if(confirm('Очистить все введённые данные?')){clearAll()}">🗑️ Очистить</button>
+  <button class="fab-btn secondary" onclick="exportCSV()">📊 CSV</button>
+  <button class="fab-btn secondary" onclick="printForm()">🖨️ PDF</button>
+  <button class="fab-btn primary" onclick="submitForm()" id="submitBtn">📨 Отправить заявку</button>
+  <button class="fab-btn danger" onclick="if(confirm('Очистить все введённые данные?')){clearAll()}">🗑️</button>
 </div>
 
 <!-- TOAST -->
@@ -2984,6 +2985,93 @@ function exportCSV() {
   a.click();
   URL.revokeObjectURL(url);
   showToast('📊 CSV файл скачан');
+}
+
+// ━━━ SUBMIT TO GOOGLE SHEETS ━━━
+// После развёртывания Google Apps Script вставьте URL сюда:
+const GOOGLE_SCRIPT_URL = ''; // ← ВСТАВИТЬ URL ВАШЕГО WEB APP
+
+async function submitForm() {
+  // Валидация
+  const company = document.getElementById('companyName').value.trim();
+  const person = document.getElementById('contactPerson').value.trim();
+  const email = document.getElementById('contactEmail').value.trim();
+  if (!company) { showToast('⚠️ Укажите название компании'); document.getElementById('companyName').focus(); return; }
+  if (!person) { showToast('⚠️ Укажите контактное лицо'); document.getElementById('contactPerson').focus(); return; }
+  if (!email) { showToast('⚠️ Укажите email'); document.getElementById('contactEmail').focus(); return; }
+
+  // Собираем товары
+  const products = [];
+  document.querySelectorAll('.product').forEach(card => {
+    const id = card.dataset.id;
+    const qty = document.querySelector(`[data-qty="${id}"]`)?.value;
+    if (!qty || parseInt(qty) <= 0) return;
+    products.push({
+      id,
+      name: card.querySelector('.prod-name').textContent,
+      qty,
+      unit: card.querySelector('.unit-label').textContent,
+      note: document.querySelector(`[data-note="${id}"]`)?.value || ''
+    });
+  });
+
+  if (products.length === 0) { showToast('⚠️ Не указано ни одного количества'); return; }
+
+  // Проверяем что URL настроен
+  if (!GOOGLE_SCRIPT_URL) {
+    // Fallback: скачиваем JSON файл
+    const payload = buildPayload(products);
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `заявка_${company}_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('📎 Заявка скачана как JSON (бэкенд не настроен)');
+    return;
+  }
+
+  // Отправляем
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Отправка...';
+
+  try {
+    const payload = buildPayload(products);
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+
+    // Google Apps Script с no-cors всегда возвращает opaque response
+    showToast('✅ Заявка отправлена! ' + products.length + ' позиций');
+    btn.innerHTML = '✅ Отправлено!';
+    setTimeout(() => { btn.disabled = false; btn.innerHTML = '📨 Отправить заявку'; }, 5000);
+
+  } catch (err) {
+    showToast('❌ Ошибка отправки: ' + err.message);
+    btn.disabled = false;
+    btn.innerHTML = '📨 Отправить заявку';
+  }
+}
+
+function buildPayload(products) {
+  return {
+    timestamp: new Date().toISOString(),
+    company: {
+      companyName: document.getElementById('companyName').value,
+      contactPerson: document.getElementById('contactPerson').value,
+      contactEmail: document.getElementById('contactEmail').value,
+      contactPhone: document.getElementById('contactPhone').value,
+      projectName: document.getElementById('projectName').value,
+    },
+    period: document.querySelector('.period-btn.active')?.textContent.trim() || '',
+    comments: document.getElementById('comments').value,
+    products
+  };
 }
 
 // ━━━ PRINT ━━━
