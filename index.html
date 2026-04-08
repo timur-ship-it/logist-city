@@ -69,6 +69,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .prod-body{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:8px}
 .prod-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .prod-name{font-size:15px;font-weight:700;color:#0f172a;line-height:1.3;flex:1}
+.prod-tags{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.prod-sku{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;font-size:11px;font-weight:800;line-height:1}
 .prod-desc{font-size:12px;color:#64748b;line-height:1.6}
 .prod-inputs{display:flex;gap:10px;align-items:center;margin-top:auto;padding-top:8px;border-top:1px solid #f1f5f9}
 .prod-inputs label{font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase}
@@ -83,6 +85,17 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .size-wrap{display:flex;flex-direction:column;gap:3px;min-width:200px}
 .size-select{padding:6px 8px;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;font-weight:600;color:#334155;background:#fff;font-family:inherit;min-width:200px}
 .size-select:focus{outline:none;border-color:#3b82f6}
+.size-variants{margin-top:8px;padding-top:8px;border-top:1px dashed #e2e8f0;display:flex;flex-direction:column;gap:8px}
+.size-variants-actions{display:flex;justify-content:flex-end}
+.add-size-btn{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer}
+.add-size-btn:hover{border-color:#93c5fd;color:#1d4ed8}
+.size-variants-list{display:flex;flex-direction:column;gap:6px}
+.size-variant-row{display:grid;grid-template-columns:minmax(200px,1fr) 92px minmax(180px,1fr) 34px;gap:8px;align-items:center}
+.size-variant-row .size-select{min-width:0}
+.size-variant-row .qty-variant-input{width:100%}
+.size-variant-row .note-variant-input{min-width:0}
+.remove-variant-btn{border:1px solid #fecaca;background:#fff1f2;color:#be123c;border-radius:8px;cursor:pointer;height:32px;font-size:16px;line-height:1}
+.remove-variant-btn:hover{background:#ffe4e6}
 
 /* ABRASIVE SHAPE BADGES */
 .shape-legend{display:flex;flex-wrap:wrap;gap:8px;margin:-4px 0 12px 0}
@@ -127,6 +140,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   .prod-inputs{flex-wrap:wrap}
   .size-wrap{min-width:100%}
   .size-select{min-width:100%}
+  .size-variant-row{grid-template-columns:1fr}
   .shape-badge{min-width:auto;padding:6px 10px;font-size:12px}
   .shape-icon{width:76px;height:26px}
   .hero h1{font-size:24px}
@@ -2694,19 +2708,119 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 <script>
 // ━━━ STATE MANAGEMENT ━━━
 const STORAGE_KEY = 'konex_procurement_v1';
+const CAT_SKU_PREFIX = {
+  abrasives: 'ABR',
+  chemicals: 'CHM',
+  tapes: 'TML',
+  ppe: 'PPE',
+  fasteners: 'FST',
+  electrical: 'ELC',
+  rags: 'RAG',
+  geo: 'GEO'
+};
+
+function toQtyNumber(value) {
+  const num = Number(String(value || '').replace(',', '.'));
+  return Number.isFinite(num) ? num : 0;
+}
+
+function getProductType(card) {
+  const id = Number(card?.dataset?.id || 0);
+  const shapeMeta = ABRASIVE_SHAPE_MAP[id];
+  return shapeMeta ? shapeMeta.label : '';
+}
+
+function getCardCategoryName(card) {
+  const sec = card.closest('.cat-section');
+  return sec?.querySelector('h2')?.textContent.replace(/^.\s*/, '') || '';
+}
+
+function createOrderLine(card, { qty = '', size = '', note = '' } = {}) {
+  return {
+    id: card.dataset.id,
+    sku: card.dataset.sku || card.dataset.id,
+    category: getCardCategoryName(card),
+    name: card.querySelector('.prod-name')?.textContent || '',
+    description: card.querySelector('.prod-desc')?.textContent || '',
+    type: getProductType(card),
+    qty: String(qty || '').trim(),
+    unit: card.querySelector('.unit-label')?.textContent || '',
+    size: String(size || '').trim(),
+    note: String(note || '').trim()
+  };
+}
+
+function collectOrderLines() {
+  const lines = [];
+
+  document.querySelectorAll('.product').forEach(card => {
+    const id = card.dataset.id;
+    const baseQty = card.querySelector(`[data-qty="${id}"]`)?.value || '';
+    const baseSize = card.querySelector(`[data-size="${id}"]`)?.value || '';
+    const baseNote = card.querySelector(`[data-note="${id}"]`)?.value || '';
+
+    if (toQtyNumber(baseQty) > 0) {
+      lines.push(createOrderLine(card, { qty: baseQty, size: baseSize, note: baseNote }));
+    }
+
+    card.querySelectorAll('.size-variant-row').forEach(row => {
+      const qty = row.querySelector('.qty-variant-input')?.value || '';
+      if (toQtyNumber(qty) <= 0) return;
+      const size = row.querySelector('.size-variant-select')?.value || '';
+      const note = row.querySelector('.note-variant-input')?.value || '';
+      lines.push(createOrderLine(card, { qty, size, note }));
+    });
+  });
+
+  return lines;
+}
+
+function findMissingSizeLines(lines) {
+  return lines.filter(line => {
+    const hasSizeOptions = Boolean(ABRASIVE_SIZE_OPTIONS[Number(line.id)]);
+    return hasSizeOptions && !line.size;
+  });
+}
+
+function cardHasAnyQty(card) {
+  if (!card) return false;
+  const id = card.dataset.id;
+  const mainQty = card.querySelector(`[data-qty="${id}"]`)?.value || '';
+  if (toQtyNumber(mainQty) > 0) return true;
+  return Array.from(card.querySelectorAll('.qty-variant-input'))
+    .some(el => toQtyNumber(el.value) > 0);
+}
+
+function refreshCardState(card) {
+  if (!card) return;
+  card.classList.toggle('has-qty', cardHasAnyQty(card));
+}
 
 function saveState() {
   const state = { company: {}, items: {}, period: document.querySelector('.period-btn.active')?.dataset.period || 'month' };
   document.querySelectorAll('[data-save]').forEach(el => {
     state.company[el.dataset.save] = el.value;
   });
-  document.querySelectorAll('.qty-input').forEach(el => {
-    const id = el.dataset.qty;
-    const qty = el.value;
-    const note = document.querySelector(`[data-note="${id}"]`)?.value || '';
-    const size = document.querySelector(`[data-size="${id}"]`)?.value || '';
-    if (qty || note || size) state.items[id] = { qty, note, size };
+
+  document.querySelectorAll('.product').forEach(card => {
+    const id = card.dataset.id;
+    const qty = card.querySelector(`[data-qty="${id}"]`)?.value || '';
+    const note = card.querySelector(`[data-note="${id}"]`)?.value || '';
+    const size = card.querySelector(`[data-size="${id}"]`)?.value || '';
+    const variants = [];
+
+    card.querySelectorAll('.size-variant-row').forEach(row => {
+      const vSize = row.querySelector('.size-variant-select')?.value || '';
+      const vQty = row.querySelector('.qty-variant-input')?.value || '';
+      const vNote = row.querySelector('.note-variant-input')?.value || '';
+      if (vSize || vQty || vNote) variants.push({ size: vSize, qty: vQty, note: vNote });
+    });
+
+    if (qty || note || size || variants.length) {
+      state.items[id] = { qty, note, size, variants };
+    }
   });
+
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   updateCounter();
 }
@@ -2731,9 +2845,23 @@ function loadState() {
       const qtyEl = document.querySelector(`[data-qty="${id}"]`);
       const noteEl = document.querySelector(`[data-note="${id}"]`);
       const sizeEl = document.querySelector(`[data-size="${id}"]`);
-      if (qtyEl && data.qty) { qtyEl.value = data.qty; highlightCard(qtyEl); }
+      if (qtyEl && data.qty) qtyEl.value = data.qty;
       if (noteEl && data.note) noteEl.value = data.note;
       if (sizeEl && data.size) sizeEl.value = data.size;
+
+      if (Array.isArray(data.variants) && data.variants.length) {
+        const card = document.querySelector(`.product[data-id="${id}"]`);
+        const list = card?.querySelector(`.size-variants-list[data-variants-for="${id}"]`);
+        const options = ABRASIVE_SIZE_OPTIONS[Number(id)] || [];
+        if (card && list) {
+          data.variants.forEach(v => {
+            list.appendChild(createSizeVariantRow(id, options, v));
+          });
+        }
+      }
+
+      const card = document.querySelector(`.product[data-id="${id}"]`);
+      refreshCardState(card);
     });
     updateCounter();
   } catch(e) { console.warn('Load state error:', e); }
@@ -2741,9 +2869,10 @@ function loadState() {
 
 function clearAll() {
   localStorage.removeItem(STORAGE_KEY);
-  document.querySelectorAll('.qty-input').forEach(el => { el.value = ''; });
-  document.querySelectorAll('.note-input').forEach(el => { el.value = ''; });
-  document.querySelectorAll('.size-select').forEach(el => { el.value = ''; });
+  document.querySelectorAll('[data-qty]').forEach(el => { el.value = ''; });
+  document.querySelectorAll('[data-note]').forEach(el => { el.value = ''; });
+  document.querySelectorAll('[data-size]').forEach(el => { el.value = ''; });
+  document.querySelectorAll('.size-variant-row').forEach(el => el.remove());
   document.querySelectorAll('[data-save]').forEach(el => { el.value = ''; });
   document.querySelectorAll('.product').forEach(el => el.classList.remove('has-qty'));
   document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
@@ -2754,17 +2883,12 @@ function clearAll() {
 
 // ━━━ UI FUNCTIONS ━━━
 function onQtyChange(el) {
-  highlightCard(el);
+  refreshCardState(el.closest('.product'));
   saveState();
 }
 
 function highlightCard(el) {
-  const card = el.closest('.product');
-  if (el.value && parseInt(el.value) > 0) {
-    card.classList.add('has-qty');
-  } else {
-    card.classList.remove('has-qty');
-  }
+  refreshCardState(el.closest('.product'));
 }
 
 function setPeriod(btn) {
@@ -2774,10 +2898,7 @@ function setPeriod(btn) {
 }
 
 function updateCounter() {
-  let count = 0;
-  document.querySelectorAll('.qty-input').forEach(el => {
-    if (el.value && parseInt(el.value) > 0) count++;
-  });
+  const count = collectOrderLines().length;
   document.getElementById('itemCounter').textContent = count + ' позиц' +
     (count === 1 ? 'ия выбрана' : count < 5 ? 'ии выбрано' : 'ий выбрано');
 }
@@ -2854,25 +2975,20 @@ function exportCSV() {
   csv += `Период:,${period}\n`;
   csv += `Дата:,${new Date().toLocaleDateString('ru-RU')}\n`;
   csv += '\n';
-  csv += 'Категория,Наименование,Описание,Количество,Единица,Размер,Примечание\n';
+  csv += 'ID,Артикул,Категория,Наименование,Тип,Описание,Количество,Единица,Размер,Примечание\n';
 
-  let hasItems = false;
-  document.querySelectorAll('.product').forEach(card => {
-    const id = card.dataset.id;
-    const qty = document.querySelector(`[data-qty="${id}"]`)?.value;
-    if (!qty || parseInt(qty) <= 0) return;
-    hasItems = true;
-    const note = document.querySelector(`[data-note="${id}"]`)?.value || '';
-    const size = document.querySelector(`[data-size="${id}"]`)?.value || '';
-    const name = card.querySelector('.prod-name').textContent;
-    const desc = card.querySelector('.prod-desc').textContent.replace(/,/g, ';');
-    const unit = card.querySelector('.unit-label').textContent;
-    const catSection = card.closest('.cat-section');
-    const catName = catSection.querySelector('h2').textContent.replace(/^.\s*/, '');
-    csv += `${id},"${catName}","${name}","${desc}",${qty},"${unit}","${size}","${note}"\n`;
+  const lines = collectOrderLines();
+  if (lines.length === 0) { showToast('⚠️ Не указано ни одного количества'); return; }
+  const missingSize = findMissingSizeLines(lines);
+  if (missingSize.length) {
+    const first = missingSize[0];
+    showToast(`⚠️ Укажите размер для артикула ${first.sku}`);
+    return;
+  }
+  lines.forEach(line => {
+    const desc = line.description.replace(/,/g, ';');
+    csv += `"${line.id}","${line.sku}","${line.category}","${line.name}","${line.type || ''}","${desc}","${line.qty}","${line.unit}","${line.size || ''}","${line.note || ''}"\n`;
   });
-
-  if (!hasItems) { showToast('⚠️ Не указано ни одного количества'); return; }
 
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);
@@ -2898,19 +3014,22 @@ async function submitForm() {
   if (!email) { showToast('⚠️ Укажите email'); document.getElementById('contactEmail').focus(); return; }
 
   // Собираем товары
-  const products = [];
-  document.querySelectorAll('.product').forEach(card => {
-    const id = card.dataset.id;
-    const qty = document.querySelector(`[data-qty="${id}"]`)?.value;
-    if (!qty || parseInt(qty) <= 0) return;
-    products.push({
-      id,
-      name: card.querySelector('.prod-name').textContent,
-      qty,
-      unit: card.querySelector('.unit-label').textContent,
-      size: document.querySelector(`[data-size="${id}"]`)?.value || '',
-      note: document.querySelector(`[data-note="${id}"]`)?.value || ''
-    });
+  const rawLines = collectOrderLines();
+  const missingSize = findMissingSizeLines(rawLines);
+  if (missingSize.length) {
+    const first = missingSize[0];
+    showToast(`⚠️ Укажите размер для артикула ${first.sku}`);
+    return;
+  }
+  const products = rawLines.map(line => {
+    const spec = [line.type ? `Тип: ${line.type}` : '', line.size ? `Размер: ${line.size}` : '']
+      .filter(Boolean)
+      .join(', ');
+    return {
+      ...line,
+      rawNote: line.note || '',
+      note: [line.note || '', spec].filter(Boolean).join(' | ')
+    };
   });
 
   if (products.length === 0) { showToast('⚠️ Не указано ни одного количества'); return; }
@@ -3166,6 +3285,71 @@ const ABRASIVE_SIZE_OPTIONS = {
   21: DIAMOND_CUP_OPTIONS
 };
 
+function createSizeSelect(options, selected = '') {
+  const select = document.createElement('select');
+  select.className = 'size-select';
+
+  const empty = document.createElement('option');
+  empty.value = '';
+  empty.textContent = 'выбрать…';
+  select.appendChild(empty);
+
+  options.forEach(optText => {
+    const opt = document.createElement('option');
+    opt.value = optText;
+    opt.textContent = optText;
+    select.appendChild(opt);
+  });
+
+  if (selected) select.value = selected;
+  return select;
+}
+
+function createSizeVariantRow(id, options, values = {}) {
+  const row = document.createElement('div');
+  row.className = 'size-variant-row';
+
+  const sizeSelect = createSizeSelect(options, values.size || '');
+  sizeSelect.classList.add('size-variant-select');
+  sizeSelect.dataset.sizeExtra = String(id);
+  sizeSelect.onchange = saveState;
+
+  const qtyInput = document.createElement('input');
+  qtyInput.type = 'number';
+  qtyInput.min = '0';
+  qtyInput.placeholder = '—';
+  qtyInput.className = 'qty-input qty-variant-input';
+  qtyInput.dataset.qtyExtra = String(id);
+  qtyInput.value = values.qty || '';
+  qtyInput.oninput = (e) => onQtyChange(e.target);
+
+  const noteInput = document.createElement('input');
+  noteInput.type = 'text';
+  noteInput.className = 'note-input note-variant-input';
+  noteInput.dataset.noteExtra = String(id);
+  noteInput.placeholder = 'комментарий по размеру…';
+  noteInput.value = values.note || '';
+  noteInput.oninput = saveState;
+
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button';
+  removeBtn.className = 'remove-variant-btn';
+  removeBtn.textContent = '×';
+  removeBtn.title = 'Удалить строку размера';
+  removeBtn.onclick = () => {
+    const card = row.closest('.product');
+    row.remove();
+    refreshCardState(card);
+    saveState();
+  };
+
+  row.appendChild(sizeSelect);
+  row.appendChild(qtyInput);
+  row.appendChild(noteInput);
+  row.appendChild(removeBtn);
+  return row;
+}
+
 function initAbrasiveSizeSelectors() {
   const sec = document.getElementById('cat-abrasives');
   if (!sec) return;
@@ -3184,22 +3368,9 @@ function initAbrasiveSizeSelectors() {
     const label = document.createElement('label');
     label.textContent = 'Размер';
 
-    const select = document.createElement('select');
-    select.className = 'size-select';
+    const select = createSizeSelect(options);
     select.dataset.size = String(id);
     select.onchange = saveState;
-
-    const empty = document.createElement('option');
-    empty.value = '';
-    empty.textContent = 'выбрать…';
-    select.appendChild(empty);
-
-    options.forEach(optText => {
-      const opt = document.createElement('option');
-      opt.value = optText;
-      opt.textContent = optText;
-      select.appendChild(opt);
-    });
 
     sizeWrap.appendChild(label);
     sizeWrap.appendChild(select);
@@ -3211,6 +3382,33 @@ function initAbrasiveSizeSelectors() {
     const noteInput = card.querySelector(`.note-input[data-note="${id}"]`);
     if (noteInput && noteInput.placeholder.includes('типоразмер')) {
       noteInput.placeholder = 'зерно, комментарий…';
+    }
+
+    if (!card.querySelector(`.size-variants[data-variants-for="${id}"]`)) {
+      const variantsBlock = document.createElement('div');
+      variantsBlock.className = 'size-variants';
+      variantsBlock.dataset.variantsFor = String(id);
+
+      const actions = document.createElement('div');
+      actions.className = 'size-variants-actions';
+
+      const addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'add-size-btn';
+      addBtn.textContent = '+ Добавить размер';
+      addBtn.onclick = () => {
+        list.appendChild(createSizeVariantRow(id, options));
+      };
+
+      const list = document.createElement('div');
+      list.className = 'size-variants-list';
+      list.dataset.variantsFor = String(id);
+
+      actions.appendChild(addBtn);
+      variantsBlock.appendChild(actions);
+      variantsBlock.appendChild(list);
+
+      row.insertAdjacentElement('afterend', variantsBlock);
     }
   });
 }
@@ -3248,6 +3446,18 @@ function createShapeBadge(meta) {
   return badge;
 }
 
+function ensureTopTags(card) {
+  const top = card.querySelector('.prod-top');
+  if (!top) return null;
+  let tags = top.querySelector('.prod-tags');
+  if (!tags) {
+    tags = document.createElement('div');
+    tags.className = 'prod-tags';
+    top.appendChild(tags);
+  }
+  return tags;
+}
+
 function renderAbrasiveShapeBadges() {
   const sec = document.getElementById('cat-abrasives');
   if (!sec) return;
@@ -3269,14 +3479,33 @@ function renderAbrasiveShapeBadges() {
     const id = Number(card.dataset.id || 0);
     const meta = ABRASIVE_SHAPE_MAP[id];
     if (!meta) return;
-    const top = card.querySelector('.prod-top');
-    if (!top || top.querySelector('.shape-badge')) return;
-    top.appendChild(createShapeBadge(meta));
+    const tags = ensureTopTags(card);
+    if (!tags || tags.querySelector('.shape-badge')) return;
+    tags.appendChild(createShapeBadge(meta));
+  });
+}
+
+function initProductMetadata() {
+  document.querySelectorAll('.cat-section').forEach(sec => {
+    const catKey = sec.dataset.cat || '';
+    const prefix = CAT_SKU_PREFIX[catKey] || 'ITM';
+    sec.querySelectorAll('.product').forEach((card, idx) => {
+      const sku = `${prefix}-${String(idx + 1).padStart(3, '0')}`;
+      card.dataset.sku = sku;
+      const tags = ensureTopTags(card);
+      if (tags && !tags.querySelector('.prod-sku')) {
+        const skuTag = document.createElement('span');
+        skuTag.className = 'prod-sku';
+        skuTag.textContent = sku;
+        tags.prepend(skuTag);
+      }
+    });
   });
 }
 
 // ━━━ INIT ━━━
 renderAbrasiveShapeBadges();
+initProductMetadata();
 initAbrasiveSizeSelectors();
 loadState();
 </script>
