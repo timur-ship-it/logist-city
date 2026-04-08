@@ -99,6 +99,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 
 /* ABRASIVE SHAPE BADGES */
 .shape-legend{display:flex;flex-wrap:wrap;gap:8px;margin:-4px 0 12px 0}
+.shape-legend-title{font-size:12px;font-weight:800;color:#475569;letter-spacing:.2px;margin:0 0 6px 2px;text-transform:uppercase}
 .shape-badge{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:7px 14px;border-radius:999px;border:1.5px solid #64748b;background:#f1f5f9;color:#0f172a;font-size:13px;font-weight:800;letter-spacing:.25px;line-height:1;white-space:nowrap;min-width:120px}
 .shape-icon{width:94px;height:32px;display:block;flex-shrink:0;object-fit:contain;object-position:center center}
 .shape-code{font-weight:900}
@@ -2975,7 +2976,7 @@ function exportCSV() {
   csv += `Период:,${period}\n`;
   csv += `Дата:,${new Date().toLocaleDateString('ru-RU')}\n`;
   csv += '\n';
-  csv += 'ID,Артикул,Категория,Наименование,Тип,Описание,Количество,Единица,Размер,Примечание\n';
+  csv += 'ID,Артикул,Категория,Наименование,Форма профиля,Описание,Количество,Единица,Размер,Примечание\n';
 
   const lines = collectOrderLines();
   if (lines.length === 0) { showToast('⚠️ Не указано ни одного количества'); return; }
@@ -3022,7 +3023,7 @@ async function submitForm() {
     return;
   }
   const products = rawLines.map(line => {
-    const spec = [line.type ? `Тип: ${line.type}` : '', line.size ? `Размер: ${line.size}` : '']
+    const spec = [line.type ? `Форма профиля: ${line.type}` : '', line.size ? `Размер: ${line.size}` : '']
       .filter(Boolean)
       .join(', ');
     return {
@@ -3464,13 +3465,18 @@ function renderAbrasiveShapeBadges() {
 
   const firstProduct = sec.querySelector('.product');
   if (firstProduct && !sec.querySelector('.shape-legend')) {
+    const legendTitle = document.createElement('div');
+    legendTitle.className = 'shape-legend-title';
+    legendTitle.textContent = 'Форма профиля абразивного круга';
+    sec.insertBefore(legendTitle, firstProduct);
+
     const legend = document.createElement('div');
     legend.className = 'shape-legend';
     [
-      {code:'41',label:'T41 Плоский'},
-      {code:'42',label:'T42 Утоплённый центр'},
-      {code:'27',label:'T27 Зачистной'},
-      {code:'29',label:'T29 Конический'}
+      {code:'41',label:'T41 Плоский профиль'},
+      {code:'42',label:'T42 Утоплённый профиль'},
+      {code:'27',label:'T27 Зачистной профиль'},
+      {code:'29',label:'T29 Конический профиль'}
     ].forEach(item => legend.appendChild(createShapeBadge(item)));
     sec.insertBefore(legend, firstProduct);
   }
