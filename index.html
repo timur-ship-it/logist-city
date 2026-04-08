@@ -3026,10 +3026,15 @@ async function submitForm() {
     const spec = [line.type ? `Форма профиля: ${line.type}` : '', line.size ? `Размер: ${line.size}` : '']
       .filter(Boolean)
       .join(', ');
+    const article = line.sku || line.id;
     return {
       ...line,
+      article,
+      catalogId: line.id,
+      name: `${line.name} [${article}]`,
+      displayName: line.name,
       rawNote: line.note || '',
-      note: [line.note || '', spec].filter(Boolean).join(' | ')
+      note: [`Артикул: ${article}`, line.note || '', spec].filter(Boolean).join(' | ')
     };
   });
 
