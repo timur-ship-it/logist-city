@@ -83,16 +83,22 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   color:#475569;font-family:inherit}
 .note-input:focus{outline:none;border-color:#3b82f6}
 .size-wrap{display:flex;flex-direction:column;gap:3px;min-width:200px}
+.params-wrap{display:flex;flex-direction:column;gap:3px;min-width:210px}
 .size-select{padding:6px 8px;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;font-weight:600;color:#334155;background:#fff;font-family:inherit;min-width:200px}
 .size-select:focus{outline:none;border-color:#3b82f6}
+.size-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.size-custom-input{display:none}
+.params-input{min-width:210px}
 .size-variants{margin-top:8px;padding-top:8px;border-top:1px dashed #e2e8f0;display:flex;flex-direction:column;gap:8px}
 .size-variants-actions{display:flex;justify-content:flex-end}
 .add-size-btn{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer}
 .add-size-btn:hover{border-color:#93c5fd;color:#1d4ed8}
 .size-variants-list{display:flex;flex-direction:column;gap:6px}
-.size-variant-row{display:grid;grid-template-columns:minmax(200px,1fr) 92px minmax(180px,1fr) 34px;gap:8px;align-items:center}
+.size-variant-row{display:grid;grid-template-columns:minmax(230px,1.3fr) 92px minmax(170px,1fr) minmax(170px,1fr) 34px;gap:8px;align-items:center}
+.size-variant-row .size-field{min-width:0}
 .size-variant-row .size-select{min-width:0}
 .size-variant-row .qty-variant-input{width:100%}
+.size-variant-row .params-variant-input{min-width:0}
 .size-variant-row .note-variant-input{min-width:0}
 .remove-variant-btn{border:1px solid #fecaca;background:#fff1f2;color:#be123c;border-radius:8px;cursor:pointer;height:32px;font-size:16px;line-height:1}
 .remove-variant-btn:hover{background:#ffe4e6}
@@ -139,8 +145,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   .product{flex-direction:column}
   .prod-img{width:100%;height:120px;border-right:none;border-bottom:1px solid #e2e8f0}
   .prod-inputs{flex-wrap:wrap}
-  .size-wrap{min-width:100%}
-  .size-select{min-width:100%}
+  .size-wrap,.params-wrap{min-width:100%}
+  .size-select,.params-input{min-width:100%}
   .size-variant-row{grid-template-columns:1fr}
   .shape-badge{min-width:auto;padding:6px 10px;font-size:12px}
   .shape-icon{width:76px;height:26px}
@@ -2719,6 +2725,40 @@ const CAT_SKU_PREFIX = {
   rags: 'RAG',
   geo: 'GEO'
 };
+const CUSTOM_SIZE_TOKEN = '__custom__';
+
+function isCustomSizeToken(value) {
+  return String(value || '').trim() === CUSTOM_SIZE_TOKEN;
+}
+
+function normalizeSelectedSize(selectedValue, customValue = '') {
+  const selected = String(selectedValue || '').trim();
+  const custom = String(customValue || '').trim();
+  if (!selected) return '';
+  return isCustomSizeToken(selected) ? custom : selected;
+}
+
+function toggleCustomSizeInput(selectEl, customInputEl) {
+  if (!customInputEl) return;
+  const show = isCustomSizeToken(selectEl?.value);
+  customInputEl.style.display = show ? '' : 'none';
+  customInputEl.disabled = !show;
+}
+
+function assignSizeControlValue(selectEl, customInputEl, options = [], savedValue = '', savedCustom = '') {
+  let selected = String(savedValue || '').trim();
+  let custom = String(savedCustom || '').trim();
+  const optionSet = new Set(options || []);
+
+  if (selected && selected !== CUSTOM_SIZE_TOKEN && !optionSet.has(selected)) {
+    custom = custom || selected;
+    selected = CUSTOM_SIZE_TOKEN;
+  }
+
+  if (selectEl) selectEl.value = selected;
+  if (customInputEl) customInputEl.value = custom;
+  toggleCustomSizeInput(selectEl, customInputEl);
+}
 
 function toQtyNumber(value) {
   const num = Number(String(value || '').replace(',', '.'));
@@ -2736,7 +2776,7 @@ function getCardCategoryName(card) {
   return sec?.querySelector('h2')?.textContent.replace(/^.\s*/, '') || '';
 }
 
-function createOrderLine(card, { qty = '', size = '', note = '' } = {}) {
+function createOrderLine(card, { qty = '', size = '', params = '', note = '' } = {}) {
   return {
     id: card.dataset.id,
     sku: card.dataset.sku || card.dataset.id,
@@ -2747,6 +2787,7 @@ function createOrderLine(card, { qty = '', size = '', note = '' } = {}) {
     qty: String(qty || '').trim(),
     unit: card.querySelector('.unit-label')?.textContent || '',
     size: String(size || '').trim(),
+    params: String(params || '').trim(),
     note: String(note || '').trim()
   };
 }
@@ -2757,19 +2798,25 @@ function collectOrderLines() {
   document.querySelectorAll('.product').forEach(card => {
     const id = card.dataset.id;
     const baseQty = card.querySelector(`[data-qty="${id}"]`)?.value || '';
-    const baseSize = card.querySelector(`[data-size="${id}"]`)?.value || '';
+    const baseSizeSelected = card.querySelector(`[data-size="${id}"]`)?.value || '';
+    const baseSizeCustom = card.querySelector(`[data-size-custom="${id}"]`)?.value || '';
+    const baseSize = normalizeSelectedSize(baseSizeSelected, baseSizeCustom);
+    const baseParams = card.querySelector(`[data-params="${id}"]`)?.value || '';
     const baseNote = card.querySelector(`[data-note="${id}"]`)?.value || '';
 
     if (toQtyNumber(baseQty) > 0) {
-      lines.push(createOrderLine(card, { qty: baseQty, size: baseSize, note: baseNote }));
+      lines.push(createOrderLine(card, { qty: baseQty, size: baseSize, params: baseParams, note: baseNote }));
     }
 
     card.querySelectorAll('.size-variant-row').forEach(row => {
       const qty = row.querySelector('.qty-variant-input')?.value || '';
       if (toQtyNumber(qty) <= 0) return;
-      const size = row.querySelector('.size-variant-select')?.value || '';
+      const sizeSelected = row.querySelector('.size-variant-select')?.value || '';
+      const sizeCustom = row.querySelector('.size-variant-custom-input')?.value || '';
+      const size = normalizeSelectedSize(sizeSelected, sizeCustom);
+      const params = row.querySelector('.params-variant-input')?.value || '';
       const note = row.querySelector('.note-variant-input')?.value || '';
-      lines.push(createOrderLine(card, { qty, size, note }));
+      lines.push(createOrderLine(card, { qty, size, params, note }));
     });
   });
 
@@ -2808,17 +2855,23 @@ function saveState() {
     const qty = card.querySelector(`[data-qty="${id}"]`)?.value || '';
     const note = card.querySelector(`[data-note="${id}"]`)?.value || '';
     const size = card.querySelector(`[data-size="${id}"]`)?.value || '';
+    const sizeCustom = card.querySelector(`[data-size-custom="${id}"]`)?.value || '';
+    const params = card.querySelector(`[data-params="${id}"]`)?.value || '';
     const variants = [];
 
     card.querySelectorAll('.size-variant-row').forEach(row => {
       const vSize = row.querySelector('.size-variant-select')?.value || '';
+      const vSizeCustom = row.querySelector('.size-variant-custom-input')?.value || '';
       const vQty = row.querySelector('.qty-variant-input')?.value || '';
+      const vParams = row.querySelector('.params-variant-input')?.value || '';
       const vNote = row.querySelector('.note-variant-input')?.value || '';
-      if (vSize || vQty || vNote) variants.push({ size: vSize, qty: vQty, note: vNote });
+      if (vSize || vSizeCustom || vQty || vParams || vNote) {
+        variants.push({ size: vSize, sizeCustom: vSizeCustom, qty: vQty, params: vParams, note: vNote });
+      }
     });
 
-    if (qty || note || size || variants.length) {
-      state.items[id] = { qty, note, size, variants };
+    if (qty || note || size || sizeCustom || params || variants.length) {
+      state.items[id] = { qty, note, size, sizeCustom, params, variants };
     }
   });
 
@@ -2843,17 +2896,23 @@ function loadState() {
     }
     // Items
     Object.entries(state.items || {}).forEach(([id, data]) => {
+      const numericId = Number(id);
+      const options = ABRASIVE_SIZE_OPTIONS[numericId] || [];
       const qtyEl = document.querySelector(`[data-qty="${id}"]`);
       const noteEl = document.querySelector(`[data-note="${id}"]`);
       const sizeEl = document.querySelector(`[data-size="${id}"]`);
+      const sizeCustomEl = document.querySelector(`[data-size-custom="${id}"]`);
+      const paramsEl = document.querySelector(`[data-params="${id}"]`);
       if (qtyEl && data.qty) qtyEl.value = data.qty;
       if (noteEl && data.note) noteEl.value = data.note;
-      if (sizeEl && data.size) sizeEl.value = data.size;
+      if (paramsEl && data.params) paramsEl.value = data.params;
+      if (sizeEl && (data.size || data.sizeCustom)) {
+        assignSizeControlValue(sizeEl, sizeCustomEl, options, data.size || '', data.sizeCustom || '');
+      }
 
       if (Array.isArray(data.variants) && data.variants.length) {
         const card = document.querySelector(`.product[data-id="${id}"]`);
         const list = card?.querySelector(`.size-variants-list[data-variants-for="${id}"]`);
-        const options = ABRASIVE_SIZE_OPTIONS[Number(id)] || [];
         if (card && list) {
           data.variants.forEach(v => {
             list.appendChild(createSizeVariantRow(id, options, v));
@@ -2873,6 +2932,12 @@ function clearAll() {
   document.querySelectorAll('[data-qty]').forEach(el => { el.value = ''; });
   document.querySelectorAll('[data-note]').forEach(el => { el.value = ''; });
   document.querySelectorAll('[data-size]').forEach(el => { el.value = ''; });
+  document.querySelectorAll('[data-size-custom]').forEach(el => {
+    el.value = '';
+    el.style.display = 'none';
+    el.disabled = true;
+  });
+  document.querySelectorAll('[data-params]').forEach(el => { el.value = ''; });
   document.querySelectorAll('.size-variant-row').forEach(el => el.remove());
   document.querySelectorAll('[data-save]').forEach(el => { el.value = ''; });
   document.querySelectorAll('.product').forEach(el => el.classList.remove('has-qty'));
@@ -2976,7 +3041,7 @@ function exportCSV() {
   csv += `Период:,${period}\n`;
   csv += `Дата:,${new Date().toLocaleDateString('ru-RU')}\n`;
   csv += '\n';
-  csv += 'ID,Артикул,Категория,Наименование,Форма профиля,Описание,Количество,Единица,Размер,Примечание\n';
+  csv += 'ID,Артикул,Категория,Наименование,Форма профиля,Описание,Количество,Единица,Размер,Параметры,Примечание\n';
 
   const lines = collectOrderLines();
   if (lines.length === 0) { showToast('⚠️ Не указано ни одного количества'); return; }
@@ -2988,7 +3053,7 @@ function exportCSV() {
   }
   lines.forEach(line => {
     const desc = line.description.replace(/,/g, ';');
-    csv += `"${line.id}","${line.sku}","${line.category}","${line.name}","${line.type || ''}","${desc}","${line.qty}","${line.unit}","${line.size || ''}","${line.note || ''}"\n`;
+    csv += `"${line.id}","${line.sku}","${line.category}","${line.name}","${line.type || ''}","${desc}","${line.qty}","${line.unit}","${line.size || ''}","${line.params || ''}","${line.note || ''}"\n`;
   });
 
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -3023,9 +3088,10 @@ async function submitForm() {
     return;
   }
   const products = rawLines.map(line => {
-    const spec = [line.type ? `Форма профиля: ${line.type}` : '', line.size ? `Размер: ${line.size}` : '']
-      .filter(Boolean)
-      .join(', ');
+    const spec = [
+      line.type ? `Форма профиля: ${line.type}` : '',
+      line.size ? `Размер: ${line.size}` : ''
+    ].filter(Boolean).join(', ');
     const article = line.sku || line.id;
     return {
       ...line,
@@ -3033,8 +3099,14 @@ async function submitForm() {
       catalogId: line.id,
       name: `${line.name} [${article}]`,
       displayName: line.name,
+      rawParams: line.params || '',
       rawNote: line.note || '',
-      note: [`Артикул: ${article}`, line.note || '', spec].filter(Boolean).join(' | ')
+      note: [
+        `Артикул: ${article}`,
+        line.params ? `Параметры: ${line.params}` : '',
+        line.note || '',
+        spec ? `Спецификация: ${spec}` : ''
+      ].filter(Boolean).join(' | ')
     };
   });
 
@@ -3307,6 +3379,11 @@ function createSizeSelect(options, selected = '') {
     select.appendChild(opt);
   });
 
+  const customOpt = document.createElement('option');
+  customOpt.value = CUSTOM_SIZE_TOKEN;
+  customOpt.textContent = '✍️ Custom размер…';
+  select.appendChild(customOpt);
+
   if (selected) select.value = selected;
   return select;
 }
@@ -3315,10 +3392,36 @@ function createSizeVariantRow(id, options, values = {}) {
   const row = document.createElement('div');
   row.className = 'size-variant-row';
 
-  const sizeSelect = createSizeSelect(options, values.size || '');
+  const rawSize = String(values.size || '').trim();
+  const rawCustomSize = String(values.sizeCustom || '').trim();
+  let selectedSize = rawSize;
+  let customSize = rawCustomSize;
+  if (rawSize && rawSize !== CUSTOM_SIZE_TOKEN && !options.includes(rawSize)) {
+    selectedSize = CUSTOM_SIZE_TOKEN;
+    customSize = customSize || rawSize;
+  }
+
+  const sizeField = document.createElement('div');
+  sizeField.className = 'size-field';
+
+  const sizeSelect = createSizeSelect(options, selectedSize);
   sizeSelect.classList.add('size-variant-select');
   sizeSelect.dataset.sizeExtra = String(id);
-  sizeSelect.onchange = saveState;
+  sizeSelect.onchange = () => {
+    toggleCustomSizeInput(sizeSelect, sizeCustomInput);
+    saveState();
+  };
+
+  const sizeCustomInput = document.createElement('input');
+  sizeCustomInput.type = 'text';
+  sizeCustomInput.className = 'note-input size-custom-input size-variant-custom-input';
+  sizeCustomInput.dataset.sizeCustomExtra = String(id);
+  sizeCustomInput.placeholder = 'custom размер (например 125×1.0×22.23)';
+  sizeCustomInput.value = customSize;
+  sizeCustomInput.oninput = saveState;
+  toggleCustomSizeInput(sizeSelect, sizeCustomInput);
+  sizeField.appendChild(sizeSelect);
+  sizeField.appendChild(sizeCustomInput);
 
   const qtyInput = document.createElement('input');
   qtyInput.type = 'number';
@@ -3329,11 +3432,19 @@ function createSizeVariantRow(id, options, values = {}) {
   qtyInput.value = values.qty || '';
   qtyInput.oninput = (e) => onQtyChange(e.target);
 
+  const paramsInput = document.createElement('input');
+  paramsInput.type = 'text';
+  paramsInput.className = 'note-input params-variant-input';
+  paramsInput.dataset.paramsExtra = String(id);
+  paramsInput.placeholder = 'другие параметры…';
+  paramsInput.value = values.params || '';
+  paramsInput.oninput = saveState;
+
   const noteInput = document.createElement('input');
   noteInput.type = 'text';
   noteInput.className = 'note-input note-variant-input';
   noteInput.dataset.noteExtra = String(id);
-  noteInput.placeholder = 'комментарий по размеру…';
+  noteInput.placeholder = 'комментарий…';
   noteInput.value = values.note || '';
   noteInput.oninput = saveState;
 
@@ -3349,8 +3460,9 @@ function createSizeVariantRow(id, options, values = {}) {
     saveState();
   };
 
-  row.appendChild(sizeSelect);
+  row.appendChild(sizeField);
   row.appendChild(qtyInput);
+  row.appendChild(paramsInput);
   row.appendChild(noteInput);
   row.appendChild(removeBtn);
   return row;
@@ -3376,18 +3488,48 @@ function initAbrasiveSizeSelectors() {
 
     const select = createSizeSelect(options);
     select.dataset.size = String(id);
-    select.onchange = saveState;
+    select.onchange = () => {
+      toggleCustomSizeInput(select, customInput);
+      saveState();
+    };
+
+    const customInput = document.createElement('input');
+    customInput.type = 'text';
+    customInput.className = 'note-input size-custom-input';
+    customInput.dataset.sizeCustom = String(id);
+    customInput.placeholder = 'custom размер (например 125×1.0×22.23)';
+    customInput.oninput = saveState;
+    toggleCustomSizeInput(select, customInput);
 
     sizeWrap.appendChild(label);
     sizeWrap.appendChild(select);
+    sizeWrap.appendChild(customInput);
+
+    const paramsWrap = document.createElement('div');
+    paramsWrap.className = 'params-wrap';
+    const paramsLabel = document.createElement('label');
+    paramsLabel.textContent = 'Параметры';
+    const paramsInput = document.createElement('input');
+    paramsInput.type = 'text';
+    paramsInput.className = 'note-input params-input';
+    paramsInput.dataset.params = String(id);
+    paramsInput.placeholder = 'зерно, твердость, отверстия…';
+    paramsInput.oninput = saveState;
+    paramsWrap.appendChild(paramsLabel);
+    paramsWrap.appendChild(paramsInput);
 
     const noteWrap = row.querySelector('div[style*="flex:1"]');
-    if (noteWrap) row.insertBefore(sizeWrap, noteWrap);
-    else row.appendChild(sizeWrap);
+    if (noteWrap) {
+      row.insertBefore(sizeWrap, noteWrap);
+      row.insertBefore(paramsWrap, noteWrap);
+    } else {
+      row.appendChild(sizeWrap);
+      row.appendChild(paramsWrap);
+    }
 
     const noteInput = card.querySelector(`.note-input[data-note="${id}"]`);
     if (noteInput && noteInput.placeholder.includes('типоразмер')) {
-      noteInput.placeholder = 'зерно, комментарий…';
+      noteInput.placeholder = 'комментарий по позиции…';
     }
 
     if (!card.querySelector(`.size-variants[data-variants-for="${id}"]`)) {
