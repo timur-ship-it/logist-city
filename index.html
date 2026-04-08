@@ -87,9 +87,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 /* ABRASIVE SHAPE BADGES */
 .shape-legend{display:flex;flex-wrap:wrap;gap:8px;margin:-4px 0 12px 0}
 .shape-badge{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:7px 14px;border-radius:999px;border:1.5px solid #64748b;background:#f1f5f9;color:#0f172a;font-size:13px;font-weight:800;letter-spacing:.25px;line-height:1;white-space:nowrap;min-width:120px}
-.shape-icon{width:64px;height:24px;display:block;flex-shrink:0}
-.shape-icon .fill{fill:#1e293b;stroke:none}
-.shape-icon .line{stroke:#1e293b;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.shape-icon{width:94px;height:32px;display:block;flex-shrink:0;object-fit:contain;object-position:center center}
 .shape-code{font-weight:900}
 
 #cat-abrasives .prod-img{background:#fff}
@@ -130,7 +128,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   .size-wrap{min-width:100%}
   .size-select{min-width:100%}
   .shape-badge{min-width:auto;padding:6px 10px;font-size:12px}
-  .shape-icon{width:52px;height:20px}
+  .shape-icon{width:76px;height:26px}
   .hero h1{font-size:24px}
   .fab-bar{bottom:12px;padding:8px 12px}
 }
@@ -3170,27 +3168,31 @@ const ABRASIVE_SHAPE_MAP = {
   1:{code:'41',label:'T41'}, 2:{code:'42',label:'T42'}, 3:{code:'41',label:'T41'}, 4:{code:'41',label:'T41'},
   5:{code:'27',label:'T27'}, 6:{code:'41',label:'T41'}, 7:{code:'41',label:'T41'}, 8:{code:'42',label:'T42'},
   9:{code:'27',label:'T27'}, 10:{code:'41',label:'T41'}, 11:{code:'42',label:'T42'}, 12:{code:'41',label:'T41'},
-  13:{code:'27',label:'T27'}, 14:{code:'27',label:'T27'}, 15:{code:'27',label:'T27'}, 16:{code:'29',label:'T29'},
-  17:{code:'flower',label:'IMP'}, 18:{code:'fiber',label:'FIB'}, 19:{code:'velcro',label:'VEL'},
-  20:{code:'diamond',label:'DIA'}, 21:{code:'cup',label:'CUP'}
+  13:{code:'27',label:'T27'}, 14:{code:'27',label:'T27'}, 15:{code:'27',label:'T27'}, 16:{code:'29',label:'T29'}
 };
 
-const SHAPE_ICON_HTML = {
-  '41': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><rect class="fill" x="5" y="9" width="50" height="6" rx="3"/></svg>',
-  '42': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><path class="fill" d="M5 9h12l5 4h16l5-4h12v6H43l-5-4H22l-5 4H5z"/></svg>',
-  '27': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><path class="fill" d="M5 16h50v-5H40l-4-4H24l-4 4H5z"/></svg>',
-  '29': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><path class="fill" d="M5 18h50L41 8H19z"/></svg>',
-  'flower': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><circle class="line" cx="24" cy="12" r="6"/><circle class="line" cx="36" cy="12" r="6"/></svg>',
-  'fiber': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><circle class="line" cx="30" cy="12" r="7"/><circle class="line" cx="30" cy="12" r="2"/></svg>',
-  'velcro': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><circle class="line" cx="30" cy="12" r="7"/><circle class="line" cx="30" cy="12" r="2"/><circle class="fill" cx="24" cy="9" r="1.1"/><circle class="fill" cx="36" cy="9" r="1.1"/><circle class="fill" cx="24" cy="15" r="1.1"/><circle class="fill" cx="36" cy="15" r="1.1"/></svg>',
-  'diamond': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><circle class="line" cx="30" cy="12" r="7"/><circle class="line" cx="30" cy="12" r="2"/><path class="line" d="M30 3.5v2.2M30 18.3v2.2M21.5 12h-2.2M40.7 12h-2.2"/></svg>',
-  'cup': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><path class="line" d="M12 6v9c0 1.4 1.2 2.5 2.6 2.5h30.8c1.4 0 2.6-1.1 2.6-2.5V6"/><path class="line" d="M20 6h20"/></svg>'
+const SHAPE_ICON_SRC = {
+  '41':'images/shape-type-41.png',
+  '42':'images/shape-type-42.png',
+  '27':'images/shape-type-27.png',
+  '29':'images/shape-type-29.png'
 };
 
 function createShapeBadge(meta) {
   const badge = document.createElement('span');
   badge.className = 'shape-badge';
-  badge.innerHTML = (SHAPE_ICON_HTML[meta.code] || SHAPE_ICON_HTML['41']) + '<span class="shape-code">' + meta.label + '</span>';
+  const icon = document.createElement('img');
+  icon.className = 'shape-icon';
+  icon.src = SHAPE_ICON_SRC[meta.code] || SHAPE_ICON_SRC['41'];
+  icon.alt = '';
+  icon.loading = 'lazy';
+
+  const code = document.createElement('span');
+  code.className = 'shape-code';
+  code.textContent = meta.label;
+
+  badge.appendChild(icon);
+  badge.appendChild(code);
   return badge;
 }
 
