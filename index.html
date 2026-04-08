@@ -80,6 +80,20 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .note-input{flex:1;padding:6px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;
   color:#475569;font-family:inherit}
 .note-input:focus{outline:none;border-color:#3b82f6}
+.size-wrap{display:flex;flex-direction:column;gap:3px;min-width:200px}
+.size-select{padding:6px 8px;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;font-weight:600;color:#334155;background:#fff;font-family:inherit;min-width:200px}
+.size-select:focus{outline:none;border-color:#3b82f6}
+
+/* ABRASIVE SHAPE BADGES */
+.shape-legend{display:flex;flex-wrap:wrap;gap:8px;margin:-4px 0 12px 0}
+.shape-badge{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:7px 14px;border-radius:999px;border:1.5px solid #64748b;background:#f1f5f9;color:#0f172a;font-size:13px;font-weight:800;letter-spacing:.25px;line-height:1;white-space:nowrap;min-width:120px}
+.shape-icon{width:64px;height:24px;display:block;flex-shrink:0}
+.shape-icon .fill{fill:#1e293b;stroke:none}
+.shape-icon .line{stroke:#1e293b;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.shape-code{font-weight:900}
+
+#cat-abrasives .prod-img{background:#fff}
+#cat-abrasives .prod-img img{object-fit:contain!important;padding:8px}
 
 /* FLOATING ACTIONS */
 .fab-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;
@@ -113,6 +127,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   .product{flex-direction:column}
   .prod-img{width:100%;height:120px;border-right:none;border-bottom:1px solid #e2e8f0}
   .prod-inputs{flex-wrap:wrap}
+  .size-wrap{min-width:100%}
+  .size-select{min-width:100%}
+  .shape-badge{min-width:auto;padding:6px 10px;font-size:12px}
+  .shape-icon{width:52px;height:20px}
   .hero h1{font-size:24px}
   .fab-bar{bottom:12px;padding:8px 12px}
 }
@@ -185,495 +203,474 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 <!-- MAIN CONTENT -->
 <div class="main" id="catalogue">
 
-  <div class="cat-section" id="cat-abrasives" data-cat="abrasives">
-    <div class="cat-header" style="background:linear-gradient(135deg,#fef3c7,#fff);border:2px solid #f59e0b25">
-      <h2 style="color:#f59e0b">🔧 Абразивные инструменты</h2>
-      <span class="cat-count" style="color:#f59e0b">21 позиций</span>
-    </div>
-
-    <div class="product" data-id="1" data-search="круг шлифовальный для точила связка керамическая, электрокорунд, зернистость 24-120, ø150-300 мм, для настольных точильных станков">
-      <div class="prod-img">
-        <img src="images/abr-001.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Круг шлифовальный для точила</span>
-        </div>
-        <div class="prod-desc">Связка керамическая, электрокорунд, зернистость 24-120, Ø150-300 мм, для настольных точильных станков</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="1" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="1" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="2" data-search="круг для плоского шлифования связка керамическая, электрокорунд, ø150-500 мм, для плоскошлифовальных станков">
-      <div class="prod-img">
-        <img src="images/abr-002.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Круг для плоского шлифования</span>
-        </div>
-        <div class="prod-desc">Связка керамическая, электрокорунд, Ø150-500 мм, для плоскошлифовальных станков</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="2" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="2" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="3" data-search="круг для наружного круглого шлифования связка керамическая/бакелитовая, ø300-600 мм, для станков цилиндрического шлифования">
-      <div class="prod-img">
-        <img src="images/abr-003.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Круг для наружного круглого шлифования</span>
-        </div>
-        <div class="prod-desc">Связка керамическая/бакелитовая, Ø300-600 мм, для станков цилиндрического шлифования</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="3" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="3" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="4" data-search="круг для бесцентрового шлифования связка керамическая/бакелитовая, для проходного и врезного бесцентрового шлифования">
-      <div class="prod-img">
-        <img src="images/abr-004.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Круг для бесцентрового шлифования</span>
-        </div>
-        <div class="prod-desc">Связка керамическая/бакелитовая, для проходного и врезного бесцентрового шлифования</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="4" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="4" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="5" data-search="круг для внутреннего шлифования связка керамическая, малые диаметры, для расточки и шлифования отверстий">
-      <div class="prod-img">
-        <img src="images/abr-005.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Круг для внутреннего шлифования</span>
-        </div>
-        <div class="prod-desc">Связка керамическая, малые диаметры, для расточки и шлифования отверстий</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="5" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="5" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="6" data-search="круг для заточки инструмента чашечный / тарельчатый / блюдцевидный, керамическая связка, для переточки свёрл, фрез, резцов">
-      <div class="prod-img">
-        <img src="images/abr-006.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Круг для заточки инструмента</span>
-        </div>
-        <div class="prod-desc">Чашечный / тарельчатый / блюдцевидный, керамическая связка, для переточки свёрл, фрез, резцов</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="6" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="6" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="7" data-search="шлифовальная шкурка на тканевой основе электрокорунд или цирконий, зернистость 24-600, прочная тканевая основа, не рвётся">
-      <div class="prod-img">
-        <img src="images/abr-001.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Шлифовальная шкурка на тканевой основе</span>
-        </div>
-        <div class="prod-desc">Электрокорунд или цирконий, зернистость 24-600, прочная тканевая основа, не рвётся</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="7" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">лист / рулон</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="7" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="8" data-search="шлифовальная шкурка на бумажной основе электрокорунд или карбид кремния, зернистость 60-2000, мокрое/сухое использование">
-      <div class="prod-img">
-        <img src="images/abr-008.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Шлифовальная шкурка на бумажной основе</span>
-        </div>
-        <div class="prod-desc">Электрокорунд или карбид кремния, зернистость 60-2000, мокрое/сухое использование</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="8" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">лист / рулон</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="8" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="9" data-search="фибровый диск для ушм (болгарки) ø100-180 мм, зернистость 24-120, электрокорунд/цирконий, на опорную тарелку">
-      <div class="prod-img">
-        <img src="images/abr-009.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Фибровый диск для УШМ (болгарки)</span>
-        </div>
-        <div class="prod-desc">Ø100-180 мм, зернистость 24-120, электрокорунд/цирконий, на опорную тарелку</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="9" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">упак. 25 шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="9" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="10" data-search="лепестковый круг для ушм ø100-180 мм, зернистость 40-120, цирконий или электрокорунд, плоский или конический">
-      <div class="prod-img">
-        <img src="images/abr-010.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Лепестковый круг для УШМ</span>
-        </div>
-        <div class="prod-desc">Ø100-180 мм, зернистость 40-120, цирконий или электрокорунд, плоский или конический</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="10" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="10" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="11" data-search="широкая шлифовальная лента ширина до 1600 мм, тканевая/бумажная, для промышленных широколенточных станков">
-      <div class="prod-img">
-        <img src="images/abr-011.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Широкая шлифовальная лента</span>
-        </div>
-        <div class="prod-desc">Ширина до 1600 мм, тканевая/бумажная, для промышленных широколенточных станков</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="11" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="11" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="12" data-search="отрезной круг по стали — плоский ø115-230 мм, толщина 1.0-3.2 мм, сертификат en12413, для резки арматуры, труб, профиля">
-      <div class="prod-img">
-        <img src="images/abr-011.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Отрезной круг по стали — плоский</span>
-        </div>
-        <div class="prod-desc">Ø115-230 мм, толщина 1.0-3.2 мм, сертификат EN12413, для резки арматуры, труб, профиля</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="12" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">кор. 25 шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="12" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="13" data-search="отрезной круг по стали — вогнутый (утопленный центр) ø115-230 мм, утопленный центр для резки заподлицо в стеснённых условиях">
-      <div class="prod-img">
-        <img src="images/abr-013.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Отрезной круг по стали — вогнутый (утопленный центр)</span>
-        </div>
-        <div class="prod-desc">Ø115-230 мм, утопленный центр для резки заподлицо в стеснённых условиях</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="13" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">кор. 25 шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="13" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="14" data-search="отрезной круг по нержавейке (inox) ø115-230 мм, толщина 0.8-2.0 мм, минимальный нагрев — без изменения цвета металла">
-      <div class="prod-img">
-        <img src="images/abr-014.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Отрезной круг по нержавейке (INOX)</span>
-        </div>
-        <div class="prod-desc">Ø115-230 мм, толщина 0.8-2.0 мм, минимальный нагрев — без изменения цвета металла</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="14" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">кор. 25 шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="14" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="15" data-search="зачистной круг по нержавейке (inox) ø115-230 мм, толщина 6.0-6.4 мм, для зачистки сварных швов на нержавейке">
-      <div class="prod-img">
-        <img src="images/abr-015.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Зачистной круг по нержавейке (INOX)</span>
-        </div>
-        <div class="prod-desc">Ø115-230 мм, толщина 6.0-6.4 мм, для зачистки сварных швов на нержавейке</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="15" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">кор. 25 шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="15" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="16" data-search="отрезной круг по камню и бетону ø115-230 мм, карбид кремния, для резки кирпича, блоков, бетона">
-      <div class="prod-img">
-        <img src="images/abr-013.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Отрезной круг по камню и бетону</span>
-        </div>
-        <div class="prod-desc">Ø115-230 мм, карбид кремния, для резки кирпича, блоков, бетона</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="16" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">кор. 25 шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="16" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="17" data-search="алмазный отрезной диск сегментный или сплошной обод, различные ø, для резки камня, бетона, плитки">
-      <div class="prod-img">
-        <img src="images/abr-017.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Алмазный отрезной диск</span>
-        </div>
-        <div class="prod-desc">Сегментный или сплошной обод, различные Ø, для резки камня, бетона, плитки</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="17" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="17" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="18" data-search="алмазная чашка для шлифовки бетона для ушм, выравнивание бетонных поверхностей и снятие покрытий">
-      <div class="prod-img">
-        <img src="images/abr-018.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Алмазная чашка для шлифовки бетона</span>
-        </div>
-        <div class="prod-desc">Для УШМ, выравнивание бетонных поверхностей и снятие покрытий</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="18" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="18" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="19" data-search="алмазная коронка (корончатое сверло) различные ø, мокрое/сухое сверление по бетону, кирпичу, камню">
-      <div class="prod-img">
-        <img src="images/abr-018.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Алмазная коронка (корончатое сверло)</span>
-        </div>
-        <div class="prod-desc">Различные Ø, мокрое/сухое сверление по бетону, кирпичу, камню</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="19" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="19" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="20" data-search="круг cbn (кубический нитрид бора) для шлифования закалённой стали, связка керамическая/бакелитовая/гальваническая">
-      <div class="prod-img">
-        <img src="images/abr-020.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Круг CBN (кубический нитрид бора)</span>
-        </div>
-        <div class="prod-desc">Для шлифования закалённой стали, связка керамическая/бакелитовая/гальваническая</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="20" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">шт.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="20" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="product" data-id="21" data-search="шлифовальный круг на липучке для орбитальной машинки электрокорунд, крепление «липучка», для эксцентриковых шлифмашин">
-      <div class="prod-img">
-        <img src="images/abr-021.jpg" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="prod-body">
-        <div class="prod-top">
-          <span class="prod-name">Шлифовальный круг на липучке для орбитальной машинки</span>
-        </div>
-        <div class="prod-desc">Электрокорунд, крепление «липучка», для эксцентриковых шлифмашин</div>
-        <div class="prod-inputs">
-          <div>
-            <label>Кол-во</label>
-            <input type="number" class="qty-input" min="0" placeholder="—" data-qty="21" oninput="onQtyChange(this)">
-          </div>
-          <span class="unit-label">упак.</span>
-          <div style="flex:1">
-            <label>Примечание</label>
-            <input type="text" class="note-input" placeholder="размер, спецификация…" data-note="21" oninput="saveState()">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="cat-section" data-cat="abrasives" id="cat-abrasives">
+<div class="cat-header" style="background:linear-gradient(135deg,#fef3c7,#fff);border:2px solid #f59e0b25">
+<h2 style="color:#f59e0b">🔧 Абразивные инструменты</h2>
+<span class="cat-count" style="color:#f59e0b">21 позиций</span>
+</div>
+<div class="product" data-id="1" data-search="отрезной круг по стали для резки стали. типоразмеры: ø100-230 × 1.0-2.2 × 16/22.23 мм; скорость до 80 м/с.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-001.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Отрезной круг по стали</span>
+</div>
+<div class="prod-desc">Для резки стали. Типоразмеры: Ø100-230 × 1.0-2.2 × 16/22.23 мм; скорость до 80 м/с.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="1" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="1" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="2" data-search="отрезной круг по стали (рез заподлицо) для резки металла заподлицо. типоразмеры: ø100-230 × 1.0-2.2 × 16/22.23 мм; скорость до 80 м/с.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-002.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Отрезной круг по стали (рез заподлицо)</span>
+</div>
+<div class="prod-desc">Для резки металла заподлицо. Типоразмеры: Ø100-230 × 1.0-2.2 × 16/22.23 мм; скорость до 80 м/с.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="2" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="2" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="3" data-search="отрезной круг по стали (большой диаметр) для стационарных/маятниковых машин. типоразмеры: 300-405 × 2.5-4.0 × 25.4 мм; скорость до 100 м/с.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-003.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Отрезной круг по стали (большой диаметр)</span>
+</div>
+<div class="prod-desc">Для стационарных/маятниковых машин. Типоразмеры: 300-405 × 2.5-4.0 × 25.4 мм; скорость до 100 м/с.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="3" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="3" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="4" data-search="рельсовый отрезной круг для резки рельсового профиля. типоразмеры: 300-400 × 2.5-4.0 × 25.4 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-004.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Рельсовый отрезной круг</span>
+</div>
+<div class="prod-desc">Для резки рельсового профиля. Типоразмеры: 300-400 × 2.5-4.0 × 25.4 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="4" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="4" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="5" data-search="зачистной круг по стали для зачистки сварных швов и кромок. типоразмеры: ø100-230 × 4.0-8.0 × 16/22.23 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-005.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Зачистной круг по стали</span>
+</div>
+<div class="prod-desc">Для зачистки сварных швов и кромок. Типоразмеры: Ø100-230 × 4.0-8.0 × 16/22.23 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="5" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="5" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="6" data-search="ультратонкий отрезной круг inox для нержавеющей стали и тонкостенных профилей. типоразмеры: ø105-230 × 1.0-1.6 × 16/22.23 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-006.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Ультратонкий отрезной круг INOX</span>
+</div>
+<div class="prod-desc">Для нержавеющей стали и тонкостенных профилей. Типоразмеры: Ø105-230 × 1.0-1.6 × 16/22.23 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="6" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="6" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="7" data-search="отрезной круг inox для нержавейки и легированных сталей. типоразмеры: ø100-230 × 1.0-2.2 × 16/22.23 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-007.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Отрезной круг INOX</span>
+</div>
+<div class="prod-desc">Для нержавейки и легированных сталей. Типоразмеры: Ø100-230 × 1.0-2.2 × 16/22.23 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="7" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="7" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="8" data-search="отрезной круг inox (рез заподлицо) для нержавейки в стесненных местах. типоразмеры: ø100-230 × 1.0-2.2 × 16/22.23 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-008.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Отрезной круг INOX (рез заподлицо)</span>
+</div>
+<div class="prod-desc">Для нержавейки в стесненных местах. Типоразмеры: Ø100-230 × 1.0-2.2 × 16/22.23 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="8" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="8" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="9" data-search="зачистной круг inox для шлифования нержавеющей стали. типоразмеры: ø100-230 × 4.0-8.0 × 16/22.23 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-009.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Зачистной круг INOX</span>
+</div>
+<div class="prod-desc">Для шлифования нержавеющей стали. Типоразмеры: Ø100-230 × 4.0-8.0 × 16/22.23 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="9" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="9" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="10" data-search="отрезной круг по камню для камня, кирпича и бетона. типоразмеры: ø100-230 × 1.6-3.2 × 16/22.23 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-010.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Отрезной круг по камню</span>
+</div>
+<div class="prod-desc">Для камня, кирпича и бетона. Типоразмеры: Ø100-230 × 1.6-3.2 × 16/22.23 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="10" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="10" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="11" data-search="отрезной круг по камню (рез заподлицо) для резки камня с утопленным центром. типоразмеры: ø100-230 × 2.5-3.2 × 16/22.23 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-011.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Отрезной круг по камню (рез заподлицо)</span>
+</div>
+<div class="prod-desc">Для резки камня с утопленным центром. Типоразмеры: Ø100-230 × 2.5-3.2 × 16/22.23 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="11" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="11" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="12" data-search="отрезной круг по камню (большой диаметр) для стационарной резки камня. типоразмеры: 300-400 × 3.0-4.0 × 25.4 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-012.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Отрезной круг по камню (большой диаметр)</span>
+</div>
+<div class="prod-desc">Для стационарной резки камня. Типоразмеры: 300-400 × 3.0-4.0 × 25.4 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="12" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="12" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="13" data-search="зачистной круг по камню для шлифования камня и бетона. типоразмеры: ø100-230 × 6.0-8.0 × 16/22.23 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-013.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Зачистной круг по камню</span>
+</div>
+<div class="prod-desc">Для шлифования камня и бетона. Типоразмеры: Ø100-230 × 6.0-8.0 × 16/22.23 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="13" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="13" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="14" data-search="гибкий шлифовальный круг для финишной шлифовки стали и нержавейки. типоразмеры: ø100/115/125/150/180 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-014.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Гибкий шлифовальный круг</span>
+</div>
+<div class="prod-desc">Для финишной шлифовки стали и нержавейки. Типоразмеры: Ø100/115/125/150/180 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="14" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="14" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="15" data-search="лепестковый круг (универсальный) универсальная зачистка. типоразмеры: 100×16, 115×22.23, 125×22.23, 150×22.23, 180×22.23 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-015.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Лепестковый круг (универсальный)</span>
+</div>
+<div class="prod-desc">Универсальная зачистка. Типоразмеры: 100×16, 115×22.23, 125×22.23, 150×22.23, 180×22.23 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="15" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="15" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="16" data-search="лепестковый круг (агрессивный съем) агрессивный съем материала. типоразмеры: 100×16, 115×22.23, 125×22.23, 150×22.23, 180×22.23 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-016.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Лепестковый круг (агрессивный съем)</span>
+</div>
+<div class="prod-desc">Агрессивный съем материала. Типоразмеры: 100×16, 115×22.23, 125×22.23, 150×22.23, 180×22.23 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="16" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="16" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="17" data-search="лепестковый flower impeller для стали/inox. типоразмеры: ø100 и ø125 мм (посадка 16/22.23 мм).">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-017.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Лепестковый круг Flower Impeller</span>
+</div>
+<div class="prod-desc">Лепестковый Flower Impeller для стали/INOX. Типоразмеры: Ø100 и Ø125 мм (посадка 16/22.23 мм).</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="17" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="17" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="18" data-search="фибровые диски для грубой и промежуточной шлифовки. типоразмеры: 100×16, 115×22.23, 125×22.23, 180×22.23 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-018.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Фибровый диск</span>
+</div>
+<div class="prod-desc">Фибровые диски для грубой и промежуточной шлифовки. Типоразмеры: 100×16, 115×22.23, 125×22.23, 180×22.23 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="18" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="18" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="19" data-search="stick & strip / velcro для финишной обработки. типоразмеры: ø75/100/115/125/150/180/230 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-019.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Диск Stick &amp; Strip / Velcro</span>
+</div>
+<div class="prod-desc">Stick & Strip / Velcro для финишной обработки. Типоразмеры: Ø75/100/115/125/150/180/230 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="19" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="19" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="20" data-search="алмазный отрезной диск (segmented/continuous/turbo) для камня и бетона. типоразмеры: ø105-230 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-020.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Алмазный отрезной диск (Segmented/Continuous/Turbo)</span>
+</div>
+<div class="prod-desc">Алмазный отрезной диск (Segmented/Continuous/Turbo) для камня и бетона. Типоразмеры: Ø105-230 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="20" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="20" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="21" data-search="алмазная чашка (cup wheel) для шлифования бетона/камня. типоразмеры: ø100/125/180 мм.">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/abr-021.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Алмазная чашка (Cup Wheel)</span>
+</div>
+<div class="prod-desc">Алмазная чашка (Cup Wheel) для шлифования бетона/камня. Типоразмеры: Ø100/125/180 мм.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="21" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="21" oninput="saveState()" placeholder="типоразмер (DxTxH), зерно, спецификация…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+</div>
 
   <div class="cat-section" id="cat-chemicals" data-cat="chemicals">
     <div class="cat-header" style="background:linear-gradient(135deg,#dbeafe,#fff);border:2px solid #3b82f625">
@@ -2709,7 +2706,8 @@ function saveState() {
     const id = el.dataset.qty;
     const qty = el.value;
     const note = document.querySelector(`[data-note="${id}"]`)?.value || '';
-    if (qty || note) state.items[id] = { qty, note };
+    const size = document.querySelector(`[data-size="${id}"]`)?.value || '';
+    if (qty || note || size) state.items[id] = { qty, note, size };
   });
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   updateCounter();
@@ -2734,8 +2732,10 @@ function loadState() {
     Object.entries(state.items || {}).forEach(([id, data]) => {
       const qtyEl = document.querySelector(`[data-qty="${id}"]`);
       const noteEl = document.querySelector(`[data-note="${id}"]`);
+      const sizeEl = document.querySelector(`[data-size="${id}"]`);
       if (qtyEl && data.qty) { qtyEl.value = data.qty; highlightCard(qtyEl); }
       if (noteEl && data.note) noteEl.value = data.note;
+      if (sizeEl && data.size) sizeEl.value = data.size;
     });
     updateCounter();
   } catch(e) { console.warn('Load state error:', e); }
@@ -2745,6 +2745,7 @@ function clearAll() {
   localStorage.removeItem(STORAGE_KEY);
   document.querySelectorAll('.qty-input').forEach(el => { el.value = ''; });
   document.querySelectorAll('.note-input').forEach(el => { el.value = ''; });
+  document.querySelectorAll('.size-select').forEach(el => { el.value = ''; });
   document.querySelectorAll('[data-save]').forEach(el => { el.value = ''; });
   document.querySelectorAll('.product').forEach(el => el.classList.remove('has-qty'));
   document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
@@ -2855,7 +2856,7 @@ function exportCSV() {
   csv += `Период:,${period}\n`;
   csv += `Дата:,${new Date().toLocaleDateString('ru-RU')}\n`;
   csv += '\n';
-  csv += 'Категория,Наименование,Описание,Количество,Единица,Примечание\n';
+  csv += 'Категория,Наименование,Описание,Количество,Единица,Размер,Примечание\n';
 
   let hasItems = false;
   document.querySelectorAll('.product').forEach(card => {
@@ -2864,12 +2865,13 @@ function exportCSV() {
     if (!qty || parseInt(qty) <= 0) return;
     hasItems = true;
     const note = document.querySelector(`[data-note="${id}"]`)?.value || '';
+    const size = document.querySelector(`[data-size="${id}"]`)?.value || '';
     const name = card.querySelector('.prod-name').textContent;
     const desc = card.querySelector('.prod-desc').textContent.replace(/,/g, ';');
     const unit = card.querySelector('.unit-label').textContent;
     const catSection = card.closest('.cat-section');
     const catName = catSection.querySelector('h2').textContent.replace(/^.\s*/, '');
-    csv += `${id},"${catName}","${name}","${desc}",${qty},"${unit}","${note}"\n`;
+    csv += `${id},"${catName}","${name}","${desc}",${qty},"${unit}","${size}","${note}"\n`;
   });
 
   if (!hasItems) { showToast('⚠️ Не указано ни одного количества'); return; }
@@ -2908,6 +2910,7 @@ async function submitForm() {
       name: card.querySelector('.prod-name').textContent,
       qty,
       unit: card.querySelector('.unit-label').textContent,
+      size: document.querySelector(`[data-size="${id}"]`)?.value || '',
       note: document.querySelector(`[data-note="${id}"]`)?.value || ''
     });
   });
@@ -2994,7 +2997,139 @@ document.addEventListener('input', () => {
   saveTimer = setTimeout(saveState, 1000);
 });
 
+// ━━━ ABRASIVE SIZE SELECTORS ━━━
+const ABRASIVE_SIZE_OPTIONS = {
+  1:['100×1.6×16','115×1.6×22.23','125×1.6×22.23','150×1.6×22.23','180×1.8×22.23','230×2.0×22.23'],
+  2:['100×1.6×16','115×1.6×22.23','125×1.6×22.23','150×1.6×22.23','180×1.8×22.23','230×2.0×22.23'],
+  3:['300×3.0×25.4','350×3.0×25.4','355×3.2×25.4','400×3.5×25.4','405×4.0×25.4'],
+  4:['300×3.0×25.4','350×3.0×25.4','400×4.0×25.4'],
+  5:['100×4×16','115×6×22.23','125×6×22.23','150×6×22.23','180×8×22.23','230×8×22.23'],
+  6:['105×1.0×16','115×1.0×22.23','125×1.0×22.23','180×1.6×22.23','230×1.9×22.23'],
+  7:['100×1.6×16','115×1.6×22.23','125×1.6×22.23','150×1.6×22.23','180×1.8×22.23','230×2.0×22.23'],
+  8:['100×1.6×16','115×1.6×22.23','125×1.6×22.23','150×1.6×22.23','180×1.8×22.23','230×2.0×22.23'],
+  9:['100×4×16','115×6×22.23','125×6×22.23','150×6×22.23','180×8×22.23','230×8×22.23'],
+  10:['100×3×16','115×3×22.23','125×3×22.23','150×3×22.23','180×3×22.23','230×3×22.23'],
+  11:['100×3×16','115×3×22.23','125×3×22.23','150×3×22.23','180×3×22.23','230×3×22.23'],
+  12:['300×3.0×25.4','350×3.0×25.4','400×4.0×25.4'],
+  13:['100×6×16','115×6×22.23','125×6×22.23','150×6×22.23','180×8×22.23','230×8×22.23'],
+  14:['100×16','115×22.23','125×22.23','150×22.23','180×22.23'],
+  15:['100×16 P40','115×22.23 P40','125×22.23 P60','150×22.23 P80','180×22.23 P120'],
+  16:['100×16 P40','115×22.23 P40','125×22.23 P60','150×22.23 P80','180×22.23 P120'],
+  17:['100×16 P60','100×16 P80','125×22.23 P60','125×22.23 P80'],
+  18:['100×16 P36','115×22.23 P60','125×22.23 P80','180×22.23 P120'],
+  19:['75 P80','100 P120','115 P180','125 P240','150 P320','180 P400','230 P600'],
+  20:['105 Segmented','115 Segmented','125 Turbo','180 Continuous','230 Segmented'],
+  21:['100 Segmented','125 Continuous','125 Turbo','180 Segmented']
+};
+
+function initAbrasiveSizeSelectors() {
+  const sec = document.getElementById('cat-abrasives');
+  if (!sec) return;
+
+  sec.querySelectorAll('.product').forEach(card => {
+    const id = Number(card.dataset.id || 0);
+    const options = ABRASIVE_SIZE_OPTIONS[id];
+    if (!options || options.length === 0) return;
+
+    const row = card.querySelector('.prod-inputs');
+    if (!row || row.querySelector(`[data-size="${id}"]`)) return;
+
+    const sizeWrap = document.createElement('div');
+    sizeWrap.className = 'size-wrap';
+
+    const label = document.createElement('label');
+    label.textContent = 'Размер';
+
+    const select = document.createElement('select');
+    select.className = 'size-select';
+    select.dataset.size = String(id);
+    select.onchange = saveState;
+
+    const empty = document.createElement('option');
+    empty.value = '';
+    empty.textContent = 'выбрать…';
+    select.appendChild(empty);
+
+    options.forEach(optText => {
+      const opt = document.createElement('option');
+      opt.value = optText;
+      opt.textContent = optText;
+      select.appendChild(opt);
+    });
+
+    sizeWrap.appendChild(label);
+    sizeWrap.appendChild(select);
+
+    const noteWrap = row.querySelector('div[style*="flex:1"]');
+    if (noteWrap) row.insertBefore(sizeWrap, noteWrap);
+    else row.appendChild(sizeWrap);
+
+    const noteInput = card.querySelector(`.note-input[data-note="${id}"]`);
+    if (noteInput && noteInput.placeholder.includes('типоразмер')) {
+      noteInput.placeholder = 'зерно, комментарий…';
+    }
+  });
+}
+
+// ━━━ ABRASIVE SHAPE BADGES ━━━
+const ABRASIVE_SHAPE_MAP = {
+  1:{code:'41',label:'T41'}, 2:{code:'42',label:'T42'}, 3:{code:'41',label:'T41'}, 4:{code:'41',label:'T41'},
+  5:{code:'27',label:'T27'}, 6:{code:'41',label:'T41'}, 7:{code:'41',label:'T41'}, 8:{code:'42',label:'T42'},
+  9:{code:'27',label:'T27'}, 10:{code:'41',label:'T41'}, 11:{code:'42',label:'T42'}, 12:{code:'41',label:'T41'},
+  13:{code:'27',label:'T27'}, 14:{code:'27',label:'T27'}, 15:{code:'27',label:'T27'}, 16:{code:'29',label:'T29'},
+  17:{code:'flower',label:'IMP'}, 18:{code:'fiber',label:'FIB'}, 19:{code:'velcro',label:'VEL'},
+  20:{code:'diamond',label:'DIA'}, 21:{code:'cup',label:'CUP'}
+};
+
+const SHAPE_ICON_HTML = {
+  '41': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><rect class="fill" x="5" y="9" width="50" height="6" rx="3"/></svg>',
+  '42': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><path class="fill" d="M5 9h12l5 4h16l5-4h12v6H43l-5-4H22l-5 4H5z"/></svg>',
+  '27': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><path class="fill" d="M5 16h50v-5H40l-4-4H24l-4 4H5z"/></svg>',
+  '29': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><path class="fill" d="M5 18h50L41 8H19z"/></svg>',
+  'flower': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><circle class="line" cx="24" cy="12" r="6"/><circle class="line" cx="36" cy="12" r="6"/></svg>',
+  'fiber': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><circle class="line" cx="30" cy="12" r="7"/><circle class="line" cx="30" cy="12" r="2"/></svg>',
+  'velcro': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><circle class="line" cx="30" cy="12" r="7"/><circle class="line" cx="30" cy="12" r="2"/><circle class="fill" cx="24" cy="9" r="1.1"/><circle class="fill" cx="36" cy="9" r="1.1"/><circle class="fill" cx="24" cy="15" r="1.1"/><circle class="fill" cx="36" cy="15" r="1.1"/></svg>',
+  'diamond': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><circle class="line" cx="30" cy="12" r="7"/><circle class="line" cx="30" cy="12" r="2"/><path class="line" d="M30 3.5v2.2M30 18.3v2.2M21.5 12h-2.2M40.7 12h-2.2"/></svg>',
+  'cup': '<svg class="shape-icon" viewBox="0 0 60 24" aria-hidden="true"><path class="line" d="M12 6v9c0 1.4 1.2 2.5 2.6 2.5h30.8c1.4 0 2.6-1.1 2.6-2.5V6"/><path class="line" d="M20 6h20"/></svg>'
+};
+
+function createShapeBadge(meta) {
+  const badge = document.createElement('span');
+  badge.className = 'shape-badge';
+  badge.innerHTML = (SHAPE_ICON_HTML[meta.code] || SHAPE_ICON_HTML['41']) + '<span class="shape-code">' + meta.label + '</span>';
+  return badge;
+}
+
+function renderAbrasiveShapeBadges() {
+  const sec = document.getElementById('cat-abrasives');
+  if (!sec) return;
+
+  const firstProduct = sec.querySelector('.product');
+  if (firstProduct && !sec.querySelector('.shape-legend')) {
+    const legend = document.createElement('div');
+    legend.className = 'shape-legend';
+    [
+      {code:'41',label:'T41 Плоский'},
+      {code:'42',label:'T42 Утоплённый центр'},
+      {code:'27',label:'T27 Зачистной'},
+      {code:'29',label:'T29 Конический'}
+    ].forEach(item => legend.appendChild(createShapeBadge(item)));
+    sec.insertBefore(legend, firstProduct);
+  }
+
+  sec.querySelectorAll('.product').forEach(card => {
+    const id = Number(card.dataset.id || 0);
+    const meta = ABRASIVE_SHAPE_MAP[id];
+    if (!meta) return;
+    const top = card.querySelector('.prod-top');
+    if (!top || top.querySelector('.shape-badge')) return;
+    top.appendChild(createShapeBadge(meta));
+  });
+}
+
 // ━━━ INIT ━━━
+renderAbrasiveShapeBadges();
+initAbrasiveSizeSelectors();
 loadState();
 </script>
 </body>
