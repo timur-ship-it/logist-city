@@ -25,7 +25,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .topbar .nav-cats{display:flex;gap:4px;flex:1;overflow-x:auto;scrollbar-width:none}
 .topbar .nav-cats::-webkit-scrollbar{display:none}
 .nav-cat{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;color:#94a3b8;cursor:pointer;
-  white-space:nowrap;transition:all .2s;border:1px solid transparent}
+  white-space:normal;transition:all .2s;border:1px solid transparent;display:flex;align-items:center;justify-content:center;
+  text-align:center;line-height:1.15;min-height:34px;width:120px;padding:6px 8px}
 .nav-cat:hover,.nav-cat.active{color:#fff;background:rgba(56,189,248,0.15);border-color:rgba(56,189,248,0.3)}
 .nav-cat.active{color:#38bdf8}
 .topbar .counter{font-size:13px;color:#38bdf8;font-weight:700;background:rgba(56,189,248,0.1);
@@ -78,6 +79,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .prod-tags{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
 .prod-sku{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;font-size:11px;font-weight:800;line-height:1}
 .prod-desc{font-size:12px;color:#64748b;line-height:1.6}
+.prod-name,.prod-desc,.unit-label{overflow-wrap:anywhere;word-break:break-word}
 .prod-inputs{display:flex;gap:10px;align-items:center;margin-top:auto;padding-top:8px;border-top:1px solid #f1f5f9}
 .prod-inputs label{font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase}
 .qty-input{width:80px;padding:6px 10px;border:2px solid #e2e8f0;border-radius:8px;font-size:14px;
@@ -152,6 +154,19 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   .topbar .logo{font-size:18px}
   .topbar .build-tag{order:2}
   .topbar .counter{order:3;width:100%;text-align:center}
+  .topbar .nav-cats{
+    order:4;
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px;
+    overflow:visible;
+  }
+  .nav-cat{
+    width:auto;
+    min-height:40px;
+    padding:8px 10px;
+  }
   .form-grid{grid-template-columns:1fr}
   .hero{padding:32px 14px 26px}
   .company-form{padding:16px}
