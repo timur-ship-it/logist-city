@@ -4220,7 +4220,7 @@ function createSizeSelect(options, selected = '') {
 
   const customOpt = document.createElement('option');
   customOpt.value = CUSTOM_SIZE_TOKEN;
-  customOpt.textContent = '✍️ Custom размер…';
+  customOpt.textContent = '✍️ Свой размер…';
   select.appendChild(customOpt);
 
   if (selected) select.value = selected;
@@ -4256,7 +4256,7 @@ function createSizeVariantRow(id, options, values = {}) {
   sizeCustomInput.type = 'text';
   sizeCustomInput.className = 'note-input size-custom-input size-variant-custom-input';
   sizeCustomInput.dataset.sizeCustomExtra = String(id);
-  sizeCustomInput.placeholder = 'custom размер (например 125×1.0×22.23)';
+  sizeCustomInput.placeholder = 'свой размер (например 125×1.0×22.23)';
   sizeCustomInput.value = customSize;
   sizeCustomInput.oninput = saveState;
   toggleCustomSizeInput(sizeSelect, sizeCustomInput);
@@ -4337,7 +4337,7 @@ function initAbrasiveSizeSelectors() {
     customInput.type = 'text';
     customInput.className = 'note-input size-custom-input';
     customInput.dataset.sizeCustom = String(id);
-    customInput.placeholder = 'custom размер (например 125×1.0×22.23)';
+    customInput.placeholder = 'свой размер (например 125×1.0×22.23)';
     customInput.oninput = saveState;
     toggleCustomSizeInput(select, customInput);
 
