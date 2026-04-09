@@ -16,6 +16,15 @@ OUT_DIR = Path('/tmp/netlify-deploy/images')
 PREVIEW_DIR = Path('/tmp/netlify-deploy/tmp_previews')
 TARGET_SIZE = 400
 
+# Keep extra breathing room for cards that previously looked too tight in UI.
+SAFE_SCALE_MAP: Dict[int, float] = {
+    12: 0.86,
+    13: 0.82,
+    15: 0.85,
+    20: 0.86,
+    21: 0.86,
+}
+
 
 @dataclass(frozen=True)
 class CropSpec:
@@ -73,11 +82,11 @@ ABR_SPECS: Dict[int, List[CropSpec]] = {
         CropSpec('cumi-08.jpg', (0.61, 0.30, 0.79, 0.43), 'largest', 'fallback from CUMI cutting row'),
     ],
     12: [
-        CropSpec('tbaw-08.jpg', (0.18, 0.14, 0.40, 0.40), 'largest', 'stone large diameter cut-off'),
+        CropSpec('tbaw-08.jpg', (0.18, 0.11, 0.46, 0.43), 'largest', 'stone large diameter cut-off (wider full-wheel crop)'),
         CropSpec('cumi-08.jpg', (0.69, 0.46, 0.90, 0.60), 'largest', 'fallback from CUMI large diameter row'),
     ],
     13: [
-        CropSpec('tbaw-08.jpg', (0.65, 0.14, 0.86, 0.36), 'largest', 'stone grinding wheel'),
+        CropSpec('tbaw-08.jpg', (0.66, 0.10, 0.96, 0.42), 'largest', 'stone grinding wheel (wider full-wheel crop)'),
         CropSpec('cumi-08.jpg', (0.61, 0.12, 0.80, 0.25), 'largest', 'fallback from CUMI grinding row'),
     ],
     14: [
@@ -85,7 +94,7 @@ ABR_SPECS: Dict[int, List[CropSpec]] = {
         CropSpec('cumi-12.jpg', (0.08, 0.74, 0.46, 0.93), 'largest', 'fallback from CUMI flap row'),
     ],
     15: [
-        CropSpec('tbaw-09.jpg', (0.55, 0.16, 0.64, 0.34), 'largest', 'flap disc (universal)'),
+        CropSpec('tbaw-09.jpg', (0.53, 0.14, 0.75, 0.39), 'largest', 'flap disc (universal, full disc crop)'),
         CropSpec('cumi-12.jpg', (0.08, 0.74, 0.46, 0.93), 'largest', 'fallback from CUMI flap row'),
     ],
     16: [
@@ -105,11 +114,11 @@ ABR_SPECS: Dict[int, List[CropSpec]] = {
         CropSpec('cumi-12.jpg', (0.08, 0.45, 0.87, 0.58), 'row', 'fallback from CUMI stick&strip row'),
     ],
     20: [
-        CropSpec('cumi-14.jpg', (0.10, 0.12, 0.25, 0.30), 'largest', 'diamond cutting disc (segmented sample)'),
+        CropSpec('cumi-14.jpg', (0.08, 0.10, 0.30, 0.33), 'largest', 'diamond cutting disc (segmented sample, wider crop)'),
         CropSpec('cumi-14.jpg', (0.25, 0.12, 0.40, 0.30), 'largest', 'fallback from CUMI continuous rim'),
     ],
     21: [
-        CropSpec('cumi-14.jpg', (0.10, 0.44, 0.25, 0.60), 'largest', 'cup wheel (segmented sample)'),
+        CropSpec('cumi-14.jpg', (0.07, 0.39, 0.30, 0.65), 'largest', 'cup wheel (segmented sample, wider crop)'),
         CropSpec('cumi-14.jpg', (0.25, 0.44, 0.40, 0.60), 'largest', 'fallback from CUMI cup wheel row'),
     ],
 }
@@ -169,10 +178,17 @@ def largest_component_crop(img: Image.Image, threshold: int = 244, pad: int = 8)
     return img.crop((l, t, r, b))
 
 
-def render_square(img: Image.Image, size: int = TARGET_SIZE, pad: int = 18) -> Image.Image:
+def render_square(
+    img: Image.Image,
+    size: int = TARGET_SIZE,
+    pad: int = 18,
+    scale: float = 1.0,
+) -> Image.Image:
     canvas = Image.new('RGB', (size, size), 'white')
     obj = img.convert('RGB')
-    obj.thumbnail((size - 2 * pad, size - 2 * pad), Image.Resampling.LANCZOS)
+    safe_scale = max(0.35, min(scale, 1.0))
+    max_side = max(1, int((size - 2 * pad) * safe_scale))
+    obj.thumbnail((max_side, max_side), Image.Resampling.LANCZOS)
     ox = (size - obj.width) // 2
     oy = (size - obj.height) // 2
     canvas.paste(obj, (ox, oy))
@@ -230,7 +246,7 @@ def build() -> None:
         if chosen_img is None or chosen_spec is None or chosen_meta is None:
             raise RuntimeError(f'Failed to generate abr-{idx:03d}')
 
-        out_img = render_square(chosen_img)
+        out_img = render_square(chosen_img, scale=SAFE_SCALE_MAP.get(idx, 1.0))
         out_path = OUT_DIR / f'abr-{idx:03d}.jpg'
         out_img.save(out_path, 'JPEG', quality=92)
 
