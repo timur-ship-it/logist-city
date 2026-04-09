@@ -147,7 +147,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .toast.show{transform:translateX(0)}
 
 /* RESPONSIVE */
-@media(max-width:768px), (hover:none) and (pointer:coarse){
+@media(max-width:1024px), (hover:none) and (pointer:coarse){
   .topbar{position:static;top:auto;padding:10px 12px;gap:10px;flex-wrap:wrap}
   .topbar .logo{font-size:18px}
   .topbar .build-tag{order:2}
@@ -243,7 +243,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .size-variants-list{width:100%}
 .size-variant-row{width:100%;grid-template-columns:minmax(0,1.2fr) 86px minmax(0,1fr) minmax(0,1fr) 34px}
 .size-variant-row > *{min-width:0}
-@media(max-width:768px), (hover:none) and (pointer:coarse){
+@media(max-width:1024px), (hover:none) and (pointer:coarse){
   .prod-inputs{align-items:stretch}
   .size-variant-row{
     grid-template-columns:1fr;
@@ -261,7 +261,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 <!-- TOPBAR NAV -->
 <div class="topbar">
 <span class="logo">Logist City</span>
-<span class="build-tag">build touchfix-2</span>
+<span class="build-tag">build touchfix-3</span>
 <div class="nav-cats" id="navCats"></div>
 <div class="counter" id="itemCounter">0 позиций выбрано</div>
 </div>
@@ -3473,7 +3473,7 @@ function updateFabViewportOffset() {
 
   fab.style.setProperty('--fab-keyboard-offset', `${keyboardOffset}px`);
 
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const isMobile = window.matchMedia('(max-width: 1024px)').matches;
   const hideFab = isMobile && fabInputFocused && keyboardOffset > 80;
   fab.classList.toggle('fab-hidden', hideFab);
 }
