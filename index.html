@@ -10,7 +10,11 @@
 <title>Заявка на снабжение — Logist City</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+:root{
+  --fab-keyboard-offset:0px;
+}
 *{margin:0;padding:0;box-sizing:border-box}
+html,body{max-width:100%;overflow-x:hidden}
 body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh}
 
 /* NAV */
@@ -51,7 +55,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .period-btn.active{border-color:#38bdf8;background:rgba(56,189,248,0.15);color:#38bdf8}
 
 /* CONTENT */
-.main{max-width:1100px;margin:0 auto;padding:24px}
+.main{max-width:1100px;margin:0 auto;padding:24px 24px calc(130px + env(safe-area-inset-bottom))}
 .cat-section{margin-bottom:40px}
 .cat-header{display:flex;align-items:center;gap:12px;padding:16px 20px;border-radius:14px;
   margin-bottom:16px;position:sticky;top:52px;z-index:50}
@@ -95,7 +99,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .add-size-btn{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer}
 .add-size-btn:hover{border-color:#93c5fd;color:#1d4ed8}
 .size-variants-list{display:flex;flex-direction:column;gap:6px}
-.size-variant-row{display:grid;grid-template-columns:minmax(230px,1.3fr) 92px minmax(170px,1fr) minmax(170px,1fr) 34px;gap:8px;align-items:center}
+.size-variant-row{display:grid;grid-template-columns:minmax(0,1.3fr) 92px minmax(0,1fr) minmax(0,1fr) 34px;gap:8px;align-items:center}
 .size-variant-row .size-field{min-width:0}
 .size-variant-row .size-select{min-width:0}
 .size-variant-row .qty-variant-input{width:100%}
@@ -115,9 +119,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 #cat-abrasives .prod-img img{object-fit:contain!important;padding:6px}
 
 /* FLOATING ACTIONS */
-.fab-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;
+.fab-bar{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:8px;
   background:rgba(15,23,42,0.95);backdrop-filter:blur(16px);padding:10px 16px;border-radius:16px;
   border:1px solid rgba(255,255,255,0.1);z-index:200;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+.fab-bar.fab-hidden{opacity:0;pointer-events:none;transform:translate(-50%,24px)}
 .fab-btn{padding:10px 20px;border-radius:10px;border:none;font-size:13px;font-weight:700;
   cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;gap:6px}
 .fab-btn.primary{background:#3b82f6;color:#fff}
@@ -142,18 +147,78 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 
 /* RESPONSIVE */
 @media(max-width:768px){
+  .topbar{padding:10px 12px;gap:10px;flex-wrap:wrap}
+  .topbar .logo{font-size:18px}
+  .topbar .counter{order:3;width:100%;text-align:center}
   .form-grid{grid-template-columns:1fr}
-  .product{flex-direction:column}
-  .prod-img{width:100%;height:120px;border-right:none;border-bottom:1px solid #e2e8f0}
-  .prod-inputs{flex-wrap:wrap}
-  .size-wrap,.params-wrap{min-width:100%}
-  .size-select,.params-input{min-width:100%}
-  .size-variant-row{grid-template-columns:1fr}
+  .hero{padding:32px 14px 26px}
+  .company-form{padding:16px}
+  .main{padding:16px 12px calc(170px + env(safe-area-inset-bottom))}
+  .search-bar{padding:0 12px}
+  .cat-header{top:86px;padding:12px 14px}
+  .cat-header h2{font-size:18px}
+  .product{flex-direction:column;border-radius:16px}
+  .prod-img{width:100%;height:170px;min-height:170px;border-right:none;border-bottom:1px solid #e2e8f0}
+  .prod-body{padding:14px 12px;gap:10px}
+  .prod-top{flex-direction:column;align-items:flex-start;gap:8px}
+  .prod-tags{justify-content:flex-start}
+  .prod-name{font-size:16px}
+  .prod-desc{font-size:13px;line-height:1.5}
+  .prod-inputs{display:flex;flex-direction:column;gap:10px;align-items:stretch;padding-top:10px}
+  .prod-inputs > div,.prod-inputs > .size-wrap,.prod-inputs > .params-wrap,.prod-inputs > .unit-label{width:100%;min-width:0;max-width:100%}
+  .prod-inputs > div{display:flex;flex-direction:column;gap:4px}
+  .prod-inputs .unit-label{font-size:12px;line-height:1.2;color:#475569;padding:0 2px;min-width:0}
+  .prod-inputs label{font-size:11px}
+  .qty-input,.note-input,.size-select,.params-input,.size-custom-input{width:100%;max-width:100%;min-height:44px;padding:10px 12px;font-size:16px}
+  input[type="number"].qty-input{width:100%;text-align:left}
+  .size-wrap,.params-wrap{min-width:0}
+  .size-select,.params-input{min-width:0}
+  .size-variants{margin-top:10px;padding-top:10px;gap:10px}
+  .size-variants-actions{justify-content:stretch}
+  .add-size-btn{width:100%;min-height:44px;padding:10px 12px;font-size:14px}
+  .size-variants-list{gap:10px}
+  .size-variant-row{grid-template-columns:1fr;gap:8px;padding:10px;border:1px solid #dbe7f3;border-radius:12px;background:#f8fbff}
+  .size-variant-row .size-field,.size-variant-row .qty-variant-input,.size-variant-row .params-variant-input,.size-variant-row .note-variant-input{width:100%}
+  .remove-variant-btn{width:100%;min-height:42px;font-size:14px}
   .shape-badge{min-width:auto;padding:6px 10px;font-size:12px}
   .shape-icon{width:76px;height:26px}
-  #cat-abrasives .prod-img{height:170px}
+  #cat-abrasives .prod-img{width:100%;height:170px;min-height:170px}
   .hero h1{font-size:24px}
-  .fab-bar{bottom:12px;padding:8px 12px}
+  .fab-bar{
+    left:12px;
+    right:12px;
+    bottom:calc(10px + var(--fab-keyboard-offset, 0px) + env(safe-area-inset-bottom));
+    transform:none;
+    width:auto;
+    padding:10px;
+    border-radius:14px;
+    gap:8px;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .fab-bar.fab-hidden{transform:translateY(16px)}
+  .fab-btn{min-height:44px;padding:10px 12px;justify-content:center;font-size:12px}
+  .fab-btn.primary{grid-column:1/-1}
+  .toast{left:12px;right:12px;top:64px;transform:translateY(-140%)}
+  .toast.show{transform:translateY(0)}
+}
+@media(max-width:430px){
+  .topbar{padding:8px 10px}
+  .topbar .logo{font-size:17px}
+  .hero h1{font-size:22px}
+  .hero p{font-size:13px;margin-bottom:20px}
+  .company-form{padding:14px 12px}
+  .main{padding:12px 10px calc(180px + env(safe-area-inset-bottom))}
+  .search-bar{padding:0 10px}
+  .search-input{padding:12px 14px 12px 40px}
+  .cat-header{top:94px;padding:10px 12px}
+  .cat-header h2{font-size:16px}
+  .prod-body{padding:12px 10px}
+  .prod-name{font-size:15px}
+  .shape-icon{width:68px;height:22px}
+  .shape-badge{padding:6px 9px;font-size:11px}
+  .fab-bar{grid-template-columns:1fr}
+  .fab-btn.primary{grid-column:auto}
 }
 @media print{
   .topbar,.fab-bar,.search-bar{display:none}
@@ -167,13 +232,25 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .product[data-removed="true"]{display:none!important}
 .prod-body{min-width:0}
 .prod-inputs{flex-wrap:wrap;align-items:flex-end}
-.size-wrap,.params-wrap{flex:1 1 220px;min-width:170px}
+.size-wrap,.params-wrap{flex:1 1 220px;min-width:0}
 .size-select,.params-input{width:100%;min-width:0}
 .note-input{min-width:0}
 .size-variants{width:100%;overflow:hidden}
 .size-variants-list{width:100%}
-.size-variant-row{width:100%;grid-template-columns:minmax(170px,1.2fr) 86px minmax(140px,1fr) minmax(140px,1fr) 34px}
+.size-variant-row{width:100%;grid-template-columns:minmax(0,1.2fr) 86px minmax(0,1fr) minmax(0,1fr) 34px}
 .size-variant-row > *{min-width:0}
+@media(max-width:768px){
+  .prod-inputs{align-items:stretch}
+  .size-variant-row{
+    grid-template-columns:1fr;
+    gap:8px;
+    padding:10px;
+    border:1px solid #dbe7f3;
+    border-radius:12px;
+    background:#f8fbff;
+  }
+  .size-variant-row .size-field,.size-variant-row .qty-variant-input,.size-variant-row .params-variant-input,.size-variant-row .note-variant-input{width:100%}
+}
 </style>
 </head>
 <body>
@@ -3833,6 +3910,57 @@ function printForm() {
   window.print();
 }
 
+// ━━━ MOBILE FAB BEHAVIOR ━━━
+let fabInputFocused = false;
+
+function isEditableElement(el) {
+  if (!el || !(el instanceof Element)) return false;
+  if (el.matches('input, textarea, select')) return !el.disabled && !el.readOnly;
+  return Boolean(el.isContentEditable);
+}
+
+function updateFabViewportOffset() {
+  const fab = document.querySelector('.fab-bar');
+  if (!fab) return;
+
+  const vv = window.visualViewport;
+  const keyboardOffset = vv
+    ? Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop))
+    : 0;
+
+  fab.style.setProperty('--fab-keyboard-offset', `${keyboardOffset}px`);
+
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const hideFab = isMobile && fabInputFocused && keyboardOffset > 80;
+  fab.classList.toggle('fab-hidden', hideFab);
+}
+
+function initMobileFabBehavior() {
+  const fab = document.querySelector('.fab-bar');
+  if (!fab) return;
+
+  const refreshFab = () => updateFabViewportOffset();
+
+  document.addEventListener('focusin', (event) => {
+    fabInputFocused = isEditableElement(event.target);
+    refreshFab();
+  });
+
+  document.addEventListener('focusout', () => {
+    fabInputFocused = false;
+    setTimeout(refreshFab, 80);
+  });
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', refreshFab);
+    window.visualViewport.addEventListener('scroll', refreshFab);
+  }
+  window.addEventListener('resize', refreshFab);
+  window.addEventListener('orientationchange', refreshFab);
+
+  refreshFab();
+}
+
 // ━━━ AUTO-SAVE ━━━
 let saveTimer;
 document.addEventListener('input', () => {
@@ -4405,6 +4533,7 @@ function initProductMetadata() {
 renderAbrasiveShapeBadges();
 initProductMetadata();
 initAbrasiveSizeSelectors();
+initMobileFabBehavior();
 updateCategoryCounters();
 loadState();
 </script>
