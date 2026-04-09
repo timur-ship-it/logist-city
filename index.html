@@ -21,6 +21,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .topbar{position:sticky;top:0;z-index:100;background:rgba(15,23,42,0.97);backdrop-filter:blur(12px);
   padding:12px 24px;display:flex;align-items:center;gap:16px;border-bottom:1px solid #1e3a5f}
 .topbar .logo{font-size:20px;font-weight:800;color:#38bdf8;letter-spacing:-1px}
+.topbar .build-tag{font-size:11px;font-weight:700;color:#86efac;background:rgba(22,163,74,0.15);border:1px solid rgba(34,197,94,0.35);padding:4px 8px;border-radius:999px;white-space:nowrap}
 .topbar .nav-cats{display:flex;gap:4px;flex:1;overflow-x:auto;scrollbar-width:none}
 .topbar .nav-cats::-webkit-scrollbar{display:none}
 .nav-cat{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;color:#94a3b8;cursor:pointer;
@@ -147,8 +148,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 
 /* RESPONSIVE */
 @media(max-width:768px){
-  .topbar{padding:10px 12px;gap:10px;flex-wrap:wrap}
+  .topbar{position:static;top:auto;padding:10px 12px;gap:10px;flex-wrap:wrap}
   .topbar .logo{font-size:18px}
+  .topbar .build-tag{order:2}
   .topbar .counter{order:3;width:100%;text-align:center}
   .form-grid{grid-template-columns:1fr}
   .hero{padding:32px 14px 26px}
@@ -164,8 +166,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   .prod-tags{justify-content:flex-start}
   .prod-name{font-size:16px}
   .prod-desc{font-size:13px;line-height:1.5}
-  .prod-inputs{display:flex;flex-direction:column;gap:6px;align-items:stretch;padding-top:10px}
-  .prod-inputs > .size-wrap + .params-wrap{margin-top:-4px}
+  .prod-inputs{display:flex;flex-direction:column;gap:4px;align-items:stretch;padding-top:10px}
+  .prod-inputs > .size-wrap + .params-wrap{margin-top:-6px}
   .prod-inputs > div,.prod-inputs > .size-wrap,.prod-inputs > .params-wrap,.prod-inputs > .unit-label{width:100%;min-width:0;max-width:100%}
   .prod-inputs > div{display:flex;flex-direction:column;gap:4px}
   .prod-inputs .unit-label{font-size:12px;line-height:1.2;color:#475569;padding:0 2px;min-width:0}
@@ -206,6 +208,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 @media(max-width:430px){
   .topbar{padding:8px 10px}
   .topbar .logo{font-size:17px}
+  .topbar .build-tag{font-size:10px;padding:3px 7px}
   .hero h1{font-size:22px}
   .hero p{font-size:13px;margin-bottom:20px}
   .company-form{padding:14px 12px}
@@ -1506,10 +1509,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 </div>
 <div class="cat-section" data-cat="chemicals" id="cat-chemicals">
 <div class="cat-header" style="background:linear-gradient(135deg,#dbeafe,#fff);border:2px solid #3b82f625">
-<h2 style="color:#3b82f6">🧪 Герметики, пены, химия</h2>
-<span class="cat-count" style="color:#3b82f6">26 позиций</span>
+<h2 style="color:#3b82f6">🧪 Герметики (бесцветные)</h2>
+<span class="cat-count" style="color:#3b82f6">5 позиций</span>
 </div>
-<div class="product" data-id="22" data-search="силиконовый герметик кислотный (для стекла) картридж 300 мл, кислотная полимеризация, -50…+100°c, для стыков стекло-стекло, аквариумов">
+<div class="product" data-id="22" data-search="силиконовый герметик кислотный (для стекла) бесцветный 300 мл аквариумы стекло">
 <div class="prod-img">
 <img alt="" loading="lazy" src="images/chm-001.jpg" style="width:100%;height:100%;object-fit:cover"/>
 </div>
@@ -1517,7 +1520,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 <div class="prod-top">
 <span class="prod-name">Силиконовый герметик кислотный (для стекла)</span>
 </div>
-<div class="prod-desc">Картридж 300 мл, кислотная полимеризация, -50…+100°C, для стыков стекло-стекло, аквариумов</div>
+<div class="prod-desc">Бесцветный. По каталогу: силиконовый герметик для аквариумов, 300 мл, коробка 12 шт. Кислотная полимеризация, для стекла и аквариумов.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -1531,7 +1534,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 </div>
 </div>
 </div>
-<div class="product" data-id="23" data-search="силиконовый герметик кислотный универсальный картридж 300 мл, быстрое отверждение, общего назначения для стекла и алюминия">
+<div class="product" data-id="23" data-search="силиконовый герметик кислотный универсальный бесцветный ацетатный 280 300 мл">
 <div class="prod-img">
 <img alt="" loading="lazy" src="images/chm-002.jpg" style="width:100%;height:100%;object-fit:cover"/>
 </div>
@@ -1539,13 +1542,13 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 <div class="prod-top">
 <span class="prod-name">Силиконовый герметик кислотный универсальный</span>
 </div>
-<div class="prod-desc">Картридж 300 мл, быстрое отверждение, общего назначения для стекла и алюминия</div>
+<div class="prod-desc">Бесцветный. По каталогу: силиконовый герметик ацетатный, 280/300 мл, коробка 24 шт. Универсальное уплотнение для стекла, алюминия и сантехники.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="23" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">картридж 300 мл</span>
+<span class="unit-label">картридж 280/300 мл</span>
 <div style="flex:1">
 <label>Примечание</label>
 <input class="note-input" data-note="23" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
@@ -1553,51 +1556,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 </div>
 </div>
 </div>
-<div class="product" data-id="24" data-search="силиконовый герметик нейтральный 300/590 мл, не разъедает металлы, без праймера, без запаха при отверждении">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-003.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Силиконовый герметик нейтральный</span>
-</div>
-<div class="prod-desc">300/590 мл, не разъедает металлы, без праймера, без запаха при отверждении</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="24" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">картридж 300 мл</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="24" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="25" data-search="герметик нейтральный атмосферостойкий 300/590 мл, рабочий диапазон -30…+150°c, uv-стойкий, для наружных работ">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-004.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Герметик нейтральный атмосферостойкий</span>
-</div>
-<div class="prod-desc">300/590 мл, рабочий диапазон -30…+150°C, UV-стойкий, для наружных работ</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="25" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">картридж 300 мл</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="25" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="26" data-search="структурный силиконовый герметик 300/590 мл, -50…+180°c, высокая адгезия и прочность, для структурного остекления">
+<div class="product" data-id="26" data-search="структурный силиконовый герметик бесцветный 300 600 мл фасады остекление">
 <div class="prod-img">
 <img alt="" loading="lazy" src="images/chm-004.jpg" style="width:100%;height:100%;object-fit:cover"/>
 </div>
@@ -1605,13 +1564,13 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 <div class="prod-top">
 <span class="prod-name">Структурный силиконовый герметик</span>
 </div>
-<div class="prod-desc">300/590 мл, -50…+180°C, высокая адгезия и прочность, для структурного остекления</div>
+<div class="prod-desc">Бесцветный. По каталогу: силиконовый структурный герметик, 300/600 мл (коробка 24/20 шт), для структурного остекления и фасадов.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="26" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">картридж 300 мл</span>
+<span class="unit-label">картридж 300/600 мл</span>
 <div style="flex:1">
 <label>Примечание</label>
 <input class="note-input" data-note="26" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
@@ -1619,73 +1578,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 </div>
 </div>
 </div>
-<div class="product" data-id="27" data-search="герметик нейтральный класс 25 (высокая подвижность шва) 300/590 мл, компенсация деформации до 25%, атмосферостойкий">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-006.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Герметик нейтральный класс 25 (высокая подвижность шва)</span>
-</div>
-<div class="prod-desc">300/590 мл, компенсация деформации до 25%, атмосферостойкий</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="27" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">картридж 300 мл</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="27" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="28" data-search="герметик атмосферостойкий класс 35 300/590 мл, -30…+150°c, компенсация движения до 35%">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-007.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Герметик атмосферостойкий класс 35</span>
-</div>
-<div class="prod-desc">300/590 мл, -30…+150°C, компенсация движения до 35%</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="28" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">картридж 300 мл</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="28" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="29" data-search="структурный герметик двухкомпонентный компоненты а+б в вёдрах, -50…+150°c, высокий модуль, для машинного нанесения на заводе">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-008.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Структурный герметик двухкомпонентный</span>
-</div>
-<div class="prod-desc">Компоненты А+Б в вёдрах, -50…+150°C, высокий модуль, для машинного нанесения на заводе</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="29" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">комплект вёдра А+Б</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="29" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="30" data-search="бутиловая лента-герметик для стеклопакетов лента/рулон, -30…+80°c, первичная герметизация стеклопакетов (ig)">
+<div class="product" data-id="30" data-search="бутиловая лента-герметик для стеклопакетов бесцветный сегмент ig">
 <div class="prod-img">
 <img alt="" loading="lazy" src="images/chm-009.jpg" style="width:100%;height:100%;object-fit:cover"/>
 </div>
@@ -1693,7 +1586,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 <div class="prod-top">
 <span class="prod-name">Бутиловая лента-герметик для стеклопакетов</span>
 </div>
-<div class="prod-desc">Лента/рулон, -30…+80°C, первичная герметизация стеклопакетов (IG)</div>
+<div class="prod-desc">Лента/рулон, -30…+80°C, первичная герметизация стеклопакетов (IG).</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -1707,227 +1600,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 </div>
 </div>
 </div>
-<div class="product" data-id="31" data-search="монтажная пена полиуретановая универсальная баллон 750-840 мл, однокомпонентная, влагоотверждаемая, пистолетная или с трубкой">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-006.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Монтажная пена полиуретановая универсальная</span>
-</div>
-<div class="prod-desc">Баллон 750-840 мл, однокомпонентная, влагоотверждаемая, пистолетная или с трубкой</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="31" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">баллон</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="31" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="32" data-search="монтажная пена повышенного выхода баллон 750-840 мл, выход в 2.5 раза больше стандартной, для крупных полостей">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-011.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Монтажная пена повышенного выхода</span>
-</div>
-<div class="prod-desc">Баллон 750-840 мл, выход в 2.5 раза больше стандартной, для крупных полостей</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="32" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">баллон</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="32" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="33" data-search="монтажная пена огнестойкая (b1/b2) баллон 750-840 мл, класс b1 или b2 по din 4102, самозатухающая">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-012.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Монтажная пена огнестойкая (B1/B2)</span>
-</div>
-<div class="prod-desc">Баллон 750-840 мл, класс B1 или B2 по DIN 4102, самозатухающая</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="33" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">баллон</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="33" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="34" data-search="клей-пена для теплоизоляционных плит (eps/xps) баллон 750-840 мл, приклейка утеплителя к стенам без механического крепежа">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-013.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Клей-пена для теплоизоляционных плит (EPS/XPS)</span>
-</div>
-<div class="prod-desc">Баллон 750-840 мл, приклейка утеплителя к стенам без механического крепежа</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="34" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">баллон</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="34" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="35" data-search="клей-пена для кровельной черепицы баллон 750-840 мл, до 8 м² с баллона, крепление черепицы без гвоздей">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-014.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Клей-пена для кровельной черепицы</span>
-</div>
-<div class="prod-desc">Баллон 750-840 мл, до 8 м² с баллона, крепление черепицы без гвоздей</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="35" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">баллон</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="35" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="36" data-search="монтажная пена с защитой от грызунов баллон 750-840 мл, горькие добавки против прогрызания грызунами">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-015.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Монтажная пена с защитой от грызунов</span>
-</div>
-<div class="prod-desc">Баллон 750-840 мл, горькие добавки против прогрызания грызунами</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="36" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">баллон</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="36" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="37" data-search="полиуретановый строительный герметик картридж 310/600 мл, тиксотропный, низкомодульный, для деформационных швов в бетоне">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-016.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Полиуретановый строительный герметик</span>
-</div>
-<div class="prod-desc">Картридж 310/600 мл, тиксотропный, низкомодульный, для деформационных швов в бетоне</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="37" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">картридж</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="37" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="38" data-search="ms-полимерный герметик (гибридный) 300/590 мл, нейтральный, окрашивается, эластичный, без праймера">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-017.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">MS-полимерный герметик (гибридный)</span>
-</div>
-<div class="prod-desc">300/590 мл, нейтральный, окрашивается, эластичный, без праймера</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="38" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">картридж 300 мл</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="38" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="39" data-search="клей монтажный высокопрочный (жидкие гвозди) картридж 300 мл, сильный начальный захват, крепление без гвоздей/саморезов">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-018.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Клей монтажный высокопрочный (жидкие гвозди)</span>
-</div>
-<div class="prod-desc">Картридж 300 мл, сильный начальный захват, крепление без гвоздей/саморезов</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="39" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">картридж 300 мл</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="39" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="40" data-search="огнезащитный герметик (интумесцентный) 300/590 мл, вспучивающийся при нагреве, сертифицированный предел огнестойкости">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-019.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Огнезащитный герметик (интумесцентный)</span>
-</div>
-<div class="prod-desc">300/590 мл, вспучивающийся при нагреве, сертифицированный предел огнестойкости</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="40" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">картридж 300 мл</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="40" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="41" data-search="силиконовый герметик для зеркал 300/590 мл, нейтральный, не повреждает амальгаму зеркала">
+<div class="product" data-id="41" data-search="силиконовый герметик для зеркал бесцветный нейтральный 300 600 мл">
 <div class="prod-img">
 <img alt="" loading="lazy" src="images/chm-020.jpg" style="width:100%;height:100%;object-fit:cover"/>
 </div>
@@ -1935,148 +1608,16 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 <div class="prod-top">
 <span class="prod-name">Силиконовый герметик для зеркал</span>
 </div>
-<div class="prod-desc">300/590 мл, нейтральный, не повреждает амальгаму зеркала</div>
+<div class="prod-desc">Бесцветный. База параметров из каталога: нейтральный силиконовый герметик 300/600 мл (коробка 24/20 шт). Не повреждает амальгаму зеркала.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="41" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">картридж 300 мл</span>
+<span class="unit-label">картридж 300/600 мл</span>
 <div style="flex:1">
 <label>Примечание</label>
 <input class="note-input" data-note="41" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="42" data-search="санитарный герметик с защитой от плесени 300/590 мл, антибактериальная добавка, стойкий к грибку и плесени">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-021.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Санитарный герметик с защитой от плесени</span>
-</div>
-<div class="prod-desc">300/590 мл, антибактериальная добавка, стойкий к грибку и плесени</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="42" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">картридж 300 мл</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="42" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="43" data-search="герметик для солнечных панелей 300/590 мл, тиксотропный, uv-стойкий, для рамок фотоэлементов">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-022.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Герметик для солнечных панелей</span>
-</div>
-<div class="prod-desc">300/590 мл, тиксотропный, UV-стойкий, для рамок фотоэлементов</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="43" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">картридж 300 мл</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="43" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="44" data-search="акриловый герметик (под покраску) 300/590 мл, водная основа, окрашивается через 1 час, для внутренних швов и трещин">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-023.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Акриловый герметик (под покраску)</span>
-</div>
-<div class="prod-desc">300/590 мл, водная основа, окрашивается через 1 час, для внутренних швов и трещин</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="44" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">картридж 300 мл</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="44" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="45" data-search="эпоксидная затирка для плитки (2к) двойной картридж 400 мл, не впитывает грязь, водостойкая, для узких швов">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-024.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Эпоксидная затирка для плитки (2К)</span>
-</div>
-<div class="prod-desc">Двойной картридж 400 мл, не впитывает грязь, водостойкая, для узких швов</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="45" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">картридж 400 мл</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="45" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="46" data-search="пистолет для монтажной пены (профессиональный) игла из нержавеющей стали, корпус стальной/алюминиевый">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-025.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Пистолет для монтажной пены (профессиональный)</span>
-</div>
-<div class="prod-desc">Игла из нержавеющей стали, корпус стальной/алюминиевый</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="46" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">шт.</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="46" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="47" data-search="пистолет для герметика (скелетный/трубчатый) 9-27 дюймов, скелетного или трубчатого типа, с функцией «антикапля»">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/chm-026.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Пистолет для герметика (скелетный/трубчатый)</span>
-</div>
-<div class="prod-desc">9-27 дюймов, скелетного или трубчатого типа, с функцией «антикапля»</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="47" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">шт.</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="47" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
 </div>
 </div>
 </div>
