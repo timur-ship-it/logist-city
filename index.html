@@ -16,6 +16,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{max-width:100%;overflow-x:hidden}
 body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh}
+body.cart-open{overflow:hidden}
 
 /* NAV */
 .topbar{position:sticky;top:0;z-index:100;background:rgba(15,23,42,0.97);backdrop-filter:blur(12px);
@@ -135,6 +136,40 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .fab-btn.danger{background:rgba(239,68,68,0.2);color:#fca5a5}
 .fab-btn.danger:hover{background:rgba(239,68,68,0.3)}
 
+/* MOBILE CART */
+.cart-fab{position:fixed;right:12px;bottom:calc(12px + var(--fab-keyboard-offset, 0px) + env(safe-area-inset-bottom));
+  border:none;border-radius:999px;background:#0f172a;color:#f8fafc;box-shadow:0 10px 26px rgba(15,23,42,.38);
+  display:none;align-items:center;gap:10px;padding:12px 14px;z-index:212;font-family:inherit;cursor:pointer;
+  border:1px solid rgba(255,255,255,.12);transition:transform .2s ease, opacity .2s ease}
+.cart-fab:hover{transform:translateY(-1px)}
+.cart-fab.fab-hidden{opacity:0;pointer-events:none;transform:translateY(18px)}
+.cart-fab .cart-label{font-size:13px;font-weight:800;line-height:1}
+.cart-fab .cart-meta{font-size:11px;color:#cbd5e1;line-height:1}
+.cart-fab .cart-count{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;
+  border-radius:999px;background:#38bdf8;color:#082f49;font-size:12px;font-weight:900}
+
+.cart-overlay{position:fixed;inset:0;background:rgba(2,6,23,.55);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:214}
+.cart-overlay.open{opacity:1;pointer-events:auto}
+.cart-drawer{position:fixed;right:0;top:0;bottom:0;width:min(430px,100vw);background:#ffffff;box-shadow:-12px 0 36px rgba(2,6,23,.25);
+  z-index:215;display:flex;flex-direction:column;transform:translateX(105%);transition:transform .24s ease}
+.cart-drawer.open{transform:translateX(0)}
+.cart-header{padding:14px 14px 12px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:10px;background:#f8fafc}
+.cart-title{font-size:16px;font-weight:900;color:#0f172a;flex:1}
+.cart-close{border:none;background:transparent;color:#475569;font-size:24px;line-height:1;cursor:pointer;padding:2px 6px}
+.cart-body{flex:1;overflow:auto;padding:10px 12px}
+.cart-empty{border:1px dashed #cbd5e1;border-radius:12px;padding:14px;color:#64748b;font-size:13px;background:#f8fafc}
+.cart-item{border:1px solid #dbe7f3;border-radius:12px;padding:10px 10px 8px;background:#fff;margin-bottom:9px}
+.cart-item-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.cart-item-name{font-size:13px;font-weight:800;color:#0f172a;line-height:1.35}
+.cart-item-sku{font-size:10px;font-weight:800;color:#3730a3;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:3px 7px;white-space:nowrap}
+.cart-item-meta{margin-top:6px;font-size:12px;color:#475569;line-height:1.45}
+.cart-warning{margin:10px 0 0;border-radius:10px;padding:9px 10px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;font-size:12px;font-weight:700}
+.cart-footer{border-top:1px solid #e2e8f0;background:#fff;padding:10px 12px calc(12px + env(safe-area-inset-bottom))}
+.cart-summary{font-size:12px;font-weight:700;color:#334155;margin-bottom:8px}
+.cart-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cart-actions .fab-btn{min-height:42px;justify-content:center;padding:10px 12px}
+.cart-actions .fab-btn.primary{grid-column:1/-1}
+
 /* SEARCH */
 .search-bar{max-width:1100px;margin:0 auto 20px;padding:0 24px}
 .search-input{width:100%;padding:12px 20px 12px 44px;border:2px solid #e2e8f0;border-radius:12px;
@@ -170,7 +205,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   .form-grid{grid-template-columns:1fr}
   .hero{padding:32px 14px 26px}
   .company-form{padding:16px}
-  .main{padding:16px 12px calc(170px + env(safe-area-inset-bottom))}
+  .main{padding:16px 12px calc(108px + env(safe-area-inset-bottom))}
   .search-bar{padding:0 12px}
   .cat-header{position:static;top:auto;padding:12px 14px}
   .cat-header h2{font-size:18px}
@@ -184,10 +219,11 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   .prod-inputs{display:flex;flex-direction:column;gap:4px;align-items:stretch;padding-top:10px}
   .prod-inputs > .size-wrap + .params-wrap{margin-top:-6px}
   .prod-inputs > div,.prod-inputs > .size-wrap,.prod-inputs > .params-wrap,.prod-inputs > .unit-label{width:100%;min-width:0;max-width:100%}
+  .prod-inputs > .size-wrap,.prod-inputs > .params-wrap,.prod-inputs > div[style*="flex:1"]{flex:0 0 auto}
   .prod-inputs > div{display:flex;flex-direction:column;gap:4px}
   .prod-inputs .unit-label{font-size:12px;line-height:1.2;color:#475569;padding:0 2px;min-width:0}
   .prod-inputs label{font-size:11px}
-  .qty-input,.note-input,.size-select,.params-input,.size-custom-input{width:100%;max-width:100%;min-height:44px;padding:10px 12px;font-size:16px}
+  .qty-input,.note-input,.size-select,.params-input,.size-custom-input{width:100%;max-width:100%;min-height:44px;padding:10px 12px;font-size:16px;flex:0 0 auto}
   input[type="number"].qty-input{width:100%;text-align:left}
   .size-wrap,.params-wrap{min-width:0}
   .size-select,.params-input{min-width:0}
@@ -202,23 +238,13 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   .shape-icon{width:76px;height:26px}
   #cat-abrasives .prod-img{width:100%;height:170px;min-height:170px}
   .hero h1{font-size:24px}
-  .fab-bar{
-    left:12px;
-    right:12px;
-    bottom:calc(10px + var(--fab-keyboard-offset, 0px) + env(safe-area-inset-bottom));
-    transform:none;
-    width:auto;
-    padding:10px;
-    border-radius:14px;
-    gap:8px;
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
+  .fab-bar{display:none}
   .fab-bar.fab-hidden{transform:translateY(16px)}
   .fab-btn{min-height:44px;padding:10px 12px;justify-content:center;font-size:12px}
   .fab-btn.primary{grid-column:1/-1}
-  .toast{left:12px;right:12px;top:64px;transform:translateY(-140%)}
-  .toast.show{transform:translateY(0)}
+  .cart-fab{display:flex}
+  .cart-drawer{width:100vw}
+  .toast{display:none!important}
 }
 @media(max-width:430px){
   .topbar{padding:8px 10px}
@@ -227,7 +253,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   .hero h1{font-size:22px}
   .hero p{font-size:13px;margin-bottom:20px}
   .company-form{padding:14px 12px}
-  .main{padding:12px 10px calc(180px + env(safe-area-inset-bottom))}
+  .main{padding:12px 10px calc(112px + env(safe-area-inset-bottom))}
   .search-bar{padding:0 10px}
   .search-input{padding:12px 14px 12px 40px}
   .cat-header{position:static;top:auto;padding:10px 12px}
@@ -236,11 +262,12 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   .prod-name{font-size:15px}
   .shape-icon{width:68px;height:22px}
   .shape-badge{padding:6px 9px;font-size:11px}
-  .fab-bar{grid-template-columns:1fr}
-  .fab-btn.primary{grid-column:auto}
+  .cart-fab{left:10px;right:10px;justify-content:center}
+  .cart-actions{grid-template-columns:1fr}
+  .cart-actions .fab-btn.primary{grid-column:auto}
 }
 @media print{
-  .topbar,.fab-bar,.search-bar{display:none}
+  .topbar,.fab-bar,.search-bar,.cart-fab,.cart-overlay,.cart-drawer{display:none}
   .product{break-inside:avoid}
   body{background:#fff}
   .hero{padding:24px;background:#f8fafc !important}
@@ -276,7 +303,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 <!-- TOPBAR NAV -->
 <div class="topbar">
 <span class="logo">Logist City</span>
-<span class="build-tag">build touchfix-3</span>
+<span class="build-tag">build touchfix-5</span>
 <div class="nav-cats" id="navCats"></div>
 <div class="counter" id="itemCounter">0 позиций выбрано</div>
 </div>
@@ -3969,9 +3996,35 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 <button class="fab-btn secondary" onclick="saveState(); showToast('💾 Черновик сохранён')">💾 Сохранить</button>
 <button class="fab-btn secondary" onclick="exportCSV()">📊 CSV</button>
 <button class="fab-btn secondary" onclick="printForm()">🖨️ PDF</button>
-<button class="fab-btn primary" id="submitBtn" onclick="submitForm()">📨 Отправить заявку</button>
+<button class="fab-btn primary" id="submitBtn" onclick="submitForm(this)">📨 Отправить заявку</button>
 <button class="fab-btn danger" onclick="if(confirm('Очистить все введённые данные?')){clearAll()}">🗑️</button>
 </div>
+<button class="cart-fab" id="cartFabBtn" onclick="toggleCartDrawer()" type="button">
+<span aria-hidden="true">🧺</span>
+<span>
+<div class="cart-label">Корзина</div>
+<div class="cart-meta" id="cartFabMeta">пусто</div>
+</span>
+<span class="cart-count" id="cartFabCount">0</span>
+</button>
+<div class="cart-overlay" id="cartOverlay" onclick="closeCartDrawer()"></div>
+<aside aria-hidden="true" class="cart-drawer" id="cartDrawer">
+<div class="cart-header">
+<div class="cart-title">Корзина заявки</div>
+<button aria-label="Закрыть корзину" class="cart-close" onclick="closeCartDrawer()" type="button">×</button>
+</div>
+<div class="cart-body" id="cartItems"></div>
+<div class="cart-footer">
+<div class="cart-summary" id="cartSummary">0 позиций</div>
+<div class="cart-actions">
+<button class="fab-btn secondary" onclick="saveState(); showToast('💾 Черновик сохранён'); renderCartDrawer();" type="button">💾 Сохранить</button>
+<button class="fab-btn secondary" onclick="exportCSV()" type="button">📊 CSV</button>
+<button class="fab-btn secondary" onclick="printForm()" type="button">🖨️ PDF</button>
+<button class="fab-btn danger" onclick="if(confirm('Очистить все введённые данные?')){clearAll(); closeCartDrawer();}" type="button">🗑️ Очистить</button>
+<button class="fab-btn primary" id="submitBtnMobile" onclick="submitForm(this)" type="button">📨 Отправить заявку</button>
+</div>
+</div>
+</aside>
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 <div style="height:100px"></div>
@@ -3985,7 +4038,7 @@ function applyForcedMobileLayoutFromQuery() {
   style.textContent = `
     .topbar{position:static!important;top:auto!important}
     .cat-header{position:static!important;top:auto!important}
-    .main{padding:16px 12px calc(180px + env(safe-area-inset-bottom))!important}
+    .main{padding:16px 12px calc(108px + env(safe-area-inset-bottom))!important}
     .search-bar{padding:0 12px!important}
     .product{flex-direction:column!important;border-radius:16px!important}
     .prod-img{width:100%!important;height:170px!important;min-height:170px!important;border-right:none!important;border-bottom:1px solid #e2e8f0!important}
@@ -3995,19 +4048,22 @@ function applyForcedMobileLayoutFromQuery() {
     .prod-tags{justify-content:flex-start!important}
     .prod-inputs{display:flex!important;flex-direction:column!important;gap:4px!important;align-items:stretch!important;padding-top:10px!important}
     .prod-inputs > div,.prod-inputs > .size-wrap,.prod-inputs > .params-wrap,.prod-inputs > .unit-label{width:100%!important;max-width:100%!important;min-width:0!important}
+    .prod-inputs > .size-wrap,.prod-inputs > .params-wrap,.prod-inputs > div[style*="flex:1"]{flex:0 0 auto!important}
     .prod-inputs > div{display:flex!important;flex-direction:column!important;gap:4px!important}
     .prod-inputs > .size-wrap + .params-wrap{margin-top:-6px!important}
-    .qty-input,.note-input,.size-select,.params-input,.size-custom-input{width:100%!important;min-height:44px!important;padding:10px 12px!important;font-size:16px!important;max-width:100%!important}
+    .qty-input,.note-input,.size-select,.params-input,.size-custom-input{width:100%!important;min-height:44px!important;padding:10px 12px!important;font-size:16px!important;max-width:100%!important;flex:0 0 auto!important}
     .size-variant-row{grid-template-columns:1fr!important;gap:8px!important;padding:10px!important;border:1px solid #dbe7f3!important;border-radius:12px!important;background:#f8fbff!important}
     .size-variant-row .size-field,.size-variant-row .qty-variant-input,.size-variant-row .params-variant-input,.size-variant-row .note-variant-input{width:100%!important}
     .remove-variant-btn,.add-size-btn,.fab-btn{min-height:44px!important}
-    .fab-bar{left:12px!important;right:12px!important;bottom:10px!important;transform:none!important;width:auto!important;padding:10px!important;display:grid!important;grid-template-columns:1fr!important}
-    .fab-btn.primary{grid-column:auto!important}
+    .toast{display:none!important}
+    .fab-bar{display:none!important}
+    .cart-fab{display:flex!important}
+    .cart-drawer{width:100vw!important}
   `;
   document.head.appendChild(style);
 
   const buildTag = document.querySelector('.build-tag');
-  if (buildTag) buildTag.textContent = 'build touchfix-4';
+  if (buildTag) buildTag.textContent = 'build touchfix-5';
 }
 
 // ━━━ STATE MANAGEMENT ━━━
@@ -4184,6 +4240,7 @@ function saveState() {
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   updateCounter();
+  renderCartDrawer();
 }
 
 function loadState() {
@@ -4231,6 +4288,7 @@ function loadState() {
       refreshCardState(card);
     });
     updateCounter();
+    renderCartDrawer();
   } catch(e) { console.warn('Load state error:', e); }
 }
 
@@ -4251,6 +4309,7 @@ function clearAll() {
   document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
   document.querySelector('[data-period="month"]').classList.add('active');
   updateCounter();
+  renderCartDrawer();
   showToast('🗑️ Данные очищены');
 }
 
@@ -4289,6 +4348,97 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getCartStats(lines = collectOrderLines()) {
+  const lineCount = lines.length;
+  const totalQty = lines.reduce((sum, line) => sum + toQtyNumber(line.qty), 0);
+  return { lineCount, totalQty };
+}
+
+function openCartDrawer() {
+  const drawer = document.getElementById('cartDrawer');
+  const overlay = document.getElementById('cartOverlay');
+  if (!drawer || !overlay) return;
+  drawer.classList.add('open');
+  overlay.classList.add('open');
+  drawer.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('cart-open');
+}
+
+function closeCartDrawer() {
+  const drawer = document.getElementById('cartDrawer');
+  const overlay = document.getElementById('cartOverlay');
+  if (!drawer || !overlay) return;
+  drawer.classList.remove('open');
+  overlay.classList.remove('open');
+  drawer.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('cart-open');
+}
+
+function toggleCartDrawer() {
+  const drawer = document.getElementById('cartDrawer');
+  if (!drawer) return;
+  if (drawer.classList.contains('open')) closeCartDrawer();
+  else openCartDrawer();
+}
+
+function renderCartDrawer() {
+  const lines = collectOrderLines();
+  const stats = getCartStats(lines);
+  const missingSize = findMissingSizeLines(lines);
+
+  const itemsEl = document.getElementById('cartItems');
+  const summaryEl = document.getElementById('cartSummary');
+  const fabCountEl = document.getElementById('cartFabCount');
+  const fabMetaEl = document.getElementById('cartFabMeta');
+  if (!itemsEl || !summaryEl || !fabCountEl || !fabMetaEl) return;
+
+  fabCountEl.textContent = String(stats.lineCount);
+  fabMetaEl.textContent = stats.lineCount
+    ? `${stats.lineCount} поз., ${stats.totalQty} шт.`
+    : 'пусто';
+
+  summaryEl.textContent = stats.lineCount
+    ? `Выбрано: ${stats.lineCount} позиций • Количество: ${stats.totalQty}`
+    : 'Пока ничего не выбрано';
+
+  if (!stats.lineCount) {
+    itemsEl.innerHTML = '<div class="cart-empty">Добавьте количество у нужных позиций, и они появятся здесь.</div>';
+    return;
+  }
+
+  const itemsHtml = lines.map(line => {
+    const meta = [
+      `Кол-во: ${escapeHtml(line.qty)} ${escapeHtml(line.unit || '')}`.trim(),
+      line.size ? `Размер: ${escapeHtml(line.size)}` : '',
+      line.params ? `Параметры: ${escapeHtml(line.params)}` : '',
+      line.note ? `Примечание: ${escapeHtml(line.note)}` : ''
+    ].filter(Boolean).join(' • ');
+
+    return `<div class="cart-item">
+<div class="cart-item-top">
+<div class="cart-item-name">${escapeHtml(line.name)}</div>
+<div class="cart-item-sku">${escapeHtml(line.sku || line.id)}</div>
+</div>
+<div class="cart-item-meta">${meta}</div>
+</div>`;
+  }).join('');
+
+  const warningHtml = missingSize.length
+    ? `<div class="cart-warning">Для части позиций не выбран размер. Перед отправкой выберите значение в поле «Размер».</div>`
+    : '';
+
+  itemsEl.innerHTML = itemsHtml + warningHtml;
 }
 
 // ━━━ NAVIGATION ━━━
@@ -4386,7 +4536,7 @@ function exportCSV() {
 // После развёртывания Google Apps Script вставьте URL сюда:
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxyjqXGolhSOAFRdVZFIfDJ6G-xN54VfbrjrueFFp66HGstF3BsAgpvnv8rTRfBiJ2w4A/exec';
 
-async function submitForm() {
+async function submitForm(triggerBtn = null) {
   // Валидация
   const company = document.getElementById('companyName').value.trim();
   const person = document.getElementById('contactPerson').value.trim();
@@ -4428,9 +4578,17 @@ async function submitForm() {
 
   if (products.length === 0) { showToast('⚠️ Не указано ни одного количества'); return; }
 
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Отправка...';
+  const submitButtons = Array.from(document.querySelectorAll('#submitBtn, #submitBtnMobile'))
+    .filter(Boolean);
+  if (triggerBtn && !submitButtons.includes(triggerBtn)) submitButtons.push(triggerBtn);
+  const setSubmitButtonsState = (disabled, label) => {
+    submitButtons.forEach(btn => {
+      btn.disabled = disabled;
+      if (label) btn.innerHTML = label;
+    });
+  };
+
+  setSubmitButtonsState(true, '⏳ Отправка...');
 
   const payload = buildPayload(products);
 
@@ -4445,12 +4603,13 @@ async function submitForm() {
     const result = await response.json();
     if (result.success) {
       showToast('✅ Заявка ' + result.reqId + ' отправлена! ' + products.length + ' позиций');
-      btn.innerHTML = '✅ Отправлено!';
+      setSubmitButtonsState(true, '✅ Отправлено!');
+      closeCartDrawer();
     } else {
       showToast('❌ Ошибка сервера: ' + (result.error || 'неизвестная'));
-      btn.innerHTML = '📨 Отправить заявку';
+      setSubmitButtonsState(false, '📨 Отправить заявку');
     }
-    setTimeout(() => { btn.disabled = false; btn.innerHTML = '📨 Отправить заявку'; }, 5000);
+    setTimeout(() => setSubmitButtonsState(false, '📨 Отправить заявку'), 5000);
   } catch (err) {
     // Fallback: если CORS блокирует — отправляем через скрытый form
     try {
@@ -4471,12 +4630,13 @@ async function submitForm() {
       form.submit();
       setTimeout(() => { iframe.remove(); form.remove(); }, 5000);
       showToast('✅ Заявка отправлена! ' + products.length + ' позиций');
-      btn.innerHTML = '✅ Отправлено!';
+      setSubmitButtonsState(true, '✅ Отправлено!');
+      closeCartDrawer();
     } catch(e2) {
       showToast('❌ Ошибка: ' + err.message);
-      btn.innerHTML = '📨 Отправить заявку';
+      setSubmitButtonsState(false, '📨 Отправить заявку');
     }
-    setTimeout(() => { btn.disabled = false; btn.innerHTML = '📨 Отправить заявку'; }, 5000);
+    setTimeout(() => setSubmitButtonsState(false, '📨 Отправить заявку'), 5000);
   }
 }
 
@@ -4554,23 +4714,27 @@ function isEditableElement(el) {
 
 function updateFabViewportOffset() {
   const fab = document.querySelector('.fab-bar');
-  if (!fab) return;
+  const cartFab = document.getElementById('cartFabBtn');
+  if (!fab && !cartFab) return;
 
   const vv = window.visualViewport;
   const keyboardOffset = vv
     ? Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop))
     : 0;
 
-  fab.style.setProperty('--fab-keyboard-offset', `${keyboardOffset}px`);
+  if (fab) fab.style.setProperty('--fab-keyboard-offset', `${keyboardOffset}px`);
+  if (cartFab) cartFab.style.setProperty('--fab-keyboard-offset', `${keyboardOffset}px`);
 
   const isMobile = window.matchMedia('(max-width: 1024px)').matches;
   const hideFab = isMobile && fabInputFocused && keyboardOffset > 80;
-  fab.classList.toggle('fab-hidden', hideFab);
+  if (fab) fab.classList.toggle('fab-hidden', hideFab);
+  if (cartFab) cartFab.classList.toggle('fab-hidden', hideFab);
 }
 
 function initMobileFabBehavior() {
   const fab = document.querySelector('.fab-bar');
-  if (!fab) return;
+  const cartFab = document.getElementById('cartFabBtn');
+  if (!fab && !cartFab) return;
 
   const refreshFab = () => updateFabViewportOffset();
 
@@ -5421,6 +5585,7 @@ initAbrasiveSizeSelectors();
 initMobileFabBehavior();
 updateCategoryCounters();
 loadState();
+renderCartDrawer();
 </script>
 </body>
 </html>
