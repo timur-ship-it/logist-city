@@ -143,6 +143,7 @@ body.cart-open{overflow:hidden}
   border:1px solid rgba(255,255,255,.12);transition:transform .2s ease, opacity .2s ease}
 .cart-fab:hover{transform:translateY(-1px)}
 .cart-fab.fab-hidden{opacity:0;pointer-events:none;transform:translateY(18px)}
+.cart-fab .cart-text{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
 .cart-fab .cart-label{font-size:13px;font-weight:800;line-height:1}
 .cart-fab .cart-meta{font-size:11px;color:#cbd5e1;line-height:1}
 .cart-fab .cart-count{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;
@@ -4001,9 +4002,9 @@ body.cart-open{overflow:hidden}
 </div>
 <button class="cart-fab" id="cartFabBtn" onclick="toggleCartDrawer()" type="button">
 <span aria-hidden="true">🧺</span>
-<span>
-<div class="cart-label">Корзина</div>
-<div class="cart-meta" id="cartFabMeta">пусто</div>
+<span class="cart-text">
+<span class="cart-label">Корзина</span>
+<span class="cart-meta" id="cartFabMeta">пусто</span>
 </span>
 <span class="cart-count" id="cartFabCount">0</span>
 </button>
@@ -4391,6 +4392,10 @@ function toggleCartDrawer() {
   if (drawer.classList.contains('open')) closeCartDrawer();
   else openCartDrawer();
 }
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeCartDrawer();
+});
 
 function renderCartDrawer() {
   const lines = collectOrderLines();
