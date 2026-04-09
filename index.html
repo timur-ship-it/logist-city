@@ -170,6 +170,40 @@ body.cart-open{overflow:hidden}
 .cart-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .cart-actions .fab-btn{min-height:42px;justify-content:center;padding:10px 12px}
 .cart-actions .fab-btn.primary{grid-column:1/-1}
+.cart-actions .fab-btn.secondary{
+  background:#e2e8f0;
+  color:#0f172a;
+  border:1px solid #cbd5e1;
+}
+.cart-actions .fab-btn.secondary:hover{background:#cbd5e1}
+.cart-actions .fab-btn.danger{
+  background:#fee2e2;
+  color:#b91c1c;
+  border:1px solid #fecaca;
+}
+.cart-actions .fab-btn.danger:hover{background:#fecaca}
+.cart-actions .fab-btn.primary{
+  background:#2563eb;
+  color:#fff;
+  border:1px solid #1d4ed8;
+  box-shadow:0 6px 14px rgba(37,99,235,.26);
+}
+.cart-actions .fab-btn.primary:hover{background:#1d4ed8}
+.cart-actions .fab-btn:disabled{
+  opacity:1;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+.cart-actions .fab-btn.secondary:disabled{
+  background:#f1f5f9;
+  color:#64748b;
+  border-color:#e2e8f0;
+}
+.cart-actions .fab-btn.primary:disabled{
+  background:#93c5fd;
+  color:#ffffff;
+  border-color:#93c5fd;
+}
 
 /* SEARCH */
 .search-bar{max-width:1100px;margin:0 auto 20px;padding:0 24px}
@@ -304,7 +338,7 @@ body.cart-open{overflow:hidden}
 <!-- TOPBAR NAV -->
 <div class="topbar">
 <span class="logo">Logist City</span>
-<span class="build-tag">build touchfix-5</span>
+<span class="build-tag">build touchfix-6</span>
 <div class="nav-cats" id="navCats"></div>
 <div class="counter" id="itemCounter">0 позиций выбрано</div>
 </div>
@@ -4064,7 +4098,7 @@ function applyForcedMobileLayoutFromQuery() {
   document.head.appendChild(style);
 
   const buildTag = document.querySelector('.build-tag');
-  if (buildTag) buildTag.textContent = 'build touchfix-5';
+  if (buildTag) buildTag.textContent = 'build touchfix-6';
 }
 
 // ━━━ STATE MANAGEMENT ━━━
