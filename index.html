@@ -110,8 +110,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
 .shape-icon{width:94px;height:32px;display:block;flex-shrink:0;object-fit:contain;object-position:center center}
 .shape-code{font-weight:900}
 
-#cat-abrasives .prod-img{background:#fff}
-#cat-abrasives .prod-img img{object-fit:contain!important;padding:8px}
+#cat-abrasives .prod-img{background:#fff;width:200px;min-height:170px}
+#cat-abrasives .prod-img img{object-fit:contain!important;padding:6px}
 
 /* FLOATING ACTIONS */
 .fab-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;
@@ -150,6 +150,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e29
   .size-variant-row{grid-template-columns:1fr}
   .shape-badge{min-width:auto;padding:6px 10px;font-size:12px}
   .shape-icon{width:76px;height:26px}
+  #cat-abrasives .prod-img{height:170px}
   .hero h1{font-size:24px}
   .fab-bar{bottom:12px;padding:8px 12px}
 }
@@ -4048,15 +4049,9 @@ const FLAP_SIZES = ['100×16','115×22.23','125×22.23','150×22.23','180×22.23
 const FLAP_GRITS = ['P36','P40','P60','P80','P120'];
 const FIBER_SIZES = ['100×16','115×22.23','125×22.23','180×22.23'];
 const FIBER_GRITS = ['P24','P36','P60','P80','P120'];
-const FLOWER_FLAP = ['100×16 P60','100×16 P80','115×22.23 P60','115×22.23 P80','125×22.23 P60','125×22.23 P80','150×22.23 P80','180×22.23 P80'];
+const FLOWER_FLAP = ['100×16','115×22.23','125×22.23','150×22.23','180×22.23'];
 const VELCRO_OPTIONS = [
-  '75 мм P40','75 мм P80','75 мм P120','75 мм P240',
-  '100 мм P40','100 мм P80','100 мм P120','100 мм P240','100 мм P400',
-  '115 мм P60','115 мм P80','115 мм P120','115 мм P240','115 мм P400',
-  '125 мм P60','125 мм P80','125 мм P120','125 мм P240','125 мм P400',
-  '150 мм P80','150 мм P120','150 мм P240','150 мм P400',
-  '180 мм P80','180 мм P120','180 мм P240','180 мм P400','180 мм P600',
-  '230 мм P120','230 мм P240','230 мм P400','230 мм P600'
+  '75 мм','100 мм','115 мм','125 мм','150 мм','180 мм','230 мм'
 ];
 
 const DIAMOND_CUT_OPTIONS = [
@@ -4091,10 +4086,10 @@ const ABRASIVE_SIZE_OPTIONS = {
   12: STONE_LARGE_T41,
   13: STONE_GRIND_T27,
   14: FLEX_DISC,
-  15: expandSizeWithGrit(FLAP_SIZES, FLAP_GRITS),
-  16: expandSizeWithGrit(FLAP_SIZES, FLAP_GRITS),
+  15: FLAP_SIZES,
+  16: FLAP_SIZES,
   17: FLOWER_FLAP,
-  18: expandSizeWithGrit(FIBER_SIZES, FIBER_GRITS),
+  18: FIBER_SIZES,
   19: VELCRO_OPTIONS,
   20: DIAMOND_CUT_OPTIONS,
   21: DIAMOND_CUP_OPTIONS
@@ -4214,6 +4209,39 @@ const ABRASIVE_DELTA_SIZE_OPTIONS = {
   ]
 };
 Object.assign(ABRASIVE_SIZE_OPTIONS, ABRASIVE_DELTA_SIZE_OPTIONS);
+
+function normalizeSizeOptionText(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+
+  let out = raw
+    .split('|')
+    .map(part => part.trim())
+    .filter(Boolean)
+    .filter(part => !/^grit\b/i.test(part))
+    .join(' | ');
+
+  // Remove grit-like tokens accidentally mixed into size strings (P36, P120, etc.)
+  out = out.replace(/\bP\s*\d{1,4}\b/gi, '').replace(/\s{2,}/g, ' ').trim();
+  out = out.replace(/\s+\|/g, ' |').replace(/\|\s*$/g, '').trim();
+  return out || raw;
+}
+
+function normalizeSizeOptions(list) {
+  const out = [];
+  const seen = new Set();
+  (Array.isArray(list) ? list : []).forEach(item => {
+    const normalized = normalizeSizeOptionText(item);
+    if (!normalized || seen.has(normalized)) return;
+    seen.add(normalized);
+    out.push(normalized);
+  });
+  return out;
+}
+
+Object.keys(ABRASIVE_SIZE_OPTIONS).forEach(key => {
+  ABRASIVE_SIZE_OPTIONS[key] = normalizeSizeOptions(ABRASIVE_SIZE_OPTIONS[key]);
+});
 // APC2026_DELTA_SIZE_OPTIONS_END
 
 function createSizeSelect(options, selected = '') {
