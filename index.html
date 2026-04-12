@@ -12,18 +12,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 :root{
   --fab-keyboard-offset:0px;
+  --topbar-height:80px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{max-width:100%;overflow-x:hidden}
-body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh}
+body{font-family:'Inter',-apple-system,sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;padding-top:var(--topbar-height)}
 body.cart-open{overflow:hidden}
 
 /* NAV */
-.topbar{position:sticky;top:0;z-index:100;background:rgba(15,23,42,0.97);backdrop-filter:blur(12px);
+.topbar{position:fixed;left:0;right:0;top:0;z-index:210;background:rgba(15,23,42,0.97);backdrop-filter:blur(12px);
   padding:12px 24px;display:flex;align-items:center;gap:16px;border-bottom:1px solid #1e3a5f}
 .topbar .logo{font-size:20px;font-weight:800;color:#38bdf8;letter-spacing:-1px}
 .topbar .build-tag{font-size:11px;font-weight:700;color:#86efac;background:rgba(22,163,74,0.15);border:1px solid rgba(34,197,94,0.35);padding:4px 8px;border-radius:999px;white-space:nowrap}
-.topbar .nav-cats{display:flex;gap:4px;flex:1;overflow-x:auto;scrollbar-width:none}
+.topbar .nav-scroll-wrap{position:relative;flex:1;min-width:0}
+.topbar .nav-cats{display:flex;gap:4px;width:100%;overflow-x:auto;scrollbar-width:none}
 .topbar .nav-cats::-webkit-scrollbar{display:none}
 .nav-cat{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;color:#94a3b8;cursor:pointer;
   white-space:normal;transition:all .2s;border:1px solid transparent;display:flex;align-items:center;justify-content:center;
@@ -32,6 +34,7 @@ body.cart-open{overflow:hidden}
 .nav-cat.active{color:#38bdf8}
 .topbar .counter{font-size:13px;color:#38bdf8;font-weight:700;background:rgba(56,189,248,0.1);
   padding:6px 14px;border-radius:20px;white-space:nowrap}
+
 
 /* HERO / COMPANY FORM */
 .hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);padding:48px 24px 40px;text-align:center}
@@ -61,7 +64,7 @@ body.cart-open{overflow:hidden}
 .main{max-width:1100px;margin:0 auto;padding:24px 24px calc(130px + env(safe-area-inset-bottom))}
 .cat-section{margin-bottom:40px}
 .cat-header{display:flex;align-items:center;gap:12px;padding:16px 20px;border-radius:14px;
-  margin-bottom:16px;position:sticky;top:52px;z-index:50}
+  margin-bottom:16px;position:static;top:auto;z-index:1}
 .cat-header h2{font-size:22px;font-weight:800;flex:1}
 .cat-header .cat-count{font-size:12px;padding:4px 12px;border-radius:20px;background:rgba(0,0,0,0.1);font-weight:600}
 
@@ -74,6 +77,8 @@ body.cart-open{overflow:hidden}
   display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;position:relative}
 .prod-img img{width:100%;height:100%;object-fit:cover}
 .prod-img .placeholder{color:#cbd5e1;font-size:36px}
+.prod-side-img{width:240px;min-height:120px;background:#f8fafc;border-left:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;position:relative}
+.prod-side-img img{width:100%;height:100%;object-fit:contain;padding:0}
 .prod-body{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:8px}
 .prod-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .prod-name{font-size:15px;font-weight:700;color:#0f172a;line-height:1.3;flex:1}
@@ -83,32 +88,34 @@ body.cart-open{overflow:hidden}
 .prod-name,.prod-desc,.unit-label{overflow-wrap:anywhere;word-break:break-word}
 .prod-inputs{display:flex;gap:10px;align-items:center;margin-top:auto;padding-top:8px;border-top:1px solid #f1f5f9}
 .prod-inputs label{font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase}
-.qty-input{width:80px;padding:6px 10px;border:2px solid #e2e8f0;border-radius:8px;font-size:14px;
-  font-weight:600;text-align:center;font-family:inherit;transition:all .2s}
-.qty-input:focus{outline:none;border-color:#3b82f6}
-.qty-input:not(:placeholder-shown){border-color:#38bdf8;background:#f0f9ff}
+.qty-stepper{display:inline-grid;grid-template-columns:40px 52px 40px;align-items:center;height:36px;border:2px solid #e2e8f0;border-radius:999px;background:#fff;overflow:hidden;min-width:132px;max-width:132px;transition:all .2s}
+.qty-stepper.has-value{border-color:#38bdf8;background:#f0f9ff}
+.qty-stepper-btn{appearance:none;border:none;background:transparent;cursor:pointer;font-size:22px;line-height:1;font-weight:700;color:#0f172a;height:100%;display:flex;align-items:center;justify-content:center}
+.qty-stepper-btn:hover{background:#e2e8f0}
+.qty-stepper-btn:active{background:#cbd5e1}
+.qty-stepper-btn:disabled{opacity:.35;cursor:not-allowed;background:transparent}
+.qty-stepper-btn.clear{font-size:16px}
+.qty-input{width:100%;height:100%;padding:0;border:none;background:transparent;font-size:15px;font-weight:800;text-align:center;font-family:inherit;color:#0f172a;appearance:textfield;-moz-appearance:textfield}
+.qty-input::-webkit-outer-spin-button,.qty-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.qty-input:focus{outline:none}
 .unit-label{font-size:11px;color:#64748b;min-width:60px}
 .note-input{flex:1;padding:6px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;
   color:#475569;font-family:inherit}
 .note-input:focus{outline:none;border-color:#3b82f6}
 .size-wrap{display:flex;flex-direction:column;gap:3px;min-width:200px}
-.params-wrap{display:flex;flex-direction:column;gap:3px;min-width:210px}
 .size-select{padding:6px 8px;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;font-weight:600;color:#334155;background:#fff;font-family:inherit;min-width:200px}
 .size-select:focus{outline:none;border-color:#3b82f6}
 .size-field{display:flex;flex-direction:column;gap:6px;min-width:0}
 .size-custom-input{display:none}
-.params-input{min-width:210px}
 .size-variants{margin-top:8px;padding-top:8px;border-top:1px dashed #e2e8f0;display:flex;flex-direction:column;gap:8px}
 .size-variants-actions{display:flex;justify-content:flex-end}
 .add-size-btn{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer}
 .add-size-btn:hover{border-color:#93c5fd;color:#1d4ed8}
 .size-variants-list{display:flex;flex-direction:column;gap:6px}
-.size-variant-row{display:grid;grid-template-columns:minmax(0,1.3fr) 92px minmax(0,1fr) minmax(0,1fr) 34px;gap:8px;align-items:center}
+.size-variant-row{display:grid;grid-template-columns:minmax(0,1.35fr) 136px 34px;gap:8px;align-items:center}
 .size-variant-row .size-field{min-width:0}
 .size-variant-row .size-select{min-width:0}
-.size-variant-row .qty-variant-input{width:100%}
-.size-variant-row .params-variant-input{min-width:0}
-.size-variant-row .note-variant-input{min-width:0}
+.size-variant-row .qty-stepper{width:100%;max-width:none;min-width:0}
 .remove-variant-btn{border:1px solid #fecaca;background:#fff1f2;color:#be123c;border-radius:8px;cursor:pointer;height:32px;font-size:16px;line-height:1}
 .remove-variant-btn:hover{background:#ffe4e6}
 
@@ -118,9 +125,22 @@ body.cart-open{overflow:hidden}
 .shape-badge{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:7px 14px;border-radius:999px;border:1.5px solid #64748b;background:#f1f5f9;color:#0f172a;font-size:13px;font-weight:800;letter-spacing:.25px;line-height:1;white-space:nowrap;min-width:120px}
 .shape-icon{width:94px;height:32px;display:block;flex-shrink:0;object-fit:contain;object-position:center center}
 .shape-code{font-weight:900}
+.shape-meta{display:inline-flex;flex-direction:column;gap:4px;align-items:flex-start}
+.shape-profile-note{display:inline-flex;align-items:center;padding:4px 8px;border-radius:8px;background:#eef6ff;color:#334155;border:1px solid #bfdbfe;font-size:11px;font-weight:800;line-height:1.2;white-space:nowrap}
 
 #cat-abrasives .prod-img{background:#fff;width:200px;min-height:170px}
 #cat-abrasives .prod-img img{object-fit:contain!important;padding:6px}
+#cat-fasteners .prod-img.prod-img-multi{width:420px;min-height:190px;background:#fff;border-right:1px solid #e2e8f0;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;align-items:stretch}
+#cat-fasteners .prod-img.prod-img-multi.single{grid-template-columns:1fr}
+#cat-fasteners .prod-img.prod-img-multi .prod-img-slot{min-height:170px;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff}
+#cat-fasteners .prod-img.prod-img-multi img{width:100%;height:100%;object-fit:contain;padding:2px}
+@media(max-width:1024px), (hover:none) and (pointer:coarse){
+  #cat-fasteners .prod-img.prod-img-multi{width:100%;min-height:170px;grid-template-columns:1fr 1fr;padding:6px;gap:6px;border-right:none}
+  #cat-fasteners .prod-img.prod-img-multi .prod-img-slot{min-height:150px}
+}
+@media(max-width:430px){
+  #cat-fasteners .prod-img.prod-img-multi{grid-template-columns:1fr;padding:6px}
+}
 
 /* FLOATING ACTIONS */
 .fab-bar{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:8px;
@@ -220,22 +240,58 @@ body.cart-open{overflow:hidden}
 
 /* RESPONSIVE */
 @media(max-width:1024px), (hover:none) and (pointer:coarse){
-  .topbar{position:static;top:auto;padding:10px 12px;gap:10px;flex-wrap:wrap}
-  .topbar .logo{font-size:18px}
-  .topbar .build-tag{order:2}
-  .topbar .counter{order:3;width:100%;text-align:center}
-  .topbar .nav-cats{
-    order:4;
-    width:100%;
+  body{padding-top:var(--topbar-height)}
+  .topbar{
+    position:fixed;left:0;right:0;top:0;z-index:210;
+    padding:8px 10px 7px;
     display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-columns:1fr;
     gap:6px;
-    overflow:visible;
+    align-items:stretch;
   }
+  .topbar .logo{font-size:15px;line-height:1;min-width:0}
+  .topbar .build-tag{display:none}
+  .topbar .counter{display:none}
+  .topbar .nav-scroll-wrap{
+    position:relative;
+    width:100%;
+    min-width:0;
+  }
+  .topbar .nav-scroll-wrap::after{
+    content:'';
+    position:absolute;
+    right:0;
+    top:0;
+    bottom:0;
+    width:26px;
+    background:linear-gradient(90deg,rgba(15,23,42,0) 0%, rgba(15,23,42,0.96) 78%);
+    pointer-events:none;
+    opacity:.95;
+    transition:opacity .2s ease;
+  }
+  .topbar .nav-scroll-wrap.swipe-end::after{opacity:0}
+  .topbar .nav-cats{
+    width:100%;
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;
+    padding:0 16px 2px 0;
+  }
+  .topbar .nav-cats::-webkit-scrollbar{display:none}
   .nav-cat{
     width:auto;
-    min-height:40px;
-    padding:8px 10px;
+    min-width:132px;
+    min-height:34px;
+    padding:7px 10px;
+    font-size:11px;
+    line-height:1.15;
+    flex:0 0 auto;
+    white-space:normal;
+    scroll-snap-align:start;
   }
   .form-grid{grid-template-columns:1fr}
   .hero{padding:32px 14px 26px}
@@ -244,34 +300,40 @@ body.cart-open{overflow:hidden}
   .search-bar{padding:0 12px}
   .cat-header{position:static;top:auto;padding:12px 14px}
   .cat-header h2{font-size:18px}
-  .product{flex-direction:column;border-radius:16px}
-  .prod-img{width:100%;height:170px;min-height:170px;border-right:none;border-bottom:1px solid #e2e8f0}
-  .prod-body{padding:14px 12px;gap:10px}
+  .product{display:grid;grid-template-columns:124px minmax(0,1fr);border-radius:14px;align-items:start}
+  .prod-img{width:124px;height:146px;min-height:146px;align-self:start;border-right:1px solid #e2e8f0;border-bottom:none}
+  .prod-side-img{width:100%;height:130px;min-height:130px;border-left:none;border-top:1px solid #e2e8f0}
+  .prod-body{padding:10px 10px;gap:6px}
   .prod-top{flex-direction:column;align-items:flex-start;gap:8px}
   .prod-tags{justify-content:flex-start}
-  .prod-name{font-size:16px}
-  .prod-desc{font-size:13px;line-height:1.5}
+  .prod-name{font-size:14px}
+  .prod-desc{font-size:12px;line-height:1.35}
   .prod-inputs{display:flex;flex-direction:column;gap:4px;align-items:stretch;padding-top:10px}
-  .prod-inputs > .size-wrap + .params-wrap{margin-top:-6px}
-  .prod-inputs > div,.prod-inputs > .size-wrap,.prod-inputs > .params-wrap,.prod-inputs > .unit-label{width:100%;min-width:0;max-width:100%}
-  .prod-inputs > .size-wrap,.prod-inputs > .params-wrap,.prod-inputs > div[style*="flex:1"]{flex:0 0 auto}
+  .prod-inputs > div,.prod-inputs > .size-wrap,.prod-inputs > .unit-label{width:100%;min-width:0;max-width:100%}
+  .prod-inputs > .size-wrap,.prod-inputs > div[style*="flex:1"]{flex:0 0 auto}
   .prod-inputs > div{display:flex;flex-direction:column;gap:4px}
   .prod-inputs .unit-label{font-size:12px;line-height:1.2;color:#475569;padding:0 2px;min-width:0}
   .prod-inputs label{font-size:11px}
-  .qty-input,.note-input,.size-select,.params-input,.size-custom-input{width:100%;max-width:100%;min-height:44px;padding:10px 12px;font-size:16px;flex:0 0 auto}
-  input[type="number"].qty-input{width:100%;text-align:left}
-  .size-wrap,.params-wrap{min-width:0}
-  .size-select,.params-input{min-width:0}
+  .qty-stepper{width:100%;max-width:none;min-width:0;height:44px;grid-template-columns:52px 1fr 52px}
+  .qty-stepper-btn{font-size:28px}
+  .qty-input{font-size:18px}
+  .note-input,.size-select,.size-custom-input{width:100%;max-width:100%;min-height:44px;padding:10px 12px;font-size:16px;flex:0 0 auto}
+  .size-wrap{min-width:0}
+  .size-select{min-width:0}
   .size-variants{margin-top:10px;padding-top:10px;gap:10px}
   .size-variants-actions{justify-content:stretch}
   .add-size-btn{width:100%;min-height:44px;padding:10px 12px;font-size:14px}
   .size-variants-list{gap:10px}
   .size-variant-row{grid-template-columns:1fr;gap:8px;padding:10px;border:1px solid #dbe7f3;border-radius:12px;background:#f8fbff}
-  .size-variant-row .size-field,.size-variant-row .qty-variant-input,.size-variant-row .params-variant-input,.size-variant-row .note-variant-input{width:100%}
+  .size-variant-row .size-field,.size-variant-row .qty-variant-input{width:100%}
   .remove-variant-btn{width:100%;min-height:42px;font-size:14px}
   .shape-badge{min-width:auto;padding:6px 10px;font-size:12px}
+  .shape-profile-note{font-size:11px;padding:4px 7px}
   .shape-icon{width:76px;height:26px}
-  #cat-abrasives .prod-img{width:100%;height:170px;min-height:170px}
+  #cat-abrasives .prod-img{width:124px;height:146px;min-height:146px}
+  #cat-fasteners .prod-img.prod-img-multi{width:124px;height:146px;min-height:146px;grid-template-columns:1fr;grid-template-rows:1fr 1fr;padding:4px;gap:4px;border-right:1px solid #e2e8f0;border-bottom:none;align-content:start}
+  #cat-fasteners .prod-img.prod-img-multi.single{grid-template-rows:1fr}
+  #cat-fasteners .prod-img.prod-img-multi .prod-img-slot{min-height:68px}
   .hero h1{font-size:24px}
   .fab-bar{display:none}
   .fab-bar.fab-hidden{transform:translateY(16px)}
@@ -282,9 +344,11 @@ body.cart-open{overflow:hidden}
   .toast{display:none!important}
 }
 @media(max-width:430px){
-  .topbar{padding:8px 10px}
-  .topbar .logo{font-size:17px}
-  .topbar .build-tag{font-size:10px;padding:3px 7px}
+  body{padding-top:var(--topbar-height)}
+  .topbar{padding:7px 8px 6px;gap:5px}
+  .topbar .logo{font-size:14px;min-width:0}
+  .topbar .nav-cats{gap:5px;padding-right:14px}
+  .nav-cat{min-width:124px;min-height:32px;font-size:10px;padding:6px 8px}
   .hero h1{font-size:22px}
   .hero p{font-size:13px;margin-bottom:20px}
   .company-form{padding:14px 12px}
@@ -293,10 +357,11 @@ body.cart-open{overflow:hidden}
   .search-input{padding:12px 14px 12px 40px}
   .cat-header{position:static;top:auto;padding:10px 12px}
   .cat-header h2{font-size:16px}
-  .prod-body{padding:12px 10px}
+  .prod-body{padding:9px 8px}
   .prod-name{font-size:15px}
   .shape-icon{width:68px;height:22px}
   .shape-badge{padding:6px 9px;font-size:11px}
+  .shape-profile-note{font-size:10px;padding:3px 6px}
   .cart-fab{left:10px;right:10px;justify-content:center}
   .cart-actions{grid-template-columns:1fr}
   .cart-actions .fab-btn.primary{grid-column:auto}
@@ -313,12 +378,12 @@ body.cart-open{overflow:hidden}
 .product[data-removed="true"]{display:none!important}
 .prod-body{min-width:0}
 .prod-inputs{flex-wrap:wrap;align-items:flex-end}
-.size-wrap,.params-wrap{flex:1 1 220px;min-width:0}
-.size-select,.params-input{width:100%;min-width:0}
+.size-wrap{flex:1 1 220px;min-width:0}
+.size-select{width:100%;min-width:0}
 .note-input{min-width:0}
 .size-variants{width:100%;overflow:hidden}
 .size-variants-list{width:100%}
-.size-variant-row{width:100%;grid-template-columns:minmax(0,1.2fr) 86px minmax(0,1fr) minmax(0,1fr) 34px}
+.size-variant-row{width:100%;grid-template-columns:minmax(0,1.35fr) 136px 34px}
 .size-variant-row > *{min-width:0}
 @media(max-width:1024px), (hover:none) and (pointer:coarse){
   .prod-inputs{align-items:stretch}
@@ -330,7 +395,7 @@ body.cart-open{overflow:hidden}
     border-radius:12px;
     background:#f8fbff;
   }
-  .size-variant-row .size-field,.size-variant-row .qty-variant-input,.size-variant-row .params-variant-input,.size-variant-row .note-variant-input{width:100%}
+  .size-variant-row .size-field,.size-variant-row .qty-variant-input{width:100%}
 }
 </style>
 </head>
@@ -338,8 +403,10 @@ body.cart-open{overflow:hidden}
 <!-- TOPBAR NAV -->
 <div class="topbar">
 <span class="logo">Logist City</span>
-<span class="build-tag">build touchfix-6</span>
+<span class="build-tag">build cableties-1</span>
+<div class="nav-scroll-wrap" id="navScrollWrap">
 <div class="nav-cats" id="navCats"></div>
+</div>
 <div class="counter" id="itemCounter">0 позиций выбрано</div>
 </div>
 <!-- HERO + COMPANY FORM -->
@@ -3255,181 +3322,395 @@ body.cart-open{overflow:hidden}
 </div>
 <div class="cat-section" data-cat="fasteners" id="cat-fasteners">
 <div class="cat-header" style="background:linear-gradient(135deg,#e0e7ff,#fff);border:2px solid #6366f125">
-<h2 style="color:#6366f1">🔩 Крепёж и аксессуары</h2>
-<span class="cat-count" style="color:#6366f1">8 позиций</span>
+<h2 style="color:#6366f1">🔗 Кабельные стяжки</h2>
+<span class="cat-count" style="color:#6366f1">15 позиций</span>
 </div>
-<div class="product" data-id="73" data-search="стяжки кабельные нейлоновые (неразъёмные) нейлон 66, -40…+85°c, длина 75-1010 мм, ul 94v-2">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/fst-001.jpg" style="width:100%;height:100%;object-fit:cover"/>
+<div class="product" data-id="73" data-search="стандартные кабельные стяжки standard cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета по запросу">
+<div class="prod-img prod-img-multi">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-01-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-01-side.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
 </div>
 <div class="prod-body">
 <div class="prod-top">
-<span class="prod-name">Стяжки кабельные нейлоновые (неразъёмные)</span>
+<span class="prod-name">Стандартные кабельные стяжки</span>
 </div>
-<div class="prod-desc">Нейлон 66, -40…+85°C, длина 75-1010 мм, UL 94V-2</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета по запросу</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="73" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">упак.</span>
+<span class="unit-label">шт.</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="73" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="73" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
 </div>
 </div>
 </div>
 </div>
-<div class="product" data-id="74" data-search="стяжки uv / термо / огнестойкие uv-стабилизированные (улица), термостойкие (+125°c), или огнестойкие ul v-0">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/fst-002.jpg" style="width:100%;height:100%;object-fit:cover"/>
+<div class="product" data-id="74" data-search="стандартные стяжки, узкие (s) и средние (m) slim (s) or medium-width (m) variants of standard tie материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-02-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-02-side.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
 </div>
 <div class="prod-body">
 <div class="prod-top">
-<span class="prod-name">Стяжки UV / термо / огнестойкие</span>
+<span class="prod-name">Стандартные стяжки, узкие (S) и средние (M)</span>
 </div>
-<div class="prod-desc">UV-стабилизированные (улица), термостойкие (+125°C), или огнестойкие UL V-0</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="74" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">упак.</span>
+<span class="unit-label">шт.</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="74" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="74" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
 </div>
 </div>
 </div>
 </div>
-<div class="product" data-id="75" data-search="стяжки кабельные разъёмные (многоразовые) нейлон 66, кнопка разблокировки, многоразовые">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/fst-003.jpg" style="width:100%;height:100%;object-fit:cover"/>
+<div class="product" data-id="75" data-search="линейные кабельные стяжки in-line cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-03-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-03-side.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
 </div>
 <div class="prod-body">
 <div class="prod-top">
-<span class="prod-name">Стяжки кабельные разъёмные (многоразовые)</span>
+<span class="prod-name">Линейные кабельные стяжки</span>
 </div>
-<div class="prod-desc">Нейлон 66, кнопка разблокировки, многоразовые</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="75" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">упак.</span>
+<span class="unit-label">шт.</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="75" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="75" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
 </div>
 </div>
 </div>
 </div>
-<div class="product" data-id="76" data-search="стяжки из нержавеющей стали ss304/ss316, шариковый замок, -80…+538°c, коррозионностойкие">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/fst-004.jpg" style="width:100%;height:100%;object-fit:cover"/>
+<div class="product" data-id="76" data-search="разъёмные кабельные стяжки (многоразовые) releasable cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-04-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-04-side.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
 </div>
 <div class="prod-body">
 <div class="prod-top">
-<span class="prod-name">Стяжки из нержавеющей стали</span>
+<span class="prod-name">Разъёмные кабельные стяжки (многоразовые)</span>
 </div>
-<div class="prod-desc">SS304/SS316, шариковый замок, -80…+538°C, коррозионностойкие</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="76" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">упак.</span>
+<span class="unit-label">шт.</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="76" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="76" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
 </div>
 </div>
 </div>
 </div>
-<div class="product" data-id="77" data-search="пломбы защитные (пластик/металл/болтовые) нумерованные, следы вскрытия, iso 17712">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/fst-005.jpg" style="width:100%;height:100%;object-fit:cover"/>
+<div class="product" data-id="77" data-search="стяжки с монтажным отверстием в головке mountable head cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-05-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-05-side.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
 </div>
 <div class="prod-body">
 <div class="prod-top">
-<span class="prod-name">Пломбы защитные (пластик/металл/болтовые)</span>
+<span class="prod-name">Стяжки с монтажным отверстием в головке</span>
 </div>
-<div class="prod-desc">Нумерованные, следы вскрытия, ISO 17712</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="77" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">упак.</span>
+<span class="unit-label">шт.</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="77" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="77" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
 </div>
 </div>
 </div>
 </div>
-<div class="product" data-id="78" data-search="анкер клиновой стальной клиновой анкер для крепления в бетоне и камне">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/fst-006.jpg" style="width:100%;height:100%;object-fit:cover"/>
+<div class="product" data-id="78" data-search="стяжки с пистонным креплением push mount cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-06-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-06-side.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
 </div>
 <div class="prod-body">
 <div class="prod-top">
-<span class="prod-name">Анкер клиновой</span>
+<span class="prod-name">Стяжки с пистонным креплением</span>
 </div>
-<div class="prod-desc">Стальной клиновой анкер для крепления в бетоне и камне, различные размеры</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="78" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">упак.</span>
+<span class="unit-label">шт.</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="78" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="78" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
 </div>
 </div>
 </div>
 </div>
-<div class="product" data-id="79" data-search="дюбель-гвоздь забивной крепёж дюбель с гвоздём для монтажа в бетон и кирпич">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/fst-007.jpg" style="width:100%;height:100%;object-fit:cover"/>
+<div class="product" data-id="79" data-search="стяжки с металлическим язычком metal pawl cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi single">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-07-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
 </div>
 <div class="prod-body">
 <div class="prod-top">
-<span class="prod-name">Дюбель-гвоздь</span>
+<span class="prod-name">Стяжки с металлическим язычком</span>
 </div>
-<div class="prod-desc">Забивной крепёж, дюбель с гвоздём для монтажа в бетон и кирпич, различные размеры</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="79" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">упак.</span>
+<span class="unit-label">шт.</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="79" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="79" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
 </div>
 </div>
 </div>
 </div>
-<div class="product" data-id="80" data-search="болты и гайки строительные (10+ типов) шестигранные, каретные, анкерные, u-образные, фланцевые, рым-болты — разные классы">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/fst-008.jpg" style="width:100%;height:100%;object-fit:cover"/>
+<div class="product" data-id="80" data-search="маркировочные кабельные стяжки marker cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-08-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-08-side.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
 </div>
 <div class="prod-body">
 <div class="prod-top">
-<span class="prod-name">Болты и гайки строительные (10+ типов)</span>
+<span class="prod-name">Маркировочные кабельные стяжки</span>
 </div>
-<div class="prod-desc">Шестигранные, каретные, анкерные, U-образные, фланцевые, рым-болты — разные классы</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="80" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">кг / шт.</span>
+<span class="unit-label">шт.</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="80" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="80" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="300" data-search="стяжки для hvac (вентиляция/кондиционирование) hvac cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-09-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-09-side.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Стяжки для HVAC (вентиляция/кондиционирование)</span>
+</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="300" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="300" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="301" data-search="стяжки с двойной головкой double head cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-10-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-10-side.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Стяжки с двойной головкой</span>
+</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="301" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="301" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="302" data-search="стяжки с двойным замком double locking cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-11-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-11-side.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Стяжки с двойным замком</span>
+</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="302" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="302" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="303" data-search="стяжки-наручники handcuffs cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi single">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-12-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Стяжки-наручники</span>
+</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="303" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="303" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="304" data-search="антипробуксовочные стяжки для шин tire antiskid cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi single">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-13-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Антипробуксовочные стяжки для шин</span>
+</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="304" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="304" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="305" data-search="стяжки с двусторонними зубьями double-side teeth cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi single">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-14-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Стяжки с двусторонними зубьями</span>
+</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="305" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="305" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="product" data-id="306" data-search="стяжки с крючком и петлёй (липучка) hook and loop cable ties материал: нейлон 66 (ul approved); огнестойкость: ul 94v-2; температура монтажа: -20…+85°c; рабочая температура: -40…+85°c; цвет: натуральный (белый), чёрный, другие цвета доступны">
+<div class="prod-img prod-img-multi single">
+<div class="prod-img-slot">
+<img alt="" loading="lazy" decoding="async" src="images/fst-tie-15-main.webp?v=ct-20260412-1" style="width:100%;height:100%;object-fit:contain"/>
+</div>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Стяжки с крючком и петлёй (липучка)</span>
+</div>
+<div class="prod-desc">Материал: Нейлон 66 (UL Approved); Огнестойкость: UL 94V-2; Температура монтажа: -20…+85°C; Рабочая температура: -40…+85°C; Цвет: Натуральный (белый), чёрный, другие цвета доступны</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="306" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="306" oninput="saveState()" placeholder="цвет, упаковка, комментарий…" type="text"/>
 </div>
 </div>
 </div>
@@ -4071,24 +4352,57 @@ function applyForcedMobileLayoutFromQuery() {
   const style = document.createElement('style');
   style.id = 'force-mobile-style';
   style.textContent = `
-    .topbar{position:static!important;top:auto!important}
+    body{padding-top:var(--topbar-height)!important}
+    .topbar{
+      position:fixed!important;left:0!important;right:0!important;top:0!important;z-index:210!important;
+      padding:8px 10px 7px!important;
+      display:grid!important;
+      grid-template-columns:1fr!important;
+      gap:6px!important;
+      align-items:stretch!important;
+    }
+    .topbar .build-tag{display:none!important}
+    .topbar .counter{display:none!important}
+    .topbar .logo{font-size:15px!important;min-width:0!important}
+    .topbar .nav-scroll-wrap{position:relative!important;width:100%!important;min-width:0!important}
+    .topbar .nav-scroll-wrap::after{
+      content:''!important;
+      position:absolute!important;
+      right:0!important;top:0!important;bottom:0!important;
+      width:26px!important;
+      background:linear-gradient(90deg,rgba(15,23,42,0) 0%, rgba(15,23,42,0.96) 78%)!important;
+      pointer-events:none!important;
+      opacity:.95!important;
+      transition:opacity .2s ease!important;
+    }
+    .topbar .nav-scroll-wrap.swipe-end::after{opacity:0!important}
+    .topbar .nav-cats{width:100%!important;display:flex!important;gap:6px!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important;scroll-snap-type:x proximity!important;padding:0 16px 2px 0!important}
+    .topbar .nav-cats::-webkit-scrollbar{display:none!important}
+    .nav-cat{width:auto!important;min-width:132px!important;min-height:34px!important;padding:7px 10px!important;font-size:11px!important;line-height:1.15!important;white-space:normal!important;flex:0 0 auto!important;scroll-snap-align:start!important}
     .cat-header{position:static!important;top:auto!important}
     .main{padding:16px 12px calc(108px + env(safe-area-inset-bottom))!important}
     .search-bar{padding:0 12px!important}
-    .product{flex-direction:column!important;border-radius:16px!important}
-    .prod-img{width:100%!important;height:170px!important;min-height:170px!important;border-right:none!important;border-bottom:1px solid #e2e8f0!important}
-    #cat-abrasives .prod-img{width:100%!important;height:170px!important;min-height:170px!important}
-    .prod-body{padding:14px 12px!important;gap:10px!important}
+    .product{display:grid!important;grid-template-columns:124px minmax(0,1fr)!important;border-radius:14px!important;align-items:start!important}
+    .prod-img{width:124px!important;height:146px!important;min-height:146px!important;align-self:start!important;border-right:1px solid #e2e8f0!important;border-bottom:none!important}
+    #cat-abrasives .prod-img{width:124px!important;height:146px!important;min-height:146px!important}
+    #cat-fasteners .prod-img.prod-img-multi{width:124px!important;height:146px!important;min-height:146px!important;grid-template-columns:1fr!important;grid-template-rows:1fr 1fr!important;padding:4px!important;gap:4px!important;border-right:1px solid #e2e8f0!important;border-bottom:none!important;align-content:start!important}
+    #cat-fasteners .prod-img.prod-img-multi.single{grid-template-rows:1fr!important}
+    #cat-fasteners .prod-img.prod-img-multi .prod-img-slot{min-height:68px!important}
+    .prod-body{padding:10px 10px!important;gap:6px!important}
     .prod-top{flex-direction:column!important;align-items:flex-start!important;gap:8px!important}
     .prod-tags{justify-content:flex-start!important}
+    .prod-name{font-size:14px!important}
+    .prod-desc{font-size:12px!important;line-height:1.35!important}
     .prod-inputs{display:flex!important;flex-direction:column!important;gap:4px!important;align-items:stretch!important;padding-top:10px!important}
-    .prod-inputs > div,.prod-inputs > .size-wrap,.prod-inputs > .params-wrap,.prod-inputs > .unit-label{width:100%!important;max-width:100%!important;min-width:0!important}
-    .prod-inputs > .size-wrap,.prod-inputs > .params-wrap,.prod-inputs > div[style*="flex:1"]{flex:0 0 auto!important}
+    .prod-inputs > div,.prod-inputs > .size-wrap,.prod-inputs > .unit-label{width:100%!important;max-width:100%!important;min-width:0!important}
+    .prod-inputs > .size-wrap,.prod-inputs > div[style*="flex:1"]{flex:0 0 auto!important}
     .prod-inputs > div{display:flex!important;flex-direction:column!important;gap:4px!important}
-    .prod-inputs > .size-wrap + .params-wrap{margin-top:-6px!important}
-    .qty-input,.note-input,.size-select,.params-input,.size-custom-input{width:100%!important;min-height:44px!important;padding:10px 12px!important;font-size:16px!important;max-width:100%!important;flex:0 0 auto!important}
+    .qty-stepper{width:100%!important;max-width:none!important;min-width:0!important;height:44px!important;grid-template-columns:52px 1fr 52px!important}
+    .qty-stepper-btn{font-size:28px!important}
+    .qty-input{font-size:18px!important}
+    .note-input,.size-select,.size-custom-input{width:100%!important;min-height:44px!important;padding:10px 12px!important;font-size:16px!important;max-width:100%!important;flex:0 0 auto!important}
     .size-variant-row{grid-template-columns:1fr!important;gap:8px!important;padding:10px!important;border:1px solid #dbe7f3!important;border-radius:12px!important;background:#f8fbff!important}
-    .size-variant-row .size-field,.size-variant-row .qty-variant-input,.size-variant-row .params-variant-input,.size-variant-row .note-variant-input{width:100%!important}
+    .size-variant-row .size-field,.size-variant-row .qty-variant-input{width:100%!important}
     .remove-variant-btn,.add-size-btn,.fab-btn{min-height:44px!important}
     .toast{display:none!important}
     .fab-bar{display:none!important}
@@ -4098,7 +4412,15 @@ function applyForcedMobileLayoutFromQuery() {
   document.head.appendChild(style);
 
   const buildTag = document.querySelector('.build-tag');
-  if (buildTag) buildTag.textContent = 'build touchfix-6';
+  if (buildTag) buildTag.textContent = 'build cableties-1';
+}
+
+function syncTopbarOffset() {
+  const topbar = document.querySelector('.topbar');
+  if (!topbar) return;
+  const pos = window.getComputedStyle(topbar).position;
+  const height = pos === 'fixed' ? Math.ceil(topbar.getBoundingClientRect().height) : 0;
+  document.documentElement.style.setProperty('--topbar-height', `${height}px`);
 }
 
 // ━━━ STATE MANAGEMENT ━━━
@@ -4153,10 +4475,88 @@ function toQtyNumber(value) {
   return Number.isFinite(num) ? num : 0;
 }
 
+function toQtyInt(value) {
+  return Math.max(0, Math.floor(toQtyNumber(value)));
+}
+
+function normalizeQtyInputValue(input) {
+  if (!input) return 0;
+  const qty = toQtyInt(input.value);
+  input.value = qty > 0 ? String(qty) : '';
+  return qty;
+}
+
+function updateQtyStepperControl(input) {
+  if (!input) return;
+  const qty = normalizeQtyInputValue(input);
+  const stepper = input.closest('.qty-stepper');
+  if (!stepper) return;
+  stepper.classList.toggle('has-value', qty > 0);
+  const clearBtn = stepper.querySelector('.qty-stepper-btn.clear');
+  if (clearBtn) {
+    clearBtn.disabled = qty <= 0;
+  }
+}
+
+function setQtyFromStepper(input, nextQty) {
+  if (!input) return;
+  const qty = Math.max(0, Math.floor(Number(nextQty) || 0));
+  input.value = qty > 0 ? String(qty) : '';
+  onQtyChange(input);
+}
+
+function enhanceQtyInput(input) {
+  if (!input || input.dataset.qtyEnhanced === '1') return;
+  const parent = input.parentElement;
+  if (!parent) return;
+
+  input.dataset.qtyEnhanced = '1';
+  input.type = 'number';
+  input.step = '1';
+  input.inputMode = 'numeric';
+  input.pattern = '[0-9]*';
+  input.autocomplete = 'off';
+  input.placeholder = '0';
+
+  const stepper = document.createElement('div');
+  stepper.className = 'qty-stepper';
+
+  const clearBtn = document.createElement('button');
+  clearBtn.type = 'button';
+  clearBtn.className = 'qty-stepper-btn clear';
+  clearBtn.textContent = '🗑';
+  clearBtn.title = 'Очистить количество';
+  clearBtn.onclick = () => {
+    setQtyFromStepper(input, 0);
+  };
+
+  const incBtn = document.createElement('button');
+  incBtn.type = 'button';
+  incBtn.className = 'qty-stepper-btn inc';
+  incBtn.textContent = '+';
+  incBtn.title = 'Увеличить количество';
+  incBtn.onclick = () => {
+    const current = toQtyInt(input.value);
+    setQtyFromStepper(input, current + 1);
+  };
+
+  parent.replaceChild(stepper, input);
+  stepper.appendChild(clearBtn);
+  stepper.appendChild(input);
+  stepper.appendChild(incBtn);
+
+  updateQtyStepperControl(input);
+}
+
+function initQtySteppers(root = document) {
+  root.querySelectorAll('.qty-input').forEach(enhanceQtyInput);
+  root.querySelectorAll('.qty-input').forEach(updateQtyStepperControl);
+}
+
 function getProductType(card) {
   const id = Number(card?.dataset?.id || 0);
   const shapeMeta = ABRASIVE_SHAPE_MAP[id];
-  if (shapeMeta) return shapeMeta.label;
+  if (shapeMeta) return `${shapeMeta.label} — ${shapeMeta.desc}`;
   return String(card?.dataset?.formProfile || '').trim();
 }
 
@@ -4169,12 +4569,14 @@ function resolveLineSku(card, size = '') {
   const id = Number(card?.dataset?.id || 0);
   const baseSku = String(card?.dataset?.sku || card?.dataset?.id || '').trim();
   const normalizedSize = normalizeSizeOptionText(size || '');
-  const sizeMap = CHEMICAL_SIZE_ARTICLE_MAP[id];
-  if (sizeMap && normalizedSize && sizeMap[normalizedSize]) return sizeMap[normalizedSize];
+  const chemicalMap = CHEMICAL_SIZE_ARTICLE_MAP[id];
+  if (chemicalMap && normalizedSize && chemicalMap[normalizedSize]) return chemicalMap[normalizedSize];
+  const cableTieMap = CABLE_TIE_SIZE_ARTICLE_MAP[id];
+  if (cableTieMap && normalizedSize && cableTieMap[normalizedSize]) return cableTieMap[normalizedSize];
   return baseSku;
 }
 
-function createOrderLine(card, { qty = '', size = '', params = '', note = '' } = {}) {
+function createOrderLine(card, { qty = '', size = '', note = '' } = {}) {
   return {
     id: card.dataset.id,
     sku: resolveLineSku(card, size),
@@ -4185,7 +4587,6 @@ function createOrderLine(card, { qty = '', size = '', params = '', note = '' } =
     qty: String(qty || '').trim(),
     unit: card.querySelector('.unit-label')?.textContent || '',
     size: String(size || '').trim(),
-    params: String(params || '').trim(),
     note: String(note || '').trim()
   };
 }
@@ -4199,11 +4600,10 @@ function collectOrderLines() {
     const baseSizeSelected = card.querySelector(`[data-size="${id}"]`)?.value || '';
     const baseSizeCustom = card.querySelector(`[data-size-custom="${id}"]`)?.value || '';
     const baseSize = normalizeSelectedSize(baseSizeSelected, baseSizeCustom);
-    const baseParams = card.querySelector(`[data-params="${id}"]`)?.value || '';
     const baseNote = card.querySelector(`[data-note="${id}"]`)?.value || '';
 
     if (toQtyNumber(baseQty) > 0) {
-      lines.push(createOrderLine(card, { qty: baseQty, size: baseSize, params: baseParams, note: baseNote }));
+      lines.push(createOrderLine(card, { qty: baseQty, size: baseSize, note: baseNote }));
     }
 
     card.querySelectorAll('.size-variant-row').forEach(row => {
@@ -4212,9 +4612,7 @@ function collectOrderLines() {
       const sizeSelected = row.querySelector('.size-variant-select')?.value || '';
       const sizeCustom = row.querySelector('.size-variant-custom-input')?.value || '';
       const size = normalizeSelectedSize(sizeSelected, sizeCustom);
-      const params = row.querySelector('.params-variant-input')?.value || '';
-      const note = row.querySelector('.note-variant-input')?.value || '';
-      lines.push(createOrderLine(card, { qty, size, params, note }));
+      lines.push(createOrderLine(card, { qty, size, note: '' }));
     });
   });
 
@@ -4254,22 +4652,19 @@ function saveState() {
     const note = card.querySelector(`[data-note="${id}"]`)?.value || '';
     const size = card.querySelector(`[data-size="${id}"]`)?.value || '';
     const sizeCustom = card.querySelector(`[data-size-custom="${id}"]`)?.value || '';
-    const params = card.querySelector(`[data-params="${id}"]`)?.value || '';
     const variants = [];
 
     card.querySelectorAll('.size-variant-row').forEach(row => {
       const vSize = row.querySelector('.size-variant-select')?.value || '';
       const vSizeCustom = row.querySelector('.size-variant-custom-input')?.value || '';
       const vQty = row.querySelector('.qty-variant-input')?.value || '';
-      const vParams = row.querySelector('.params-variant-input')?.value || '';
-      const vNote = row.querySelector('.note-variant-input')?.value || '';
-      if (vSize || vSizeCustom || vQty || vParams || vNote) {
-        variants.push({ size: vSize, sizeCustom: vSizeCustom, qty: vQty, params: vParams, note: vNote });
+      if (vSize || vSizeCustom || vQty) {
+        variants.push({ size: vSize, sizeCustom: vSizeCustom, qty: vQty });
       }
     });
 
-    if (qty || note || size || sizeCustom || params || variants.length) {
-      state.items[id] = { qty, note, size, sizeCustom, params, variants };
+    if (qty || note || size || sizeCustom || variants.length) {
+      state.items[id] = { qty, note, size, sizeCustom, variants };
     }
   });
 
@@ -4301,10 +4696,11 @@ function loadState() {
       const noteEl = document.querySelector(`[data-note="${id}"]`);
       const sizeEl = document.querySelector(`[data-size="${id}"]`);
       const sizeCustomEl = document.querySelector(`[data-size-custom="${id}"]`);
-      const paramsEl = document.querySelector(`[data-params="${id}"]`);
       if (qtyEl && data.qty) qtyEl.value = data.qty;
-      if (noteEl && data.note) noteEl.value = data.note;
-      if (paramsEl && data.params) paramsEl.value = data.params;
+      if (noteEl) {
+        const mergedNote = [data.params || '', data.note || ''].filter(Boolean).join(' | ');
+        if (mergedNote) noteEl.value = mergedNote;
+      }
       if (sizeEl && (data.size || data.sizeCustom)) {
         assignSizeControlValue(sizeEl, sizeCustomEl, options, data.size || '', data.sizeCustom || '');
       }
@@ -4321,7 +4717,9 @@ function loadState() {
 
       const card = document.querySelector(`.product[data-id="${id}"]`);
       refreshCardState(card);
+      if (qtyEl) updateQtyStepperControl(qtyEl);
     });
+    document.querySelectorAll('.qty-input').forEach(updateQtyStepperControl);
     updateCounter();
     renderCartDrawer();
   } catch(e) { console.warn('Load state error:', e); }
@@ -4337,10 +4735,10 @@ function clearAll() {
     el.style.display = 'none';
     el.disabled = true;
   });
-  document.querySelectorAll('[data-params]').forEach(el => { el.value = ''; });
   document.querySelectorAll('.size-variant-row').forEach(el => el.remove());
   document.querySelectorAll('[data-save]').forEach(el => { el.value = ''; });
   document.querySelectorAll('.product').forEach(el => el.classList.remove('has-qty'));
+  document.querySelectorAll('.qty-input').forEach(updateQtyStepperControl);
   document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
   document.querySelector('[data-period="month"]').classList.add('active');
   updateCounter();
@@ -4350,6 +4748,8 @@ function clearAll() {
 
 // ━━━ UI FUNCTIONS ━━━
 function onQtyChange(el) {
+  normalizeQtyInputValue(el);
+  updateQtyStepperControl(el);
   refreshCardState(el.closest('.product'));
   saveState();
 }
@@ -4460,7 +4860,6 @@ function renderCartDrawer() {
     const meta = [
       `Кол-во: ${escapeHtml(line.qty)} ${escapeHtml(line.unit || '')}`.trim(),
       line.size ? `Размер: ${escapeHtml(line.size)}` : '',
-      line.params ? `Параметры: ${escapeHtml(line.params)}` : '',
       line.note ? `Примечание: ${escapeHtml(line.note)}` : ''
     ].filter(Boolean).join(' • ');
 
@@ -4481,20 +4880,63 @@ function renderCartDrawer() {
 }
 
 // ━━━ NAVIGATION ━━━
-const cats = {"abrasives": "\u0410\u0431\u0440\u0430\u0437\u0438\u0432\u043d\u044b\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b", "chemicals": "\u0413\u0435\u0440\u043c\u0435\u0442\u0438\u043a\u0438, \u043f\u0435\u043d\u044b, \u0445\u0438\u043c\u0438\u044f", "tapes": "\u0422\u0435\u0440\u043c\u043e\u0443\u0441\u0430\u0434\u043a\u0430, \u043b\u0435\u043d\u0442\u044b, \u043c\u0430\u0440\u043a\u0438\u0440\u043e\u0432\u043a\u0430", "ppe": "\u0421\u0418\u0417 \u2014 \u0441\u0440\u0435\u0434\u0441\u0442\u0432\u0430 \u0437\u0430\u0449\u0438\u0442\u044b", "fasteners": "\u041a\u0440\u0435\u043f\u0451\u0436 \u0438 \u0430\u043a\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044b", "electrical": "\u041a\u0430\u0431\u0435\u043b\u0438 \u0438 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043c\u043e\u043d\u0442\u0430\u0436", "rags": "\u0412\u0435\u0442\u043e\u0448\u044c \u0438 \u043f\u0440\u043e\u0442\u0438\u0440\u043e\u0447\u043d\u044b\u0435 \u043c\u0430\u0442\u0435\u0440\u0438\u0430\u043b\u044b", "geo": "\u0413\u0435\u043e\u0441\u0438\u043d\u0442\u0435\u0442\u0438\u043a\u0430 \u0438 \u0443\u043f\u0430\u043a\u043e\u0432\u043a\u0430"};
+const cats = {"abrasives": "\u0410\u0431\u0440\u0430\u0437\u0438\u0432\u043d\u044b\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b", "chemicals": "\u0413\u0435\u0440\u043c\u0435\u0442\u0438\u043a\u0438, \u043f\u0435\u043d\u044b, \u0445\u0438\u043c\u0438\u044f", "tapes": "\u0422\u0435\u0440\u043c\u043e\u0443\u0441\u0430\u0434\u043a\u0430, \u043b\u0435\u043d\u0442\u044b, \u043c\u0430\u0440\u043a\u0438\u0440\u043e\u0432\u043a\u0430", "ppe": "\u0421\u0418\u0417 \u2014 \u0441\u0440\u0435\u0434\u0441\u0442\u0432\u0430 \u0437\u0430\u0449\u0438\u0442\u044b", "fasteners": "\u041a\u0430\u0431\u0435\u043b\u044c\u043d\u044b\u0435 \u0441\u0442\u044f\u0436\u043a\u0438", "electrical": "\u041a\u0430\u0431\u0435\u043b\u0438 \u0438 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043c\u043e\u043d\u0442\u0430\u0436", "rags": "\u0412\u0435\u0442\u043e\u0448\u044c \u0438 \u043f\u0440\u043e\u0442\u0438\u0440\u043e\u0447\u043d\u044b\u0435 \u043c\u0430\u0442\u0435\u0440\u0438\u0430\u043b\u044b", "geo": "\u0413\u0435\u043e\u0441\u0438\u043d\u0442\u0435\u0442\u0438\u043a\u0430 \u0438 \u0443\u043f\u0430\u043a\u043e\u0432\u043a\u0430"};
 const catColors = {"abrasives": "#f59e0b", "chemicals": "#3b82f6", "tapes": "#8b5cf6", "ppe": "#10b981", "fasteners": "#6366f1", "electrical": "#ef4444", "rags": "#14b8a6", "geo": "#f97316"};
 
 const navCats = document.getElementById('navCats');
+const navScrollWrap = document.getElementById('navScrollWrap');
+
+function getTopbarOffset() {
+  const topbar = document.querySelector('.topbar');
+  if (!topbar) return 8;
+  const style = window.getComputedStyle(topbar);
+  if (style.position !== 'fixed') return 8;
+  return Math.ceil(topbar.getBoundingClientRect().height) + 8;
+}
+
+function scrollToCategory(catKey) {
+  const target = document.getElementById('cat-' + catKey);
+  if (!target) return;
+  const align = () => {
+    const top = window.scrollY + target.getBoundingClientRect().top - getTopbarOffset();
+    window.scrollTo({ top: Math.max(0, top), behavior: 'auto' });
+  };
+  align();
+  // Re-align once after potential late layout shifts.
+  setTimeout(align, 120);
+}
+
+function updateNavSwipeHint() {
+  if (!navCats || !navScrollWrap) return;
+  const canScroll = (navCats.scrollWidth - navCats.clientWidth) > 8;
+  if (!canScroll) {
+    navScrollWrap.classList.add('swipe-end');
+    return;
+  }
+  const atEnd = (navCats.scrollLeft + navCats.clientWidth) >= (navCats.scrollWidth - 4);
+  navScrollWrap.classList.toggle('swipe-end', atEnd);
+}
+
+function initNavSwipeHint() {
+  if (!navCats || !navScrollWrap) return;
+  navCats.scrollLeft = 0;
+  navCats.addEventListener('scroll', updateNavSwipeHint, { passive: true });
+  window.addEventListener('resize', updateNavSwipeHint);
+  requestAnimationFrame(updateNavSwipeHint);
+  setTimeout(updateNavSwipeHint, 180);
+}
+
 Object.entries(cats).forEach(([key, name]) => {
   const btn = document.createElement('div');
   btn.className = 'nav-cat';
   btn.textContent = name;
   btn.dataset.cat = key;
   btn.onclick = () => {
-    document.getElementById('cat-' + key).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    scrollToCategory(key);
   };
   navCats.appendChild(btn);
 });
+initNavSwipeHint();
 
 // Scroll spy
 const observer = new IntersectionObserver(entries => {
@@ -4546,7 +4988,7 @@ function exportCSV() {
   csv += `Период:,${period}\n`;
   csv += `Дата:,${new Date().toLocaleDateString('ru-RU')}\n`;
   csv += '\n';
-  csv += 'ID,Артикул,Категория,Наименование,Форма профиля,Описание,Количество,Единица,Размер,Параметры,Примечание\n';
+  csv += 'ID,Артикул,Категория,Наименование,Форма профиля,Описание,Количество,Единица,Размер,Примечание\n';
 
   const lines = collectOrderLines();
   if (lines.length === 0) { showToast('⚠️ Не указано ни одного количества'); return; }
@@ -4558,7 +5000,7 @@ function exportCSV() {
   }
   lines.forEach(line => {
     const desc = line.description.replace(/,/g, ';');
-    csv += `"${line.id}","${line.sku}","${line.category}","${line.name}","${line.type || ''}","${desc}","${line.qty}","${line.unit}","${line.size || ''}","${line.params || ''}","${line.note || ''}"\n`;
+    csv += `"${line.id}","${line.sku}","${line.category}","${line.name}","${line.type || ''}","${desc}","${line.qty}","${line.unit}","${line.size || ''}","${line.note || ''}"\n`;
   });
 
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -4604,11 +5046,9 @@ async function submitForm(triggerBtn = null) {
       catalogId: line.id,
       name: `${line.name} [${article}]`,
       displayName: line.name,
-      rawParams: line.params || '',
       rawNote: line.note || '',
       note: [
         `Артикул: ${article}`,
-        line.params ? `Параметры: ${line.params}` : '',
         line.note || '',
         spec ? `Спецификация: ${spec}` : ''
       ].filter(Boolean).join(' | ')
@@ -5289,7 +5729,455 @@ const CHEMICAL_SIZE_ARTICLE_MAP = {
   }
 };
 // CHEMICAL_SIZE_OPTIONS_END
-Object.assign(ABRASIVE_SIZE_OPTIONS, ABRASIVE_DELTA_SIZE_OPTIONS, CHEMICAL_SIZE_OPTIONS);
+// CABLE_TIE_SIZE_OPTIONS_START
+const CABLE_TIE_SIZE_OPTIONS = {
+  "73": [
+    "NL-3x80 | 2.5×80 мм | E=16 мм | 8 кг",
+    "NL-3x100 | 2.5×100 мм | E=22 мм | 8 кг",
+    "NL-3x120 | 2.5×120 мм | E=30 мм | 8 кг",
+    "NL-3x150 | 2.5×150 мм | E=35 мм | 8 кг",
+    "NL-3x200 | 2.5×200 мм | E=53 мм | 8 кг",
+    "NL-4x100 | 3.6×100 мм | E=22 мм | 18 кг",
+    "NL-4x120 | 3.6×120 мм | E=30 мм | 18 кг",
+    "NL-4x150 | 3.6×150 мм | E=35 мм | 18 кг",
+    "NL-4x200 | 3.6×200 мм | E=53 мм | 18 кг",
+    "NL-4x250 | 3.6×250 мм | E=65 мм | 18 кг",
+    "NL-4x300 | 3.6×300 мм | E=80 мм | 18 кг",
+    "NL-4x350 | 3.6×350 мм | E=93 мм | 18 кг",
+    "NL-4x370 | 3.6×370 мм | E=102 мм | 18 кг",
+    "NL-4x400 | 3.6×400 мм | E=108 мм | 18 кг",
+    "NL-4x450 | 3.6×450 мм | E=124 мм | 18 кг",
+    "NL-4x500 | 3.6×500 мм | E=138 мм | 18 кг",
+    "NL-5x150 | 4.6×150 мм | E=35 мм | 22 кг",
+    "NL-5x200 | 4.8×200 мм | E=53 мм | 25 кг",
+    "NL-5x250 | 4.8×250 мм | E=65 мм | 25 кг",
+    "NL-5x300 | 4.8×300 мм | E=80 мм | 25 кг",
+    "NL-5x350 | 4.8×350 мм | E=93 мм | 25 кг",
+    "NL-5x380 | 4.8×380 мм | E=102 мм | 25 кг",
+    "NL-5x400 | 4.8×400 мм | E=108 мм | 25 кг",
+    "NL-5x450 | 4.8×450 мм | E=124 мм | 25 кг",
+    "NL-5x500 | 4.8×500 мм | E=138 мм | 25 кг",
+    "NL-5x550 | 4.8×550 мм | E=154 мм | 25 кг",
+    "NL-5x650 | 4.8×650 мм | E=188 мм | 25 кг",
+    "NL-8x150 | 7.6×150 мм | E=36 мм | 55 кг",
+    "NL-8x200 | 7.6×200 мм | E=53 мм | 55 кг",
+    "NL-8x250 | 7.6×250 мм | E=65 мм | 55 кг",
+    "NL-8x300 | 7.6×300 мм | E=80 мм | 55 кг",
+    "NL-8x350 | 7.6×350 мм | E=93 мм | 55 кг",
+    "NL-8x380 | 7.6×380 мм | E=102 мм | 55 кг",
+    "NL-8x400 | 7.6×400 мм | E=108 мм | 55 кг",
+    "NL-8x450 | 7.6×450 мм | E=124 мм | 55 кг",
+    "NL-8x500 | 7.6×500 мм | E=138 мм | 55 кг",
+    "NL-8x550 | 7.6×550 мм | E=154 мм | 55 кг",
+    "NL-8x600 | 7.6×600 мм | E=172 мм | 55 кг",
+    "NL-8x650 | 7.6×650 мм | E=188 мм | 55 кг",
+    "NL-8x700 | 7.6×700 мм | E=205 мм | 55 кг",
+    "NL-8x750 | 7.6×750 мм | E=222 мм | 55 кг",
+    "NL-8x800 | 7.6×800 мм | E=234 мм | 55 кг",
+    "NL-10x400 | 9×400 мм | E=108 мм | 80 кг",
+    "NL-10x450 | 9×450 мм | E=124 мм | 80 кг",
+    "NL-10x500 | 9×500 мм | E=138 мм | 80 кг",
+    "NL-10x550 | 9×550 мм | E=154 мм | 80 кг",
+    "NL-10x600 | 9×600 мм | E=172 мм | 80 кг",
+    "NL-10x650 | 9×650 мм | E=188 мм | 80 кг",
+    "NL-10x700 | 9×720 мм | E=205 мм | 80 кг",
+    "NL-10x750 | 9×760 мм | E=222 мм | 80 кг",
+    "NL-10x800 | 9×800 мм | E=234 мм | 80 кг",
+    "NL-10x920 | 9×920 мм | E=275 мм | 80 кг",
+    "NL-10x1000 | 9×1000 мм | E=292 мм | 80 кг",
+    "NL-10x1200 | 9×1200 мм | E=340 мм | 80 кг",
+    "NL-10x1350 | 9×1350 мм | E=380 мм | 80 кг",
+    "NL-10x1500 | 9×1500 мм | E=430 мм | 80 кг",
+    "NL-12x300 | 12×300 мм | E=80 мм | 114 кг",
+    "NL-12x400 | 12×400 мм | E=108 мм | 114 кг",
+    "NL-12x500 | 12×500 мм | E=138 мм | 114 кг",
+    "NL-12x600 | 12×600 мм | E=172 мм | 114 кг",
+    "NL-12x650 | 12×650 мм | E=188 мм | 114 кг",
+    "NL-12x800 | 12×800 мм | E=234 мм | 114 кг",
+    "NL-12x900 | 12×900 мм | E=268 мм | 114 кг",
+    "NL-12x1000 | 12×1000 мм | E=292 мм | 114 кг"
+  ],
+  "74": [
+    "NL-3x80S | 1.9×80 мм | E=16 мм | 5 кг",
+    "NL-3x100S | 1.9×100 мм | E=22 мм | 5 кг",
+    "NL-3x120S | 1.9×120 мм | E=30 мм | 5 кг",
+    "NL-3x150S | 1.9×150 мм | E=35 мм | 5 кг",
+    "NL-3x200S | 1.9×200 мм | E=53 мм | 5 кг",
+    "NL-4x150S | 2.7×150 мм | E=35 мм | 10 кг",
+    "NL-4x200S | 2.7×200 мм | E=53 мм | 10 кг",
+    "NL-4x250S | 2.7×250 мм | E=65 мм | 10 кг",
+    "NL-4x300S | 2.7×300 мм | E=80 мм | 10 кг",
+    "NL-4x150M | 3×150 мм | E=35 мм | 14 кг",
+    "NL-4x200M | 3×200 мм | E=53 мм | 14 кг",
+    "NL-4x250M | 3×250 мм | E=65 мм | 14 кг",
+    "NL-4x300M | 3×300 мм | E=80 мм | 14 кг",
+    "NL-5x380M | 4.3×380 мм | E=102 мм | 20 кг",
+    "NL-8x200S | 5.2×200 мм | E=53 мм | 35 кг",
+    "NL-8x250S | 5.2×250 мм | E=65 мм | 35 кг",
+    "NL-8x300S | 5.2×300 мм | E=80 мм | 35 кг",
+    "NL-8x350S | 5.2×350 мм | E=93 мм | 35 кг",
+    "NL-8x400S | 5.2×400 мм | E=108 мм | 35 кг",
+    "NL-8x450S | 5.2×450 мм | E=124 мм | 35 кг",
+    "NL-8x500S | 5.2×500 мм | E=138 мм | 35 кг",
+    "NL-8x200M | 5.8×200 мм | E=53 мм | 40 кг",
+    "NL-8x250M | 5.8×250 мм | E=65 мм | 40 кг",
+    "NL-8x300M | 5.8×300 мм | E=80 мм | 40 кг",
+    "NL-8x350M | 5.8×350 мм | E=93 мм | 40 кг",
+    "NL-8x400M | 5.8×400 мм | E=108 мм | 40 кг",
+    "NL-8x450M | 5.8×450 мм | E=124 мм | 40 кг",
+    "NL-8x500M | 5.8×500 мм | E=138 мм | 40 кг",
+    "NL-10x650S | 7.2×650 мм | E=188 мм | 50 кг"
+  ],
+  "75": [
+    "NL-8x350IT | 8×350 мм | E=95 мм | 50 кг",
+    "NL-8x400IT | 8×400 мм | E=110 мм | 50 кг",
+    "NL-8x450IT | 8×450 мм | E=125 мм | 50 кг",
+    "NL-9x450IT | 9×450 мм | E=125 мм | 55 кг",
+    "NL-9x500IT | 9×500 мм | E=140 мм | 55 кг"
+  ],
+  "76": [
+    "NL-4x150RT | 3.6×150 мм | E=3–35 мм | 8 кг",
+    "NL-5x200RT | 4.8×200 мм | E=3–53 мм | 18 кг",
+    "NL-5x300RT | 4.8×300 мм | E=3–80 мм | 18 кг",
+    "NL-8x150RT | 7.2×150 мм | E=4–35 мм | 30 кг",
+    "NL-8x200RT | 7.2×200 мм | E=4–53 мм | 30 кг",
+    "NL-8x250RT | 7.2×250 мм | E=4–65 мм | 30 кг",
+    "NL-8x300RT | 7.2×300 мм | E=4–80 мм | 30 кг",
+    "NL-8x350RT | 7.2×350 мм | E=4–95 мм | 30 кг",
+    "NL-8x400RT | 7.2×400 мм | E=4–108 мм | 30 кг",
+    "NL-8x450RT | 7.2×450 мм | E=4–124 мм | 30 кг",
+    "NL-8x500RT | 7.2×500 мм | E=4–138 мм | 30 кг",
+    "NL-8x710RT | 7.2×710 мм | E=4–208 мм | 30 кг",
+    "NL-10x1000RT | 8.8×1000 мм | E=5–292 мм | 60 кг"
+  ],
+  "77": [
+    "NL-4x100HT | 3.6×100 мм | E=22 мм | 18 кг",
+    "NL-4x150HT | 3.6×150 мм | E=35 мм | 18 кг",
+    "NL-5x160HT | 4.8×160 мм | E=35 мм | 25 кг",
+    "NL-5x200HT | 4.8×220 мм | E=53 мм | 25 кг",
+    "NL-5x300HT | 4.8×300 мм | E=80 мм | 25 кг",
+    "NL-5x350HT | 4.8×350 мм | E=93 мм | 25 кг",
+    "NL-5x400HT | 4.8×400 мм | E=108 мм | 25 кг",
+    "NL-8x300HT | 7.6×300 мм | E=80 мм | 55 кг",
+    "NL-8x350HT | 7.6×350 мм | E=93 мм | 55 кг",
+    "NL-8x400HT | 7.6×380 мм | E=102 мм | 55 кг"
+  ],
+  "78": [
+    "NL-3x100PT | 2.5×100 мм | E=22 мм | 8 кг",
+    "NL-4x120PT | 3.6×120 мм | E=25 мм | 18 кг",
+    "NL-4x150PT | 3.6×150 мм | E=35 мм | 18 кг",
+    "NL-5x120PT | 4.8×120 мм | E=25 мм | 22 кг",
+    "NL-5x160PT | 4.8×160 мм | E=38 мм | 22 кг",
+    "NL-5x190PT | 4.8×190 мм | E=46 мм | 22 кг"
+  ],
+  "79": [
+    "NL-3x100ST | 3×100 мм | E=22 мм | 9 кг",
+    "NL-4x150ST | 4×150 мм | E=35 мм | 18 кг",
+    "NL-4x200ST | 4×200 мм | E=53 мм | 18 кг",
+    "NL-5x200ST | 4.8×200 мм | E=53 мм | 22 кг",
+    "NL-5x250ST | 4.8×250 мм | E=65 мм | 22 кг",
+    "NL-5x300ST | 4.8×300 мм | E=80 мм | 22 кг",
+    "NL-5x380ST | 4.8×380 мм | E=102 мм | 22 кг",
+    "NL-7x300ST | 7×300 мм | E=80 мм | 40 кг",
+    "NL-8x175ST | 7.6×175 мм | E=45 мм | 45 кг",
+    "NL-8x200ST | 7.6×200 мм | E=53 мм | 45 кг",
+    "NL-8x240ST | 7.6×240 мм | E=62 мм | 45 кг",
+    "NL-8x300ST | 7.6×300 мм | E=80 мм | 45 кг",
+    "NL-8x350ST | 7.6×350 мм | E=93 мм | 45 кг",
+    "NL-8x400ST | 7.6×400 мм | E=108 мм | 45 кг",
+    "NL-10x300ST | 9.8×300 мм | E=80 мм | 55 кг",
+    "NL-10x350ST | 9.8×350 мм | E=93 мм | 55 кг",
+    "NL-10x400ST | 9.8×400 мм | E=108 мм | 55 кг",
+    "NL-10x450ST | 9.8×450 мм | E=124 мм | 55 кг",
+    "NL-10x500ST | 9.8×500 мм | E=138 мм | 55 кг",
+    "NL-10x550ST | 9.8×550 мм | E=154 мм | 55 кг",
+    "NL-10x600ST | 9.8×600 мм | E=172 мм | 55 кг"
+  ],
+  "80": [
+    "NL-2.5x100MTA | 2.5×100 мм | E=22 мм | 8 кг",
+    "NL-2.5x100MTB | 2.5×100 мм | E=22 мм | 8 кг",
+    "NL-3x150MTB | 3×150 мм | E=35 мм | 14 кг",
+    "NL-3x200MTB | 3×200 мм | E=53 мм | 14 кг",
+    "NL-4x170MTC | 5.5×170 мм | E=42 мм | 25 кг"
+  ],
+  "300": [
+    "NL-10x800 | 9×800 мм | E=234 мм | 80 кг",
+    "NL-10x920 | 9×920 мм | E=275 мм | 80 кг",
+    "NL-10x1000 | 9×1000 мм | E=292 мм | 80 кг",
+    "NL-10x1200 | 9×1200 мм | E=340 мм | 80 кг",
+    "NL-10x1350 | 9×1350 мм | E=380 мм | 80 кг",
+    "NL-10x1500 | 9×1500 мм | E=430 мм | 80 кг",
+    "NL-12x800 | 12×800 мм | E=234 мм | 114 кг",
+    "NL-12x900 | 12×900 мм | E=268 мм | 114 кг",
+    "NL-12x1000 | 12×1000 мм | E=292 мм | 114 кг"
+  ],
+  "301": [
+    "NL-5x200DH | 4.8×200 мм | E=50 мм | 22 кг",
+    "NL-5x250DH | 4.8×250 мм | E=65 мм | 22 кг",
+    "NL-5x300DH | 4.8×300 мм | E=80 мм | 22 кг",
+    "NL-5x370DH | 4.8×370 мм | E=102 мм | 22 кг"
+  ],
+  "302": [
+    "NL-6x115DL | 6×115 мм | E=36 мм | 35 кг",
+    "NL-6x180DL | 6×180 мм | E=53 мм | 35 кг",
+    "NL-9x180DL | 9×180 мм | E=65 мм | 50 кг",
+    "NL-9x260DL | 9×260 мм | E=80 мм | 50 кг",
+    "NL-9x300DL | 9×300 мм | E=93 мм | 50 кг",
+    "NL-9x350DL | 9×350 мм | E=102 мм | 50 кг",
+    "NL-9x510DL | 9×510 мм | E=140 мм | 50 кг",
+    "NL-9x760DL | 9×760 мм | E=220 мм | 50 кг"
+  ],
+  "303": [
+    "NL-12x500HF | 12×500 мм | E=50 мм | 80 кг",
+    "NL-12x700HF | 12×700 мм | E=80 мм | 114 кг",
+    "NL-13x900HF | 13×900 мм | E=100 мм | 114 кг"
+  ],
+  "304": [
+    "NL-9x900CT | 9×900 мм | E=251 мм | 80 кг"
+  ],
+  "305": [
+    "NLDT-5x200 | 4.5×200 мм | E=53 мм | 34 кг",
+    "NLDT-5x280 | 4.5×280 мм | E=75 мм | 34 кг",
+    "NLDT-5x360 | 4.5×360 мм | E=98 мм | 34 кг"
+  ],
+  "306": [
+    "NL-12x100HL | 12×100 мм | E=22 мм",
+    "NL-12x150HL | 12×150 мм | E=35 мм",
+    "NL-12x200HL | 12×200 мм | E=50 мм",
+    "NL-12x250HL | 12×250 мм | E=65 мм",
+    "NL-12x300HL | 12×300 мм | E=80 мм",
+    "NL-16x200HL | 16×200 мм | E=50 мм",
+    "NL-16x250HL | 16×250 мм | E=65 мм",
+    "NL-16x300HL | 16×300 мм | E=80 мм",
+    "NL-16x400HL | 16×400 мм | E=110 мм",
+    "NL-16x500HL | 16×500 мм | E=140 мм"
+  ]
+};
+const CABLE_TIE_SIZE_ARTICLE_MAP = {
+  "73": {
+    "NL-3x80 | 2.5×80 мм | E=16 мм | 8 кг": "NL-3x80",
+    "NL-3x100 | 2.5×100 мм | E=22 мм | 8 кг": "NL-3x100",
+    "NL-3x120 | 2.5×120 мм | E=30 мм | 8 кг": "NL-3x120",
+    "NL-3x150 | 2.5×150 мм | E=35 мм | 8 кг": "NL-3x150",
+    "NL-3x200 | 2.5×200 мм | E=53 мм | 8 кг": "NL-3x200",
+    "NL-4x100 | 3.6×100 мм | E=22 мм | 18 кг": "NL-4x100",
+    "NL-4x120 | 3.6×120 мм | E=30 мм | 18 кг": "NL-4x120",
+    "NL-4x150 | 3.6×150 мм | E=35 мм | 18 кг": "NL-4x150",
+    "NL-4x200 | 3.6×200 мм | E=53 мм | 18 кг": "NL-4x200",
+    "NL-4x250 | 3.6×250 мм | E=65 мм | 18 кг": "NL-4x250",
+    "NL-4x300 | 3.6×300 мм | E=80 мм | 18 кг": "NL-4x300",
+    "NL-4x350 | 3.6×350 мм | E=93 мм | 18 кг": "NL-4x350",
+    "NL-4x370 | 3.6×370 мм | E=102 мм | 18 кг": "NL-4x370",
+    "NL-4x400 | 3.6×400 мм | E=108 мм | 18 кг": "NL-4x400",
+    "NL-4x450 | 3.6×450 мм | E=124 мм | 18 кг": "NL-4x450",
+    "NL-4x500 | 3.6×500 мм | E=138 мм | 18 кг": "NL-4x500",
+    "NL-5x150 | 4.6×150 мм | E=35 мм | 22 кг": "NL-5x150",
+    "NL-5x200 | 4.8×200 мм | E=53 мм | 25 кг": "NL-5x200",
+    "NL-5x250 | 4.8×250 мм | E=65 мм | 25 кг": "NL-5x250",
+    "NL-5x300 | 4.8×300 мм | E=80 мм | 25 кг": "NL-5x300",
+    "NL-5x350 | 4.8×350 мм | E=93 мм | 25 кг": "NL-5x350",
+    "NL-5x380 | 4.8×380 мм | E=102 мм | 25 кг": "NL-5x380",
+    "NL-5x400 | 4.8×400 мм | E=108 мм | 25 кг": "NL-5x400",
+    "NL-5x450 | 4.8×450 мм | E=124 мм | 25 кг": "NL-5x450",
+    "NL-5x500 | 4.8×500 мм | E=138 мм | 25 кг": "NL-5x500",
+    "NL-5x550 | 4.8×550 мм | E=154 мм | 25 кг": "NL-5x550",
+    "NL-5x650 | 4.8×650 мм | E=188 мм | 25 кг": "NL-5x650",
+    "NL-8x150 | 7.6×150 мм | E=36 мм | 55 кг": "NL-8x150",
+    "NL-8x200 | 7.6×200 мм | E=53 мм | 55 кг": "NL-8x200",
+    "NL-8x250 | 7.6×250 мм | E=65 мм | 55 кг": "NL-8x250",
+    "NL-8x300 | 7.6×300 мм | E=80 мм | 55 кг": "NL-8x300",
+    "NL-8x350 | 7.6×350 мм | E=93 мм | 55 кг": "NL-8x350",
+    "NL-8x380 | 7.6×380 мм | E=102 мм | 55 кг": "NL-8x380",
+    "NL-8x400 | 7.6×400 мм | E=108 мм | 55 кг": "NL-8x400",
+    "NL-8x450 | 7.6×450 мм | E=124 мм | 55 кг": "NL-8x450",
+    "NL-8x500 | 7.6×500 мм | E=138 мм | 55 кг": "NL-8x500",
+    "NL-8x550 | 7.6×550 мм | E=154 мм | 55 кг": "NL-8x550",
+    "NL-8x600 | 7.6×600 мм | E=172 мм | 55 кг": "NL-8x600",
+    "NL-8x650 | 7.6×650 мм | E=188 мм | 55 кг": "NL-8x650",
+    "NL-8x700 | 7.6×700 мм | E=205 мм | 55 кг": "NL-8x700",
+    "NL-8x750 | 7.6×750 мм | E=222 мм | 55 кг": "NL-8x750",
+    "NL-8x800 | 7.6×800 мм | E=234 мм | 55 кг": "NL-8x800",
+    "NL-10x400 | 9×400 мм | E=108 мм | 80 кг": "NL-10x400",
+    "NL-10x450 | 9×450 мм | E=124 мм | 80 кг": "NL-10x450",
+    "NL-10x500 | 9×500 мм | E=138 мм | 80 кг": "NL-10x500",
+    "NL-10x550 | 9×550 мм | E=154 мм | 80 кг": "NL-10x550",
+    "NL-10x600 | 9×600 мм | E=172 мм | 80 кг": "NL-10x600",
+    "NL-10x650 | 9×650 мм | E=188 мм | 80 кг": "NL-10x650",
+    "NL-10x700 | 9×720 мм | E=205 мм | 80 кг": "NL-10x700",
+    "NL-10x750 | 9×760 мм | E=222 мм | 80 кг": "NL-10x750",
+    "NL-10x800 | 9×800 мм | E=234 мм | 80 кг": "NL-10x800",
+    "NL-10x920 | 9×920 мм | E=275 мм | 80 кг": "NL-10x920",
+    "NL-10x1000 | 9×1000 мм | E=292 мм | 80 кг": "NL-10x1000",
+    "NL-10x1200 | 9×1200 мм | E=340 мм | 80 кг": "NL-10x1200",
+    "NL-10x1350 | 9×1350 мм | E=380 мм | 80 кг": "NL-10x1350",
+    "NL-10x1500 | 9×1500 мм | E=430 мм | 80 кг": "NL-10x1500",
+    "NL-12x300 | 12×300 мм | E=80 мм | 114 кг": "NL-12x300",
+    "NL-12x400 | 12×400 мм | E=108 мм | 114 кг": "NL-12x400",
+    "NL-12x500 | 12×500 мм | E=138 мм | 114 кг": "NL-12x500",
+    "NL-12x600 | 12×600 мм | E=172 мм | 114 кг": "NL-12x600",
+    "NL-12x650 | 12×650 мм | E=188 мм | 114 кг": "NL-12x650",
+    "NL-12x800 | 12×800 мм | E=234 мм | 114 кг": "NL-12x800",
+    "NL-12x900 | 12×900 мм | E=268 мм | 114 кг": "NL-12x900",
+    "NL-12x1000 | 12×1000 мм | E=292 мм | 114 кг": "NL-12x1000"
+  },
+  "74": {
+    "NL-3x80S | 1.9×80 мм | E=16 мм | 5 кг": "NL-3x80S",
+    "NL-3x100S | 1.9×100 мм | E=22 мм | 5 кг": "NL-3x100S",
+    "NL-3x120S | 1.9×120 мм | E=30 мм | 5 кг": "NL-3x120S",
+    "NL-3x150S | 1.9×150 мм | E=35 мм | 5 кг": "NL-3x150S",
+    "NL-3x200S | 1.9×200 мм | E=53 мм | 5 кг": "NL-3x200S",
+    "NL-4x150S | 2.7×150 мм | E=35 мм | 10 кг": "NL-4x150S",
+    "NL-4x200S | 2.7×200 мм | E=53 мм | 10 кг": "NL-4x200S",
+    "NL-4x250S | 2.7×250 мм | E=65 мм | 10 кг": "NL-4x250S",
+    "NL-4x300S | 2.7×300 мм | E=80 мм | 10 кг": "NL-4x300S",
+    "NL-4x150M | 3×150 мм | E=35 мм | 14 кг": "NL-4x150M",
+    "NL-4x200M | 3×200 мм | E=53 мм | 14 кг": "NL-4x200M",
+    "NL-4x250M | 3×250 мм | E=65 мм | 14 кг": "NL-4x250M",
+    "NL-4x300M | 3×300 мм | E=80 мм | 14 кг": "NL-4x300M",
+    "NL-5x380M | 4.3×380 мм | E=102 мм | 20 кг": "NL-5x380M",
+    "NL-8x200S | 5.2×200 мм | E=53 мм | 35 кг": "NL-8x200S",
+    "NL-8x250S | 5.2×250 мм | E=65 мм | 35 кг": "NL-8x250S",
+    "NL-8x300S | 5.2×300 мм | E=80 мм | 35 кг": "NL-8x300S",
+    "NL-8x350S | 5.2×350 мм | E=93 мм | 35 кг": "NL-8x350S",
+    "NL-8x400S | 5.2×400 мм | E=108 мм | 35 кг": "NL-8x400S",
+    "NL-8x450S | 5.2×450 мм | E=124 мм | 35 кг": "NL-8x450S",
+    "NL-8x500S | 5.2×500 мм | E=138 мм | 35 кг": "NL-8x500S",
+    "NL-8x200M | 5.8×200 мм | E=53 мм | 40 кг": "NL-8x200M",
+    "NL-8x250M | 5.8×250 мм | E=65 мм | 40 кг": "NL-8x250M",
+    "NL-8x300M | 5.8×300 мм | E=80 мм | 40 кг": "NL-8x300M",
+    "NL-8x350M | 5.8×350 мм | E=93 мм | 40 кг": "NL-8x350M",
+    "NL-8x400M | 5.8×400 мм | E=108 мм | 40 кг": "NL-8x400M",
+    "NL-8x450M | 5.8×450 мм | E=124 мм | 40 кг": "NL-8x450M",
+    "NL-8x500M | 5.8×500 мм | E=138 мм | 40 кг": "NL-8x500M",
+    "NL-10x650S | 7.2×650 мм | E=188 мм | 50 кг": "NL-10x650S"
+  },
+  "75": {
+    "NL-8x350IT | 8×350 мм | E=95 мм | 50 кг": "NL-8x350IT",
+    "NL-8x400IT | 8×400 мм | E=110 мм | 50 кг": "NL-8x400IT",
+    "NL-8x450IT | 8×450 мм | E=125 мм | 50 кг": "NL-8x450IT",
+    "NL-9x450IT | 9×450 мм | E=125 мм | 55 кг": "NL-9x450IT",
+    "NL-9x500IT | 9×500 мм | E=140 мм | 55 кг": "NL-9x500IT"
+  },
+  "76": {
+    "NL-4x150RT | 3.6×150 мм | E=3–35 мм | 8 кг": "NL-4x150RT",
+    "NL-5x200RT | 4.8×200 мм | E=3–53 мм | 18 кг": "NL-5x200RT",
+    "NL-5x300RT | 4.8×300 мм | E=3–80 мм | 18 кг": "NL-5x300RT",
+    "NL-8x150RT | 7.2×150 мм | E=4–35 мм | 30 кг": "NL-8x150RT",
+    "NL-8x200RT | 7.2×200 мм | E=4–53 мм | 30 кг": "NL-8x200RT",
+    "NL-8x250RT | 7.2×250 мм | E=4–65 мм | 30 кг": "NL-8x250RT",
+    "NL-8x300RT | 7.2×300 мм | E=4–80 мм | 30 кг": "NL-8x300RT",
+    "NL-8x350RT | 7.2×350 мм | E=4–95 мм | 30 кг": "NL-8x350RT",
+    "NL-8x400RT | 7.2×400 мм | E=4–108 мм | 30 кг": "NL-8x400RT",
+    "NL-8x450RT | 7.2×450 мм | E=4–124 мм | 30 кг": "NL-8x450RT",
+    "NL-8x500RT | 7.2×500 мм | E=4–138 мм | 30 кг": "NL-8x500RT",
+    "NL-8x710RT | 7.2×710 мм | E=4–208 мм | 30 кг": "NL-8x710RT",
+    "NL-10x1000RT | 8.8×1000 мм | E=5–292 мм | 60 кг": "NL-10x1000RT"
+  },
+  "77": {
+    "NL-4x100HT | 3.6×100 мм | E=22 мм | 18 кг": "NL-4x100HT",
+    "NL-4x150HT | 3.6×150 мм | E=35 мм | 18 кг": "NL-4x150HT",
+    "NL-5x160HT | 4.8×160 мм | E=35 мм | 25 кг": "NL-5x160HT",
+    "NL-5x200HT | 4.8×220 мм | E=53 мм | 25 кг": "NL-5x200HT",
+    "NL-5x300HT | 4.8×300 мм | E=80 мм | 25 кг": "NL-5x300HT",
+    "NL-5x350HT | 4.8×350 мм | E=93 мм | 25 кг": "NL-5x350HT",
+    "NL-5x400HT | 4.8×400 мм | E=108 мм | 25 кг": "NL-5x400HT",
+    "NL-8x300HT | 7.6×300 мм | E=80 мм | 55 кг": "NL-8x300HT",
+    "NL-8x350HT | 7.6×350 мм | E=93 мм | 55 кг": "NL-8x350HT",
+    "NL-8x400HT | 7.6×380 мм | E=102 мм | 55 кг": "NL-8x400HT"
+  },
+  "78": {
+    "NL-3x100PT | 2.5×100 мм | E=22 мм | 8 кг": "NL-3x100PT",
+    "NL-4x120PT | 3.6×120 мм | E=25 мм | 18 кг": "NL-4x120PT",
+    "NL-4x150PT | 3.6×150 мм | E=35 мм | 18 кг": "NL-4x150PT",
+    "NL-5x120PT | 4.8×120 мм | E=25 мм | 22 кг": "NL-5x120PT",
+    "NL-5x160PT | 4.8×160 мм | E=38 мм | 22 кг": "NL-5x160PT",
+    "NL-5x190PT | 4.8×190 мм | E=46 мм | 22 кг": "NL-5x190PT"
+  },
+  "79": {
+    "NL-3x100ST | 3×100 мм | E=22 мм | 9 кг": "NL-3x100ST",
+    "NL-4x150ST | 4×150 мм | E=35 мм | 18 кг": "NL-4x150ST",
+    "NL-4x200ST | 4×200 мм | E=53 мм | 18 кг": "NL-4x200ST",
+    "NL-5x200ST | 4.8×200 мм | E=53 мм | 22 кг": "NL-5x200ST",
+    "NL-5x250ST | 4.8×250 мм | E=65 мм | 22 кг": "NL-5x250ST",
+    "NL-5x300ST | 4.8×300 мм | E=80 мм | 22 кг": "NL-5x300ST",
+    "NL-5x380ST | 4.8×380 мм | E=102 мм | 22 кг": "NL-5x380ST",
+    "NL-7x300ST | 7×300 мм | E=80 мм | 40 кг": "NL-7x300ST",
+    "NL-8x175ST | 7.6×175 мм | E=45 мм | 45 кг": "NL-8x175ST",
+    "NL-8x200ST | 7.6×200 мм | E=53 мм | 45 кг": "NL-8x200ST",
+    "NL-8x240ST | 7.6×240 мм | E=62 мм | 45 кг": "NL-8x240ST",
+    "NL-8x300ST | 7.6×300 мм | E=80 мм | 45 кг": "NL-8x300ST",
+    "NL-8x350ST | 7.6×350 мм | E=93 мм | 45 кг": "NL-8x350ST",
+    "NL-8x400ST | 7.6×400 мм | E=108 мм | 45 кг": "NL-8x400ST",
+    "NL-10x300ST | 9.8×300 мм | E=80 мм | 55 кг": "NL-10x300ST",
+    "NL-10x350ST | 9.8×350 мм | E=93 мм | 55 кг": "NL-10x350ST",
+    "NL-10x400ST | 9.8×400 мм | E=108 мм | 55 кг": "NL-10x400ST",
+    "NL-10x450ST | 9.8×450 мм | E=124 мм | 55 кг": "NL-10x450ST",
+    "NL-10x500ST | 9.8×500 мм | E=138 мм | 55 кг": "NL-10x500ST",
+    "NL-10x550ST | 9.8×550 мм | E=154 мм | 55 кг": "NL-10x550ST",
+    "NL-10x600ST | 9.8×600 мм | E=172 мм | 55 кг": "NL-10x600ST"
+  },
+  "80": {
+    "NL-2.5x100MTA | 2.5×100 мм | E=22 мм | 8 кг": "NL-2.5x100MTA",
+    "NL-2.5x100MTB | 2.5×100 мм | E=22 мм | 8 кг": "NL-2.5x100MTB",
+    "NL-3x150MTB | 3×150 мм | E=35 мм | 14 кг": "NL-3x150MTB",
+    "NL-3x200MTB | 3×200 мм | E=53 мм | 14 кг": "NL-3x200MTB",
+    "NL-4x170MTC | 5.5×170 мм | E=42 мм | 25 кг": "NL-4x170MTC"
+  },
+  "300": {
+    "NL-10x800 | 9×800 мм | E=234 мм | 80 кг": "NL-10x800",
+    "NL-10x920 | 9×920 мм | E=275 мм | 80 кг": "NL-10x920",
+    "NL-10x1000 | 9×1000 мм | E=292 мм | 80 кг": "NL-10x1000",
+    "NL-10x1200 | 9×1200 мм | E=340 мм | 80 кг": "NL-10x1200",
+    "NL-10x1350 | 9×1350 мм | E=380 мм | 80 кг": "NL-10x1350",
+    "NL-10x1500 | 9×1500 мм | E=430 мм | 80 кг": "NL-10x1500",
+    "NL-12x800 | 12×800 мм | E=234 мм | 114 кг": "NL-12x800",
+    "NL-12x900 | 12×900 мм | E=268 мм | 114 кг": "NL-12x900",
+    "NL-12x1000 | 12×1000 мм | E=292 мм | 114 кг": "NL-12x1000"
+  },
+  "301": {
+    "NL-5x200DH | 4.8×200 мм | E=50 мм | 22 кг": "NL-5x200DH",
+    "NL-5x250DH | 4.8×250 мм | E=65 мм | 22 кг": "NL-5x250DH",
+    "NL-5x300DH | 4.8×300 мм | E=80 мм | 22 кг": "NL-5x300DH",
+    "NL-5x370DH | 4.8×370 мм | E=102 мм | 22 кг": "NL-5x370DH"
+  },
+  "302": {
+    "NL-6x115DL | 6×115 мм | E=36 мм | 35 кг": "NL-6x115DL",
+    "NL-6x180DL | 6×180 мм | E=53 мм | 35 кг": "NL-6x180DL",
+    "NL-9x180DL | 9×180 мм | E=65 мм | 50 кг": "NL-9x180DL",
+    "NL-9x260DL | 9×260 мм | E=80 мм | 50 кг": "NL-9x260DL",
+    "NL-9x300DL | 9×300 мм | E=93 мм | 50 кг": "NL-9x300DL",
+    "NL-9x350DL | 9×350 мм | E=102 мм | 50 кг": "NL-9x350DL",
+    "NL-9x510DL | 9×510 мм | E=140 мм | 50 кг": "NL-9x510DL",
+    "NL-9x760DL | 9×760 мм | E=220 мм | 50 кг": "NL-9x760DL"
+  },
+  "303": {
+    "NL-12x500HF | 12×500 мм | E=50 мм | 80 кг": "NL-12x500HF",
+    "NL-12x700HF | 12×700 мм | E=80 мм | 114 кг": "NL-12x700HF",
+    "NL-13x900HF | 13×900 мм | E=100 мм | 114 кг": "NL-13x900HF"
+  },
+  "304": {
+    "NL-9x900CT | 9×900 мм | E=251 мм | 80 кг": "NL-9x900CT"
+  },
+  "305": {
+    "NLDT-5x200 | 4.5×200 мм | E=53 мм | 34 кг": "NLDT-5x200",
+    "NLDT-5x280 | 4.5×280 мм | E=75 мм | 34 кг": "NLDT-5x280",
+    "NLDT-5x360 | 4.5×360 мм | E=98 мм | 34 кг": "NLDT-5x360"
+  },
+  "306": {
+    "NL-12x100HL | 12×100 мм | E=22 мм": "NL-12x100HL",
+    "NL-12x150HL | 12×150 мм | E=35 мм": "NL-12x150HL",
+    "NL-12x200HL | 12×200 мм | E=50 мм": "NL-12x200HL",
+    "NL-12x250HL | 12×250 мм | E=65 мм": "NL-12x250HL",
+    "NL-12x300HL | 12×300 мм | E=80 мм": "NL-12x300HL",
+    "NL-16x200HL | 16×200 мм | E=50 мм": "NL-16x200HL",
+    "NL-16x250HL | 16×250 мм | E=65 мм": "NL-16x250HL",
+    "NL-16x300HL | 16×300 мм | E=80 мм": "NL-16x300HL",
+    "NL-16x400HL | 16×400 мм | E=110 мм": "NL-16x400HL",
+    "NL-16x500HL | 16×500 мм | E=140 мм": "NL-16x500HL"
+  }
+};
+// CABLE_TIE_SIZE_OPTIONS_END
+Object.assign(ABRASIVE_SIZE_OPTIONS, ABRASIVE_DELTA_SIZE_OPTIONS, CHEMICAL_SIZE_OPTIONS, CABLE_TIE_SIZE_OPTIONS);
 
 function normalizeSizeOptionText(value) {
   const raw = String(value || '').trim();
@@ -5393,22 +6281,6 @@ function createSizeVariantRow(id, options, values = {}) {
   qtyInput.value = values.qty || '';
   qtyInput.oninput = (e) => onQtyChange(e.target);
 
-  const paramsInput = document.createElement('input');
-  paramsInput.type = 'text';
-  paramsInput.className = 'note-input params-variant-input';
-  paramsInput.dataset.paramsExtra = String(id);
-  paramsInput.placeholder = 'другие параметры…';
-  paramsInput.value = values.params || '';
-  paramsInput.oninput = saveState;
-
-  const noteInput = document.createElement('input');
-  noteInput.type = 'text';
-  noteInput.className = 'note-input note-variant-input';
-  noteInput.dataset.noteExtra = String(id);
-  noteInput.placeholder = 'комментарий…';
-  noteInput.value = values.note || '';
-  noteInput.oninput = saveState;
-
   const removeBtn = document.createElement('button');
   removeBtn.type = 'button';
   removeBtn.className = 'remove-variant-btn';
@@ -5423,9 +6295,9 @@ function createSizeVariantRow(id, options, values = {}) {
 
   row.appendChild(sizeField);
   row.appendChild(qtyInput);
-  row.appendChild(paramsInput);
-  row.appendChild(noteInput);
   row.appendChild(removeBtn);
+  enhanceQtyInput(qtyInput);
+  updateQtyStepperControl(qtyInput);
   return row;
 }
 
@@ -5463,27 +6335,11 @@ function initAbrasiveSizeSelectors() {
     sizeWrap.appendChild(select);
     sizeWrap.appendChild(customInput);
 
-    const paramsWrap = document.createElement('div');
-    paramsWrap.className = 'params-wrap';
-    const paramsLabel = document.createElement('label');
-    paramsLabel.textContent = 'Параметры';
-    const paramsInput = document.createElement('input');
-    paramsInput.type = 'text';
-    paramsInput.className = 'note-input params-input';
-    paramsInput.dataset.params = String(id);
-    const catKey = card.closest('.cat-section')?.dataset?.cat || '';
-    paramsInput.placeholder = catKey === 'abrasives' ? 'зерно, твердость, отверстия…' : 'доп. параметры…';
-    paramsInput.oninput = saveState;
-    paramsWrap.appendChild(paramsLabel);
-    paramsWrap.appendChild(paramsInput);
-
     const noteWrap = row.querySelector('div[style*="flex:1"]');
     if (noteWrap) {
       row.insertBefore(sizeWrap, noteWrap);
-      row.insertBefore(paramsWrap, noteWrap);
     } else {
       row.appendChild(sizeWrap);
-      row.appendChild(paramsWrap);
     }
 
     const noteInput = card.querySelector(`.note-input[data-note="${id}"]`);
@@ -5522,10 +6378,10 @@ function initAbrasiveSizeSelectors() {
 
 // ━━━ ABRASIVE SHAPE BADGES ━━━
 const ABRASIVE_SHAPE_MAP = {
-  1:{code:'41',label:'T41'}, 2:{code:'42',label:'T42'}, 3:{code:'41',label:'T41'}, 4:{code:'41',label:'T41'},
-  5:{code:'27',label:'T27'}, 6:{code:'41',label:'T41'}, 7:{code:'41',label:'T41'}, 8:{code:'42',label:'T42'},
-  9:{code:'27',label:'T27'}, 10:{code:'41',label:'T41'}, 11:{code:'42',label:'T42'}, 12:{code:'41',label:'T41'},
-  13:{code:'27',label:'T27'}, 14:{code:'27',label:'T27'}, 15:{code:'27',label:'T27'}, 16:{code:'29',label:'T29'}
+  1:{code:'41',label:'T41',desc:'плоский профиль'}, 2:{code:'42',label:'T42',desc:'утоплённый профиль'}, 3:{code:'41',label:'T41',desc:'плоский профиль'}, 4:{code:'41',label:'T41',desc:'плоский профиль'},
+  5:{code:'27',label:'T27',desc:'зачистной профиль'}, 6:{code:'41',label:'T41',desc:'плоский профиль'}, 7:{code:'41',label:'T41',desc:'плоский профиль'}, 8:{code:'42',label:'T42',desc:'утоплённый профиль'},
+  9:{code:'27',label:'T27',desc:'зачистной профиль'}, 10:{code:'41',label:'T41',desc:'плоский профиль'}, 11:{code:'42',label:'T42',desc:'утоплённый профиль'}, 12:{code:'41',label:'T41',desc:'плоский профиль'},
+  13:{code:'27',label:'T27',desc:'зачистной профиль'}, 14:{code:'27',label:'T27',desc:'зачистной профиль'}, 15:{code:'27',label:'T27',desc:'зачистной профиль'}, 16:{code:'29',label:'T29',desc:'конический профиль'}
 };
 
 const SHAPE_ICON_SRC = {
@@ -5592,8 +6448,16 @@ function renderAbrasiveShapeBadges() {
     const meta = ABRASIVE_SHAPE_MAP[id];
     if (!meta) return;
     const tags = ensureTopTags(card);
-    if (!tags || tags.querySelector('.shape-badge')) return;
-    tags.appendChild(createShapeBadge(meta));
+    if (!tags || tags.querySelector('.shape-meta')) return;
+    const shapeMeta = document.createElement('span');
+    shapeMeta.className = 'shape-meta';
+    shapeMeta.appendChild(createShapeBadge(meta));
+    const note = document.createElement('span');
+    note.className = 'shape-profile-note';
+    note.textContent = meta.desc;
+    shapeMeta.appendChild(note);
+    tags.appendChild(shapeMeta);
+    card.dataset.formProfile = `${meta.label} — ${meta.desc}`;
   });
 }
 
@@ -5618,13 +6482,16 @@ function initProductMetadata() {
 
 // ━━━ INIT ━━━
 applyForcedMobileLayoutFromQuery();
+syncTopbarOffset();
 renderAbrasiveShapeBadges();
 initProductMetadata();
 initAbrasiveSizeSelectors();
+initQtySteppers();
 initMobileFabBehavior();
 updateCategoryCounters();
 loadState();
 renderCartDrawer();
+window.addEventListener('resize', syncTopbarOffset);
 </script>
 </body>
 </html>
