@@ -4424,7 +4424,16 @@ function syncTopbarOffset() {
 }
 
 // ━━━ STATE MANAGEMENT ━━━
-const STORAGE_KEY = 'konex_procurement_v1';
+const STORAGE_KEY = 'logist_city_procurement_v1';
+
+function getLegacyStorageKeys() {
+  try {
+    return Object.keys(localStorage)
+      .filter(key => key.endsWith('_procurement_v1') && key !== STORAGE_KEY);
+  } catch {
+    return [];
+  }
+}
 const CAT_SKU_PREFIX = {
   abrasives: 'ABR',
   chemicals: 'CHM',
@@ -4673,9 +4682,21 @@ function saveState() {
   renderCartDrawer();
 }
 
+function getStoredStateRaw() {
+  const keys = [STORAGE_KEY, ...getLegacyStorageKeys()];
+  for (const key of keys) {
+    const raw = localStorage.getItem(key);
+    if (!raw) continue;
+    if (key !== STORAGE_KEY) localStorage.setItem(STORAGE_KEY, raw);
+    return raw;
+  }
+  return null;
+}
+
 function loadState() {
   try {
-    const state = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    const rawState = getStoredStateRaw();
+    const state = rawState ? JSON.parse(rawState) : null;
     if (!state) return;
     // Company
     Object.entries(state.company || {}).forEach(([key, val]) => {
@@ -4727,6 +4748,7 @@ function loadState() {
 
 function clearAll() {
   localStorage.removeItem(STORAGE_KEY);
+  getLegacyStorageKeys().forEach(key => localStorage.removeItem(key));
   document.querySelectorAll('[data-qty]').forEach(el => { el.value = ''; });
   document.querySelectorAll('[data-note]').forEach(el => { el.value = ''; });
   document.querySelectorAll('[data-size]').forEach(el => { el.value = ''; });
@@ -5007,7 +5029,7 @@ function exportCSV() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `заявка_${company || 'konex'}_${new Date().toISOString().split('T')[0]}.csv`;
+  a.download = `заявка_${company || 'organization'}_${new Date().toISOString().split('T')[0]}.csv`;
   a.click();
   URL.revokeObjectURL(url);
   showToast('📊 CSV файл скачан');
