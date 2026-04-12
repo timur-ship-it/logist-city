@@ -4311,7 +4311,6 @@ body.cart-open{overflow:hidden}
 <div class="fab-bar">
 <button class="fab-btn secondary" onclick="saveState(); showToast('💾 Черновик сохранён')">💾 Сохранить</button>
 <button class="fab-btn secondary" onclick="exportCSV()">📊 CSV</button>
-<button class="fab-btn secondary" onclick="printForm()">🖨️ PDF</button>
 <button class="fab-btn primary" id="submitBtn" onclick="submitForm(this)">📨 Отправить заявку</button>
 <button class="fab-btn danger" onclick="if(confirm('Очистить все введённые данные?')){clearAll()}">🗑️</button>
 </div>
@@ -4335,7 +4334,6 @@ body.cart-open{overflow:hidden}
 <div class="cart-actions">
 <button class="fab-btn secondary" onclick="saveState(); showToast('💾 Черновик сохранён'); renderCartDrawer();" type="button">💾 Сохранить</button>
 <button class="fab-btn secondary" onclick="exportCSV()" type="button">📊 CSV</button>
-<button class="fab-btn secondary" onclick="printForm()" type="button">🖨️ PDF</button>
 <button class="fab-btn danger" onclick="if(confirm('Очистить все введённые данные?')){clearAll(); closeCartDrawer();}" type="button">🗑️ Очистить</button>
 <button class="fab-btn primary" id="submitBtnMobile" onclick="submitForm(this)" type="button">📨 Отправить заявку</button>
 </div>
@@ -5197,11 +5195,6 @@ function buildPayload(products) {
     routing,
     products
   };
-}
-
-// ━━━ PRINT ━━━
-function printForm() {
-  window.print();
 }
 
 // ━━━ MOBILE FAB BEHAVIOR ━━━
