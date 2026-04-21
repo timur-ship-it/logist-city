@@ -137,10 +137,32 @@ body.cart-open{overflow:hidden}
 /* SCREW CARD STYLES START */
 .section-subhead{margin:8px 0 12px;padding:10px 14px;border-radius:12px;font-size:14px;font-weight:900;letter-spacing:.2px}
 .section-subhead-fasteners{background:linear-gradient(135deg,#eef2ff,#f8fafc);border:1px solid #c7d2fe;color:#3730a3}
+#cat-fasteners .drill-legend-wrap{margin:0 0 16px;border:1px solid #cfe0f4;border-radius:18px;background:linear-gradient(180deg,#f8fbff 0%,#eef6ff 100%);padding:14px 14px 16px}
+#cat-fasteners .drill-legend-title{font-size:18px;font-weight:900;color:#21466f;margin:0 0 6px}
+#cat-fasteners .drill-legend-sub{font-size:13px;line-height:1.45;color:#5b7088;margin:0 0 12px}
+#cat-fasteners .drill-legend-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+#cat-fasteners .drill-legend-card{background:#ffffff;border:1px solid #d8e7f7;border-radius:16px;padding:10px}
+#cat-fasteners .drill-legend-card b{display:block;font-size:14px;color:#1f5b91;margin-bottom:6px}
+#cat-fasteners .drill-legend-card span{display:block;font-size:18px;font-weight:900;color:#16345a}
+#cat-fasteners .drill-legend-card small{display:block;font-size:12px;line-height:1.35;color:#6a7f95;margin-top:4px}
+#cat-fasteners .drill-legend-note{margin-top:10px;font-size:12px;line-height:1.45;color:#60758d}
+#cat-fasteners .drill-family-note{margin:8px 0 0;padding:8px 10px;border-radius:10px;background:#f6f9fd;border:1px solid #e2ebf5;font-size:12px;line-height:1.45;color:#5f7288}
+#cat-fasteners .drill-subsection{margin:0 0 14px}
+#cat-fasteners .drill-subhead{margin:0 0 12px}
+#cat-fasteners .drill-legend-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 14px}
+#cat-fasteners .drill-legend-row img{display:block;width:100%;height:auto;border:1px solid #d8e7f7;border-radius:18px;background:#fff}
 #cat-fasteners .prod-img.prod-img-fastener-single{width:200px;min-height:170px;background:#fff;border-right:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center}
 #cat-fasteners .prod-img.prod-img-fastener-single img{object-fit:contain!important;padding:6px}
+#cat-fasteners .product:is([data-sku="SCR-005"],[data-sku="SCR-006"],[data-sku="SCR-008"],[data-sku="SCR-009"],[data-sku="SCR-012"],[data-sku="SCR-013"],[data-sku="SCR-015"],[data-sku="SCR-016"],[data-sku="SCR-032"]) .prod-inputs{gap:8px;align-items:flex-end}
+#cat-fasteners .product:is([data-sku="SCR-005"],[data-sku="SCR-006"],[data-sku="SCR-008"],[data-sku="SCR-009"],[data-sku="SCR-012"],[data-sku="SCR-013"],[data-sku="SCR-015"],[data-sku="SCR-016"],[data-sku="SCR-032"]) .size-wrap{flex:0 1 145px;min-width:145px}
+#cat-fasteners .product:is([data-sku="SCR-005"],[data-sku="SCR-006"],[data-sku="SCR-008"],[data-sku="SCR-009"],[data-sku="SCR-012"],[data-sku="SCR-013"],[data-sku="SCR-015"],[data-sku="SCR-016"],[data-sku="SCR-032"]) .size-select{min-width:0;padding:6px 7px;font-size:11px}
+#cat-fasteners .product:is([data-sku="SCR-005"],[data-sku="SCR-006"],[data-sku="SCR-008"],[data-sku="SCR-009"],[data-sku="SCR-012"],[data-sku="SCR-013"],[data-sku="SCR-015"],[data-sku="SCR-016"],[data-sku="SCR-032"]) .note-input{min-width:0}
 @media(max-width:430px){
   #cat-fasteners .prod-img.prod-img-fastener-single{width:124px;height:146px;min-height:146px}
+  #cat-fasteners .drill-legend-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  #cat-fasteners .drill-legend-row{grid-template-columns:1fr}
 }
 /* SCREW CARD STYLES END */
 @media(max-width:1024px), (hover:none) and (pointer:coarse){
@@ -3743,7 +3765,15 @@ body.cart-open{overflow:hidden}
 </div>
 
 <!-- SCREW_CARDS_START -->
-<div class="section-subhead section-subhead-fasteners">Саморезы и крепеж Zhenxiang</div>
+<div class="section-subhead section-subhead-fasteners">Саморезы</div>
+
+<div id="drill-screw-subsection" class="drill-subsection">
+  <div class="section-subhead section-subhead-fasteners drill-subhead">Сверлоконечные саморезы</div>
+  <div class="drill-legend-row">
+    <img alt="Тип сверла 1+1 мм и 3 мм" loading="lazy" decoding="async" src="images/drill-point-top.png"/>
+    <img alt="Тип сверла 6 мм и 12.5 мм" loading="lazy" decoding="async" src="images/drill-point-bottom.png"/>
+  </div>
+</div>
 <div class="product" data-id="330" data-sku="SCR-001" data-search="саморез гкл, мелкая резьба scr-001 материал: углеродистая сталь c1022. покрытие: фосфат: черный, серый; оцинковка: сине-белая, белая, желтая. головка: потайная головка для гкл. шлиц: phillips. резьба / наконечник: мелкая резьба, острый наконечник. применение: крепление к металлу до 1.5 мм. 3.5x25 3.5x32 3.5x38 3.5x42 3.5x45 3.5x50 3.5x55 3.5x60 4.2x65 4.2x75 4.8x90 4.8x100 4.8x125 4.8x150">
 <div class="prod-img prod-img-fastener-single">
 <img alt="" loading="lazy" decoding="async" src="images/scr-001.webp?v=scr-20260421-1" style="width:100%;height:100%;object-fit:contain"/>
@@ -3832,15 +3862,15 @@ body.cart-open{overflow:hidden}
 </div>
 </div>
 </div>
-<div class="product" data-id="334" data-sku="SCR-005" data-search="саморез сверлоконечный, потайной scr-005 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: потайная. шлиц: phillips. резьба / наконечник: самонарезающий / сверлоконечный. применение: крепление к металлу (2.0-4.0 мм). 3.5x13 3.5x16 3.5x19 3.5x22 3.5x25 3.9x12 3.9x13 3.9x14 3.9x16 3.9x19 3.9x22 3.9x25 3.9x32 3.9x35 3.9x38 3.9x40 3.9x45 3.9x50 4.2x13 4.2x14 4.2x16 4.2x19 4.2x22 4.2x25 4.2x32 4.2x35 4.2x38 4.2x40 4.2x45 4.2x50 4.2x60 4.2x63 4.2x70 4.2x75 4.8x13 4.8x14 4.8x16 4.8x19 4.8x22 4.8x25 4.8x32 4.8x35 4.8x38 4.8x40 4.8x45 4.8x50 4.8x60 4.8x63 4.8x70 4.8x75 5.5x25 6.3x30 6.3x38">
+<div class="product" data-id="334" data-sku="SCR-005" data-search="саморез сверлоконечный, потайная головка scr-005 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: потайная. шлиц: phillips. резьба / наконечник: самонарезающий / сверлоконечный. применение: крепление к металлу (2.0-4.0 мм). 3.5x13 3.5x16 3.5x19 3.5x22 3.5x25 3.9x12 3.9x13 3.9x14 3.9x16 3.9x19 3.9x22 3.9x25 3.9x32 3.9x35 3.9x38 3.9x40 3.9x45 3.9x50 4.2x13 4.2x14 4.2x16 4.2x19 4.2x22 4.2x25 4.2x32 4.2x35 4.2x38 4.2x40 4.2x45 4.2x50 4.2x60 4.2x63 4.2x70 4.2x75 4.8x13 4.8x14 4.8x16 4.8x19 4.8x22 4.8x25 4.8x32 4.8x35 4.8x38 4.8x40 4.8x45 4.8x50 4.8x60 4.8x63 4.8x70 4.8x75 4.8x90 4.8x120 4.8x150 4.8x180 5.5x25 5.5x32 5.5x38 5.5x45 5.5x50 5.5x55 5.5x60 5.5x63 5.5x75 5.5x100 5.5x125 5.5x150 5.5x165 5.5x180 5.5x200 6.3x30 6.3x38 6.3x45 6.3x50 6.3x60 6.3x63 6.3x75 6.3x100 6.3x125 6.3x150 6.3x165 6.3x180 6.3x200 6.3x230 6.3x250 6.3x275 6.3x300">
 <div class="prod-img prod-img-fastener-single">
 <img alt="" loading="lazy" decoding="async" src="images/scr-005.webp?v=scr-20260421-1" style="width:100%;height:100%;object-fit:contain"/>
 </div>
 <div class="prod-body">
 <div class="prod-top">
-<span class="prod-name">Саморез сверлоконечный, потайной</span>
+<span class="prod-name">Саморез сверлоконечный, потайная головка</span>
 </div>
-<div class="prod-desc">Материал: Углеродистая сталь C1022. Покрытие: Оцинковка: сине-белая, белая, желтая. Головка: Потайная. Шлиц: Phillips. Резьба / наконечник: Самонарезающий / сверлоконечный. Применение: Крепление к металлу (2.0-4.0 мм).</div>
+<div class="prod-desc">Материал: Углеродистая сталь C1022. Головка: Потайная. Применение: Крепление к металлу.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -3898,15 +3928,15 @@ body.cart-open{overflow:hidden}
 </div>
 </div>
 </div>
-<div class="product" data-id="337" data-sku="SCR-008" data-search="саморез сверлоконечный с широкой полукруглой головкой scr-008 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: широкая полукруглая. шлиц: phillips. резьба / наконечник: самонарезающий / сверлоконечный. применение: крепление к металлу (2.0-4.0 мм). 4.2x13 4.2x16 4.2x19 4.2x25 4.2x32 4.2x38 4.2x50 4.8x19 5.5x19 6.3x25">
+<div class="product" data-id="337" data-sku="SCR-008" data-search="саморез сверлоконечный, широкая головка scr-008 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: широкая полукруглая. шлиц: phillips. резьба / наконечник: самонарезающий / сверлоконечный. применение: крепление к металлу (2.0-4.0 мм). 4.2x13 4.2x16 4.2x19 4.2x25 4.2x32 4.2x38 4.2x50 4.8x19 4.8x25 4.8x32 4.8x38 4.8x50 4.8x60 4.8x63 4.8x70 4.8x75 4.8x90 4.8x120 4.8x150 4.8x180 5.5x19 5.5x25 5.5x32 5.5x38 5.5x45 5.5x50 5.5x55 5.5x60 5.5x63 5.5x75 5.5x100 5.5x125 5.5x150 5.5x165 5.5x180 5.5x200 5.5x225 5.5x250 5.5x275 5.5x300 6.3x25 6.3x38 6.3x45 6.3x50 6.3x60 6.3x63 6.3x75 6.3x100 6.3x125 6.3x150 6.3x165 6.3x180 6.3x200 6.3x230 6.3x250 6.3x275 6.3x300">
 <div class="prod-img prod-img-fastener-single">
 <img alt="" loading="lazy" decoding="async" src="images/scr-008.webp?v=scr-20260421-1" style="width:100%;height:100%;object-fit:contain"/>
 </div>
 <div class="prod-body">
 <div class="prod-top">
-<span class="prod-name">Саморез сверлоконечный с широкой полукруглой головкой</span>
+<span class="prod-name">Саморез сверлоконечный, широкая головка</span>
 </div>
-<div class="prod-desc">Материал: Углеродистая сталь C1022. Покрытие: Оцинковка: сине-белая, белая, желтая. Головка: Широкая полукруглая. Шлиц: Phillips. Резьба / наконечник: Самонарезающий / сверлоконечный. Применение: Крепление к металлу (2.0-4.0 мм).</div>
+<div class="prod-desc">Материал: Углеродистая сталь C1022. Головка: Wafer / Truss. Применение: Крепление к металлу.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -3920,15 +3950,15 @@ body.cart-open{overflow:hidden}
 </div>
 </div>
 </div>
-<div class="product" data-id="338" data-sku="SCR-009" data-search="саморез din7504k, шестигранный, сверлоконечный scr-009 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: шестигранная. шлиц: шестигранник. резьба / наконечник: самонарезающий / сверлоконечный. применение: крепление к металлу (до 3.0-10.0 мм). 4.2x16 4.2x45 4.8x19 4.8x22 4.8x25 4.8x32 4.8x38 4.8x45 4.8x50 4.8x60 4.8x180 5.5x19 5.5x22 5.5x25 5.5x32 5.5x38 5.5x45 5.5x50 5.5x60 5.5x63 5.5x300 6.3x19 6.3x22 6.3x25 6.3x32 6.3x38 6.3x45 6.3x50 6.3x60 6.3x63 6.3x70 6.3x300">
+<div class="product" data-id="338" data-sku="SCR-009" data-search="саморез сверлоконечный, шестигранная головка scr-009 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: шестигранная. шлиц: шестигранник. резьба / наконечник: самонарезающий / сверлоконечный. применение: крепление к металлу (до 3.0-10.0 мм). 4.2x16 4.2x19 4.2x22 4.2x25 4.2x32 4.2x38 4.2x45 4.8x19 4.8x22 4.8x25 4.8x32 4.8x38 4.8x45 4.8x50 4.8x60 4.8x63 4.8x70 4.8x75 4.8x90 4.8x120 4.8x150 4.8x180 5.5x22 5.5x25 5.5x32 5.5x38 5.5x45 5.5x50 5.5x55 5.5x60 5.5x63 5.5x72 5.5x75 5.5x89 5.5x100 5.5x105 5.5x115 5.5x122 5.5x125 5.5x135 5.5x142 5.5x150 5.5x157 5.5x165 5.5x177 5.5x180 5.5x190 5.5x200 5.5x225 5.5x230 5.5x250 5.5x260 5.5x275 5.5x300 6.3x22 6.3x25 6.3x32 6.3x38 6.3x45 6.3x50 6.3x60 6.3x63 6.3x70 6.3x75 6.3x80 6.3x90 6.3x100 6.3x115 6.3x125 6.3x130 6.3x135 6.3x150 6.3x160 6.3x165 6.3x180 6.3x200 6.3x230 6.3x250 6.3x275 6.3x300">
 <div class="prod-img prod-img-fastener-single">
 <img alt="" loading="lazy" decoding="async" src="images/scr-009.webp?v=scr-20260421-1" style="width:100%;height:100%;object-fit:contain"/>
 </div>
 <div class="prod-body">
 <div class="prod-top">
-<span class="prod-name">Саморез DIN7504K, шестигранный, сверлоконечный</span>
+<span class="prod-name">Саморез сверлоконечный, шестигранная головка</span>
 </div>
-<div class="prod-desc">Материал: Углеродистая сталь C1022. Покрытие: Оцинковка: сине-белая, белая, желтая. Головка: Шестигранная. Шлиц: Шестигранник. Резьба / наконечник: Самонарезающий / сверлоконечный. Применение: Крепление к металлу (до 3.0-10.0 мм).</div>
+<div class="prod-desc">Материал: Углеродистая сталь C1022. Головка: Hex washer / Hex. Применение: Крепление к металлу.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -3986,7 +4016,7 @@ body.cart-open{overflow:hidden}
 </div>
 </div>
 </div>
-<div class="product" data-id="341" data-sku="SCR-012" data-search="саморез сверлоконечный, полукруглая головка scr-012 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: полукруглая. шлиц: крестовой шлиц. резьба / наконечник: самонарезающий / сверлоконечный. применение: крепление к металлу (2.0-4.0 мм). 3.5x13 3.5x14 3.5x16 3.5x19 3.5x22 3.5x25 3.9x13 3.9x14 3.9x16 3.9x19 3.9x22 3.9x25 3.9x32 3.9x35 3.9x38 3.9x40 3.9x45 3.9x50 4.2x13 4.2x14 4.2x16 4.2x19 4.2x22 4.2x25 4.2x32 4.2x35 4.2x38 4.2x40 4.2x45 4.2x50 4.2x60 4.2x63 4.2x70 4.2x75 4.8x13 4.8x14 4.8x16 4.8x19 4.8x22 4.8x25 4.8x32 4.8x35 4.8x38 4.8x40 4.8x45 4.8x50 4.8x60 4.8x63 4.8x70 4.8x75">
+<div class="product" data-id="341" data-sku="SCR-012" data-search="саморез сверлоконечный, полукруглая головка scr-012 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: полукруглая. шлиц: крестовой шлиц. резьба / наконечник: самонарезающий / сверлоконечный. применение: крепление к металлу (2.0-4.0 мм). 3.5x13 3.5x14 3.5x16 3.5x19 3.5x22 3.5x25 3.9x13 3.9x14 3.9x16 3.9x19 3.9x22 3.9x25 3.9x32 3.9x35 3.9x38 3.9x40 3.9x45 3.9x50 4.2x13 4.2x14 4.2x16 4.2x19 4.2x22 4.2x25 4.2x32 4.2x35 4.2x38 4.2x40 4.2x45 4.2x50 4.2x60 4.2x63 4.2x70 4.2x75 4.8x13 4.8x14 4.8x16 4.8x19 4.8x22 4.8x25 4.8x32 4.8x35 4.8x38 4.8x40 4.8x45 4.8x50 4.8x60 4.8x63 4.8x70 4.8x75 4.8x90 4.8x120 4.8x150 4.8x180 5.5x25 5.5x32 5.5x38 5.5x45 5.5x50 5.5x55 5.5x60 5.5x63 5.5x75 5.5x100 5.5x125 5.5x150 5.5x165 5.5x180 5.5x200 5.5x225 5.5x250 5.5x275 5.5x300 6.3x25 6.3x32 6.3x38 6.3x45 6.3x50 6.3x60 6.3x63 6.3x75 6.3x100 6.3x125 6.3x150 6.3x165 6.3x180 6.3x200 6.3x230 6.3x250 6.3x275 6.3x300">
 <div class="prod-img prod-img-fastener-single">
 <img alt="" loading="lazy" decoding="async" src="images/scr-012.webp?v=scr-20260421-1" style="width:100%;height:100%;object-fit:contain"/>
 </div>
@@ -3994,7 +4024,7 @@ body.cart-open{overflow:hidden}
 <div class="prod-top">
 <span class="prod-name">Саморез сверлоконечный, полукруглая головка</span>
 </div>
-<div class="prod-desc">Материал: Углеродистая сталь C1022. Покрытие: Оцинковка: сине-белая, белая, желтая. Головка: Полукруглая. Шлиц: Крестовой шлиц. Резьба / наконечник: Самонарезающий / сверлоконечный. Применение: Крепление к металлу (2.0-4.0 мм).</div>
+<div class="prod-desc">Материал: Углеродистая сталь C1022. Головка: Полукруглая. Применение: Крепление к металлу.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -4074,7 +4104,7 @@ body.cart-open{overflow:hidden}
 </div>
 </div>
 </div>
-<div class="product" data-id="345" data-sku="SCR-016" data-search="саморез сверлоконечный для гкл scr-016 материал: углеродистая сталь c1022. покрытие: фосфат: черный, серый; оцинковка: сине-белая, белая, желтая. головка: потайная головка для гкл. шлиц: крестовой шлиц. резьба / наконечник: самонарезающий / сверлоконечный. применение: крепление к металлу (2.0-4.0 мм). 3.5x22 3.5x25 3.5x32 3.5x35 3.5x45 3.5x55 4.2x32 4.2x35 4.2x45 4.2x55 4.2x65 4.2x75 4.2x100 4.2x125 4.8x32 4.8x38 4.8x50 4.8x55 4.8x63 4.8x75 4.8x100 4.8x125">
+<div class="product" data-id="345" data-sku="SCR-016" data-search="саморез сверлоконечный для гкл scr-016 материал: углеродистая сталь c1022. покрытие: фосфат: черный, серый; оцинковка: сине-белая, белая, желтая. головка: потайная головка для гкл. шлиц: крестовой шлиц. резьба / наконечник: самонарезающий / сверлоконечный. применение: крепление к металлу (2.0-4.0 мм). 3.5x22 3.5x25 3.5x32 3.5x35 3.5x38 3.5x45 3.5x50 3.5x55 3.5x60 3.5x70 3.5x75 4.2x32 4.2x35 4.2x45 4.2x50 4.2x55 4.2x60 4.2x63 4.2x65 4.2x75 4.2x90 4.2x100 4.2x125 4.2x150 4.8x32 4.8x38 4.8x50 4.8x55 4.8x63 4.8x75 4.8x90 4.8x100 4.8x125 4.8x150">
 <div class="prod-img prod-img-fastener-single">
 <img alt="" loading="lazy" decoding="async" src="images/scr-016.webp?v=scr-20260421-1" style="width:100%;height:100%;object-fit:contain"/>
 </div>
@@ -4082,7 +4112,7 @@ body.cart-open{overflow:hidden}
 <div class="prod-top">
 <span class="prod-name">Саморез сверлоконечный для ГКЛ</span>
 </div>
-<div class="prod-desc">Материал: Углеродистая сталь C1022. Покрытие: Фосфат: черный, серый; оцинковка: сине-белая, белая, желтая. Головка: Потайная головка для ГКЛ. Шлиц: Крестовой шлиц. Резьба / наконечник: Самонарезающий / сверлоконечный. Применение: Крепление к металлу (2.0-4.0 мм).</div>
+<div class="prod-desc">Материал: Углеродистая сталь C1022. Покрытие: Фосфат: черный, серый; оцинковка: сине-белая, белая, желтая. Головка: Потайная головка для ГКЛ (bugle). Резьба / наконечник: сверлоконечный. Применение: Крепление к металлу.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -4272,7 +4302,7 @@ body.cart-open{overflow:hidden}
 </div>
 </div>
 </div>
-<div class="product" data-id="354" data-sku="SCR-025" data-search="оконный саморез для европейского рынка scr-025 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: не указано. шлиц: phillips. резьба / наконечник: самонарезающий / сверлоконечный. применение: крепление к металлу. 3.9x16 3.9x19 3.9x22 3.9x25 3.9x28 3.9x32 3.9x38 3.9x41 3.9x45 3.9x50 4.2x16 4.2x19 4.2x22 4.2x25 4.2x29 4.2x32 4.2x38 4.2x45 4.2x50 4.5x19 4.5x29 4.5x45 4.8x16 4.8x19 4.8x22 4.8x25 4.8x32 4.8x38 4.8x45 4.8x50">
+<div class="product" data-id="354" data-sku="SCR-025" data-search="оконный саморез для европейского рынка scr-025 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: не указано. шлиц: phillips. резьба / наконечник: самонарезающий / сверлоконечный. применение: крепление к металлу. 3.9x16 3.9x19 3.9x22 3.9x25 3.9x28 3.9x32 3.9x38 3.9x41 3.9x45 3.9x50 4.2x16 4.2x19 4.2x22 4.2x25 4.2x29 4.2x32 4.2x38 4.2x41 4.2x45 4.2x50 4.5x16 4.5x19 4.5x22 4.5x25 4.5x29 4.5x32 4.5x38 4.5x41 4.5x45 4.8x16 4.8x19 4.8x22 4.8x25 4.8x32 4.8x38 4.8x45 4.8x50">
 <div class="prod-img prod-img-fastener-single">
 <img alt="" loading="lazy" decoding="async" src="images/scr-025.webp?v=scr-20260421-1" style="width:100%;height:100%;object-fit:contain"/>
 </div>
@@ -4316,7 +4346,7 @@ body.cart-open{overflow:hidden}
 </div>
 </div>
 </div>
-<div class="product" data-id="356" data-sku="SCR-027" data-search="нейлоновый анкер scr-027 материал: нейлон + саморез c1022. покрытие: цвета: желтый, серый, белый и др.. головка: нейлоновая втулка. резьба / наконечник: под саморез по дсп / гкл и др.. применение: строительный крепеж. 6x30 7x35 8x40 10x50">
+<div class="product" data-removed="true" data-id="356" data-sku="SCR-027" data-search="нейлоновый анкер scr-027 материал: нейлон + саморез c1022. покрытие: цвета: желтый, серый, белый и др.. головка: нейлоновая втулка. резьба / наконечник: под саморез по дсп / гкл и др.. применение: строительный крепеж. 6x30 7x35 8x40 10x50">
 <div class="prod-img prod-img-fastener-single">
 <img alt="" loading="lazy" decoding="async" src="images/scr-027.webp?v=scr-20260421-1" style="width:100%;height:100%;object-fit:contain"/>
 </div>
@@ -4404,7 +4434,7 @@ body.cart-open{overflow:hidden}
 </div>
 </div>
 </div>
-<div class="product" data-id="360" data-sku="SCR-031" data-search="саморез din7504k, сверлоконечный scr-031 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: шестигранная. шлиц: шестигранник. резьба / наконечник: сверлоконечный. применение: крепление к металлу (до 4-10 мм). 4.8x19 4.8x25 4.8x32 4.8x38 4.8x50 5.5x19 5.5x22 5.5x32 5.5x38 5.5x45 5.5x50 5.5x63 6.3x19 6.3x25 6.3x32 6.3x38 6.3x45 6.3x50 6.3x63">
+<div class="product" data-id="360" data-removed="true" data-sku="SCR-031" data-search="саморез din7504k, сверлоконечный scr-031 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: шестигранная. шлиц: шестигранник. резьба / наконечник: сверлоконечный. применение: крепление к металлу (до 4-10 мм). 4.8x19 4.8x25 4.8x32 4.8x38 4.8x50 5.5x19 5.5x22 5.5x32 5.5x38 5.5x45 5.5x50 5.5x63 6.3x19 6.3x25 6.3x32 6.3x38 6.3x45 6.3x50 6.3x63">
 <div class="prod-img prod-img-fastener-single">
 <img alt="" loading="lazy" decoding="async" src="images/scr-031.webp?v=scr-20260421-1" style="width:100%;height:100%;object-fit:contain"/>
 </div>
@@ -4426,7 +4456,7 @@ body.cart-open{overflow:hidden}
 </div>
 </div>
 </div>
-<div class="product" data-id="361" data-sku="SCR-032" data-search="саморез для сэндвич-панелей scr-032 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: шестигранная. шлиц: шестигранник. резьба / наконечник: сверлоконечный. применение: крепление к металлу. 5.5/6.3x100 5.5/6.3x115 5.5/6.3x132 5.5/6.3x150 5.5/6.3x155 5.5/6.3x170 5.5/6.3x175 5.5/6.3x200 5.5/6.3x235 5.5/6.3x250 5.5/6.3x275 5.5/6.3x300">
+<div class="product" data-id="361" data-sku="SCR-032" data-search="саморез для сэндвич-панелей scr-032 материал: углеродистая сталь c1022. покрытие: оцинковка: сине-белая, белая, желтая. головка: шестигранная. шлиц: шестигранник. резьба / наконечник: сверлоконечный. применение: крепление к металлу. 5.5/6.3x50 5.5/6.3x100 5.5/6.3x115 5.5/6.3x132 5.5/6.3x150 5.5/6.3x155 5.5/6.3x170 5.5/6.3x175 5.5/6.3x200 5.5/6.3x235 5.5/6.3x250 5.5/6.3x275 5.5/6.3x300">
 <div class="prod-img prod-img-fastener-single">
 <img alt="" loading="lazy" decoding="async" src="images/scr-032.webp?v=scr-20260421-1" style="width:100%;height:100%;object-fit:contain"/>
 </div>
@@ -4434,7 +4464,7 @@ body.cart-open{overflow:hidden}
 <div class="prod-top">
 <span class="prod-name">Саморез для сэндвич-панелей</span>
 </div>
-<div class="prod-desc">Материал: Углеродистая сталь C1022. Покрытие: Оцинковка: сине-белая, белая, желтая. Головка: Шестигранная. Шлиц: Шестигранник. Резьба / наконечник: Сверлоконечный. Применение: Крепление к металлу.</div>
+<div class="prod-desc">Материал: Углеродистая сталь C1022. Головка: Hex washer. Применение: Крепление сэндвич-панелей к металлу.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -5744,7 +5774,9 @@ function resolveLineSku(card, size = '') {
   return baseSku;
 }
 
-function createOrderLine(card, { qty = '', size = '', note = '' } = {}) {
+function createOrderLine(card, { qty = '', size = '', note = '', coating = '' } = {}) {
+  const drillType = String(arguments[1]?.drillType || '').trim();
+  const coatingValue = String(arguments[1]?.coating || '').trim();
   return {
     id: card.dataset.id,
     sku: resolveLineSku(card, size),
@@ -5755,6 +5787,8 @@ function createOrderLine(card, { qty = '', size = '', note = '' } = {}) {
     qty: String(qty || '').trim(),
     unit: card.querySelector('.unit-label')?.textContent || '',
     size: String(size || '').trim(),
+    drillType,
+    coating: coatingValue,
     note: String(note || '').trim()
   };
 }
@@ -5768,10 +5802,12 @@ function collectOrderLines() {
     const baseSizeSelected = card.querySelector(`[data-size="${id}"]`)?.value || '';
     const baseSizeCustom = card.querySelector(`[data-size-custom="${id}"]`)?.value || '';
     const baseSize = normalizeSelectedSize(baseSizeSelected, baseSizeCustom);
+    const baseDrillType = card.querySelector(`[data-drill="${id}"]`)?.value || '';
+    const baseCoating = card.querySelector(`[data-coating="${id}"]`)?.value || '';
     const baseNote = card.querySelector(`[data-note="${id}"]`)?.value || '';
 
     if (toQtyNumber(baseQty) > 0) {
-      lines.push(createOrderLine(card, { qty: baseQty, size: baseSize, note: baseNote }));
+      lines.push(createOrderLine(card, { qty: baseQty, size: baseSize, drillType: baseDrillType, coating: baseCoating, note: baseNote }));
     }
 
     card.querySelectorAll('.size-variant-row').forEach(row => {
@@ -5780,7 +5816,7 @@ function collectOrderLines() {
       const sizeSelected = row.querySelector('.size-variant-select')?.value || '';
       const sizeCustom = row.querySelector('.size-variant-custom-input')?.value || '';
       const size = normalizeSelectedSize(sizeSelected, sizeCustom);
-      lines.push(createOrderLine(card, { qty, size, note: '' }));
+      lines.push(createOrderLine(card, { qty, size, drillType: baseDrillType, coating: baseCoating, note: '' }));
     });
   });
 
@@ -5790,7 +5826,8 @@ function collectOrderLines() {
 function findMissingSizeLines(lines) {
   return lines.filter(line => {
     const hasSizeOptions = Boolean(ABRASIVE_SIZE_OPTIONS[Number(line.id)]);
-    return hasSizeOptions && !line.size;
+    const hasDrillSizeOptions = Boolean(DRILL_SCREW_CONFIG[Number(line.id)]);
+    return (hasSizeOptions || hasDrillSizeOptions) && !line.size;
   });
 }
 
@@ -5820,6 +5857,8 @@ function saveState() {
     const note = card.querySelector(`[data-note="${id}"]`)?.value || '';
     const size = card.querySelector(`[data-size="${id}"]`)?.value || '';
     const sizeCustom = card.querySelector(`[data-size-custom="${id}"]`)?.value || '';
+    const drill = card.querySelector(`[data-drill="${id}"]`)?.value || '';
+    const coating = card.querySelector(`[data-coating="${id}"]`)?.value || '';
     const variants = [];
 
     card.querySelectorAll('.size-variant-row').forEach(row => {
@@ -5831,8 +5870,8 @@ function saveState() {
       }
     });
 
-    if (qty || note || size || sizeCustom || variants.length) {
-      state.items[id] = { qty, note, size, sizeCustom, variants };
+    if (qty || note || size || sizeCustom || drill || coating || variants.length) {
+      state.items[id] = { qty, note, size, sizeCustom, drill, coating, variants };
     }
   });
 
@@ -5876,11 +5915,15 @@ function loadState() {
       const noteEl = document.querySelector(`[data-note="${id}"]`);
       const sizeEl = document.querySelector(`[data-size="${id}"]`);
       const sizeCustomEl = document.querySelector(`[data-size-custom="${id}"]`);
+      const drillEl = document.querySelector(`[data-drill="${id}"]`);
+      const coatingEl = document.querySelector(`[data-coating="${id}"]`);
       if (qtyEl && data.qty) qtyEl.value = data.qty;
       if (noteEl) {
         const mergedNote = [data.params || '', data.note || ''].filter(Boolean).join(' | ');
         if (mergedNote) noteEl.value = mergedNote;
       }
+      if (drillEl && data.drill) drillEl.value = data.drill;
+      if (coatingEl && data.coating) coatingEl.value = data.coating;
       if (sizeEl && (data.size || data.sizeCustom)) {
         assignSizeControlValue(sizeEl, sizeCustomEl, options, data.size || '', data.sizeCustom || '');
       }
@@ -5910,6 +5953,8 @@ function clearAll() {
   getLegacyStorageKeys().forEach(key => localStorage.removeItem(key));
   document.querySelectorAll('[data-qty]').forEach(el => { el.value = ''; });
   document.querySelectorAll('[data-note]').forEach(el => { el.value = ''; });
+  document.querySelectorAll('[data-drill]').forEach(el => { el.value = ''; });
+  document.querySelectorAll('[data-coating]').forEach(el => { el.value = ''; });
   document.querySelectorAll('[data-size]').forEach(el => { el.value = ''; });
   document.querySelectorAll('[data-size-custom]').forEach(el => {
     el.value = '';
@@ -6040,6 +6085,8 @@ function renderCartDrawer() {
   const itemsHtml = lines.map(line => {
     const meta = [
       `Кол-во: ${escapeHtml(line.qty)} ${escapeHtml(line.unit || '')}`.trim(),
+      line.coating ? `Покрытие: ${escapeHtml(line.coating)}` : '',
+      line.drillType ? `Тип сверла: ${escapeHtml(line.drillType)}` : '',
       line.size ? `Размер: ${escapeHtml(line.size)}` : '',
       line.note ? `Примечание: ${escapeHtml(line.note)}` : ''
     ].filter(Boolean).join(' • ');
@@ -6054,7 +6101,7 @@ function renderCartDrawer() {
   }).join('');
 
   const warningHtml = missingSize.length
-    ? `<div class="cart-warning">Для части позиций не выбран размер. Перед отправкой выберите значение в поле «Размер».</div>`
+    ? `<div class="cart-warning">Для части позиций не выбран типоразмер. Перед отправкой выберите значение в поле «Типоразмер».</div>`
     : '';
 
   itemsEl.innerHTML = itemsHtml + warningHtml;
@@ -6178,12 +6225,13 @@ function exportCSV() {
   const missingSize = findMissingSizeLines(lines);
   if (missingSize.length) {
     const first = missingSize[0];
-    showToast(`⚠️ Укажите размер для артикула ${first.sku}`);
+    showToast(`⚠️ Укажите типоразмер для артикула ${first.sku}`);
     return;
   }
   lines.forEach(line => {
     const desc = line.description.replace(/,/g, ';');
-    csv += `"${line.id}","${line.sku}","${line.category}","${line.name}","${line.type || ''}","${desc}","${line.qty}","${line.unit}","${line.size || ''}","${line.note || ''}"\n`;
+    const note = [line.coating ? `Покрытие: ${line.coating}` : '', line.drillType ? `Тип сверла: ${line.drillType}` : '', line.note || ''].filter(Boolean).join(' | ');
+    csv += `"${line.id}","${line.sku}","${line.category}","${line.name}","${line.type || ''}","${desc}","${line.qty}","${line.unit}","${line.size || ''}","${note}"\n`;
   });
 
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -6214,12 +6262,14 @@ async function submitForm(triggerBtn = null) {
   const missingSize = findMissingSizeLines(rawLines);
   if (missingSize.length) {
     const first = missingSize[0];
-    showToast(`⚠️ Укажите размер для артикула ${first.sku}`);
+    showToast(`⚠️ Укажите типоразмер для артикула ${first.sku}`);
     return;
   }
   const products = rawLines.map(line => {
     const spec = [
       line.type ? `Форма профиля: ${line.type}` : '',
+      line.coating ? `Покрытие: ${line.coating}` : '',
+      line.drillType ? `Тип сверла: ${line.drillType}` : '',
       line.size ? `Размер: ${line.size}` : ''
     ].filter(Boolean).join(', ');
     const article = line.sku || line.id;
@@ -7600,18 +7650,18 @@ const SCREW_SIZE_OPTIONS = {
   "331": ["3.5x25", "3.5x32", "3.5x35", "3.5x38", "3.5x42", "3.5x50", "4.8x125", "4.8x150"],
   "332": ["3.5x16", "3.5x25", "3.5x30", "3.5x40", "4.0x20", "4.0x30", "4.0x40", "4.0x50", "4.0x60", "4.0x70", "4.5x40", "4.5x50", "4.5x60", "4.5x70", "5.0x30", "5.0x40", "5.0x50", "5.0x60", "5.0x70", "6.0x40", "6.0x50", "6.0x60", "6.0x70", "6.0x80", "6.0x90", "6.0x100", "6.0x120"],
   "333": ["3.5x9.5", "3.5x13", "3.5x16", "3.5x19", "3.5x22", "3.5x25", "3.9x9.5", "3.9x13", "3.9x16", "3.9x19", "3.9x22", "3.9x25", "4.2x9.5", "4.2x13", "4.2x16", "4.2x19", "4.2x22", "4.2x25", "4.2x32"],
-  "334": ["3.5x13", "3.5x16", "3.5x19", "3.5x22", "3.5x25", "3.9x12", "3.9x13", "3.9x14", "3.9x16", "3.9x19", "3.9x22", "3.9x25", "3.9x32", "3.9x35", "3.9x38", "3.9x40", "3.9x45", "3.9x50", "4.2x13", "4.2x14", "4.2x16", "4.2x19", "4.2x22", "4.2x25", "4.2x32", "4.2x35", "4.2x38", "4.2x40", "4.2x45", "4.2x50", "4.2x60", "4.2x63", "4.2x70", "4.2x75", "4.8x13", "4.8x14", "4.8x16", "4.8x19", "4.8x22", "4.8x25", "4.8x32", "4.8x35", "4.8x38", "4.8x40", "4.8x45", "4.8x50", "4.8x60", "4.8x63", "4.8x70", "4.8x75", "5.5x25", "6.3x30", "6.3x38"],
+  "334": ["3.5x13", "3.5x16", "3.5x19", "3.5x22", "3.5x25", "3.9x12", "3.9x13", "3.9x14", "3.9x16", "3.9x19", "3.9x22", "3.9x25", "3.9x32", "3.9x35", "3.9x38", "3.9x40", "3.9x45", "3.9x50", "4.2x13", "4.2x14", "4.2x16", "4.2x19", "4.2x22", "4.2x25", "4.2x32", "4.2x35", "4.2x38", "4.2x40", "4.2x45", "4.2x50", "4.2x60", "4.2x63", "4.2x70", "4.2x75", "4.8x13", "4.8x14", "4.8x16", "4.8x19", "4.8x22", "4.8x25", "4.8x32", "4.8x35", "4.8x38", "4.8x40", "4.8x45", "4.8x50", "4.8x60", "4.8x63", "4.8x70", "4.8x75", "4.8x90", "4.8x120", "4.8x150", "4.8x180", "5.5x25", "5.5x32", "5.5x38", "5.5x45", "5.5x50", "5.5x55", "5.5x60", "5.5x63", "5.5x75", "5.5x100", "5.5x125", "5.5x150", "5.5x165", "5.5x180", "5.5x200", "6.3x30", "6.3x38", "6.3x45", "6.3x50", "6.3x60", "6.3x63", "6.3x75", "6.3x100", "6.3x125", "6.3x150", "6.3x165", "6.3x180", "6.3x200", "6.3x230", "6.3x250", "6.3x275", "6.3x300"],
   "335": ["3.5x16", "3.5x19", "3.5x25", "3.9x16", "3.9x19", "3.9x25", "3.9x32", "3.9x38", "4.2x16", "4.2x19", "4.2x25", "4.2x32", "4.2x38"],
   "336": ["4.2x13", "4.2x16", "4.2x19", "4.2x22", "4.2x25", "4.2x41", "4.2x50"],
-  "337": ["4.2x13", "4.2x16", "4.2x19", "4.2x25", "4.2x32", "4.2x38", "4.2x50", "4.8x19", "5.5x19", "6.3x25"],
-  "338": ["4.2x16", "4.2x45", "4.8x19", "4.8x22", "4.8x25", "4.8x32", "4.8x38", "4.8x45", "4.8x50", "4.8x60", "4.8x180", "5.5x19", "5.5x22", "5.5x25", "5.5x32", "5.5x38", "5.5x45", "5.5x50", "5.5x60", "5.5x63", "5.5x300", "6.3x19", "6.3x22", "6.3x25", "6.3x32", "6.3x38", "6.3x45", "6.3x50", "6.3x60", "6.3x63", "6.3x70", "6.3x300"],
+  "337": ["4.2x13", "4.2x16", "4.2x19", "4.2x25", "4.2x32", "4.2x38", "4.2x50", "4.8x19", "4.8x25", "4.8x32", "4.8x38", "4.8x50", "4.8x60", "4.8x63", "4.8x70", "4.8x75", "4.8x90", "4.8x120", "4.8x150", "4.8x180", "5.5x19", "5.5x25", "5.5x32", "5.5x38", "5.5x45", "5.5x50", "5.5x55", "5.5x60", "5.5x63", "5.5x75", "5.5x100", "5.5x125", "5.5x150", "5.5x165", "5.5x180", "5.5x200", "5.5x225", "5.5x250", "5.5x275", "5.5x300", "6.3x25", "6.3x38", "6.3x45", "6.3x50", "6.3x60", "6.3x63", "6.3x75", "6.3x100", "6.3x125", "6.3x150", "6.3x165", "6.3x180", "6.3x200", "6.3x230", "6.3x250", "6.3x275", "6.3x300"],
+  "338": ["4.2x16", "4.2x19", "4.2x22", "4.2x25", "4.2x32", "4.2x38", "4.2x45", "4.8x19", "4.8x22", "4.8x25", "4.8x32", "4.8x38", "4.8x45", "4.8x50", "4.8x60", "4.8x63", "4.8x70", "4.8x75", "4.8x90", "4.8x120", "4.8x150", "4.8x180", "5.5x22", "5.5x25", "5.5x32", "5.5x38", "5.5x45", "5.5x50", "5.5x55", "5.5x60", "5.5x63", "5.5x72", "5.5x75", "5.5x89", "5.5x100", "5.5x105", "5.5x115", "5.5x122", "5.5x125", "5.5x135", "5.5x142", "5.5x150", "5.5x157", "5.5x165", "5.5x177", "5.5x180", "5.5x190", "5.5x200", "5.5x225", "5.5x230", "5.5x250", "5.5x260", "5.5x275", "5.5x300", "6.3x22", "6.3x25", "6.3x32", "6.3x38", "6.3x45", "6.3x50", "6.3x60", "6.3x63", "6.3x70", "6.3x75", "6.3x80", "6.3x90", "6.3x100", "6.3x115", "6.3x125", "6.3x130", "6.3x135", "6.3x150", "6.3x160", "6.3x165", "6.3x180", "6.3x200", "6.3x230", "6.3x250", "6.3x275", "6.3x300"],
   "339": ["4.2x13", "4.2x16", "4.2x19", "4.2x25", "4.2x32", "4.2x38", "4.8x13", "4.8x16", "4.8x19", "4.8x25", "4.8x32", "4.8x38", "4.8x45", "4.8x50", "5.5x19", "5.5x25", "5.5x32", "5.5x35", "5.5x38", "5.5x41", "5.5x45", "5.5x50", "5.5x55", "5.5x63", "5.5x65", "5.5x75", "5.5x80", "5.5x90", "5.5x100", "5.5x115", "5.5x125", "5.5x135", "5.5x150", "5.5x165", "6.3x19", "6.3x25", "6.3x32", "6.3x38", "6.3x41", "6.3x50", "6.3x63", "6.3x75", "6.3x80", "6.3x90", "6.3x100", "6.3x115", "6.3x125", "6.3x135", "6.3x150", "6.3x165"],
   "340": ["3.5x13", "3.5x16", "3.5x19", "3.5x25", "3.5x32", "3.9x13", "3.9x16", "3.9x19", "3.9x22", "3.9x25", "3.9x32", "3.9x35", "3.9x38", "3.9x40", "3.9x45", "3.9x50", "4.2x13", "4.2x16", "4.2x19", "4.2x22", "4.2x25", "4.2x32", "4.2x35", "4.2x38", "4.2x40", "4.2x45", "4.2x50", "4.8x13", "4.8x16", "4.8x19", "4.8x22", "4.8x25", "4.8x32", "4.8x35", "4.8x38", "4.8x40", "4.8x45", "4.8x50"],
-  "341": ["3.5x13", "3.5x14", "3.5x16", "3.5x19", "3.5x22", "3.5x25", "3.9x13", "3.9x14", "3.9x16", "3.9x19", "3.9x22", "3.9x25", "3.9x32", "3.9x35", "3.9x38", "3.9x40", "3.9x45", "3.9x50", "4.2x13", "4.2x14", "4.2x16", "4.2x19", "4.2x22", "4.2x25", "4.2x32", "4.2x35", "4.2x38", "4.2x40", "4.2x45", "4.2x50", "4.2x60", "4.2x63", "4.2x70", "4.2x75", "4.8x13", "4.8x14", "4.8x16", "4.8x19", "4.8x22", "4.8x25", "4.8x32", "4.8x35", "4.8x38", "4.8x40", "4.8x45", "4.8x50", "4.8x60", "4.8x63", "4.8x70", "4.8x75"],
+  "341": ["3.5x13", "3.5x14", "3.5x16", "3.5x19", "3.5x22", "3.5x25", "3.9x13", "3.9x14", "3.9x16", "3.9x19", "3.9x22", "3.9x25", "3.9x32", "3.9x35", "3.9x38", "3.9x40", "3.9x45", "3.9x50", "4.2x13", "4.2x14", "4.2x16", "4.2x19", "4.2x22", "4.2x25", "4.2x32", "4.2x35", "4.2x38", "4.2x40", "4.2x45", "4.2x50", "4.2x60", "4.2x63", "4.2x70", "4.2x75", "4.8x13", "4.8x14", "4.8x16", "4.8x19", "4.8x22", "4.8x25", "4.8x32", "4.8x35", "4.8x38", "4.8x40", "4.8x45", "4.8x50", "4.8x60", "4.8x63", "4.8x70", "4.8x75", "4.8x90", "4.8x120", "4.8x150", "4.8x180", "5.5x25", "5.5x32", "5.5x38", "5.5x45", "5.5x50", "5.5x55", "5.5x60", "5.5x63", "5.5x75", "5.5x100", "5.5x125", "5.5x150", "5.5x165", "5.5x180", "5.5x200", "5.5x225", "5.5x250", "5.5x275", "5.5x300", "6.3x25", "6.3x32", "6.3x38", "6.3x45", "6.3x50", "6.3x60", "6.3x63", "6.3x75", "6.3x100", "6.3x125", "6.3x150", "6.3x165", "6.3x180", "6.3x200", "6.3x230", "6.3x250", "6.3x275", "6.3x300"],
   "342": ["3.9x13", "3.9x16", "3.9x19", "3.9x25", "3.9x32", "3.9x38", "3.9x41", "3.9x45", "3.9x50", "4.2x13", "4.2x16", "4.2x19", "4.2x25", "4.2x32", "4.2x38", "4.2x41", "4.2x45", "4.2x50"],
   "343": ["4.2x13", "4.2x16", "4.2x19", "4.2x22", "4.2x25", "4.2x41", "4.2x50"],
   "344": ["3.5x25", "3.5x32", "3.5x38", "3.5x50", "3.9x32", "3.9x38", "3.9x50", "4.2x25", "4.2x32", "4.2x38", "4.2x50", "4.2x63", "4.2x75", "4.8x25", "5.5x32", "5.5x55", "6.3x55"],
-  "345": ["3.5x22", "3.5x25", "3.5x32", "3.5x35", "3.5x45", "3.5x55", "4.2x32", "4.2x35", "4.2x45", "4.2x55", "4.2x65", "4.2x75", "4.2x100", "4.2x125", "4.8x32", "4.8x38", "4.8x50", "4.8x55", "4.8x63", "4.8x75", "4.8x100", "4.8x125"],
+  "345": ["3.5x22", "3.5x25", "3.5x32", "3.5x35", "3.5x38", "3.5x45", "3.5x50", "3.5x55", "3.5x60", "3.5x70", "3.5x75", "4.2x32", "4.2x35", "4.2x45", "4.2x50", "4.2x55", "4.2x60", "4.2x63", "4.2x65", "4.2x75", "4.2x90", "4.2x100", "4.2x125", "4.2x150", "4.8x32", "4.8x38", "4.8x50", "4.8x55", "4.8x63", "4.8x75", "4.8x90", "4.8x100", "4.8x125", "4.8x150"],
   "346": ["4.0x16", "4.0x20", "4.0x25", "4.0x30", "4.0x35", "4.0x40", "4.0x45", "4.0x50", "4.0x60", "4.5x20", "4.5x30", "4.5x40", "4.5x45", "4.5x50"],
   "347": ["4.8x25", "4.8x40", "4.8x50", "4.8x60", "4.8x70", "4.8x80", "4.8x100", "5.5x25", "5.5x40", "5.5x50", "5.5x60", "5.5x70", "5.5x80", "5.5x100", "6.3x25", "6.3x40", "6.3x50", "6.3x60", "6.3x70", "6.3x80", "6.3x100", "6.3x120"],
   "348": ["6x20", "6x25", "6x30", "6x35", "6x40", "6x45", "6x50", "6x55", "6x60"],
@@ -7620,7 +7670,7 @@ const SCREW_SIZE_OPTIONS = {
   "351": ["3.5x25", "3.5x35", "3.5x38", "3.5x50"],
   "352": ["5x20", "5x25", "5x30", "5x40", "5x50", "6.3x30", "6.3x40", "6.3x50", "6.3x60", "7x30", "7x40", "7x50", "7x60", "7x70"],
   "353": ["7.5x52", "7.5x72", "7.5x82", "7.5x92", "7.5x102", "7.5x112", "7.5x132", "7.5x152", "7.5x182", "7.5x202", "7.5x212"],
-  "354": ["3.9x16", "3.9x19", "3.9x22", "3.9x25", "3.9x28", "3.9x32", "3.9x38", "3.9x41", "3.9x45", "3.9x50", "4.2x16", "4.2x19", "4.2x22", "4.2x25", "4.2x29", "4.2x32", "4.2x38", "4.2x45", "4.2x50", "4.5x19", "4.5x29", "4.5x45", "4.8x16", "4.8x19", "4.8x22", "4.8x25", "4.8x32", "4.8x38", "4.8x45", "4.8x50"],
+  "354": ["3.9x16", "3.9x19", "3.9x22", "3.9x25", "3.9x28", "3.9x32", "3.9x38", "3.9x41", "3.9x45", "3.9x50", "4.2x16", "4.2x19", "4.2x22", "4.2x25", "4.2x29", "4.2x32", "4.2x38", "4.2x41", "4.2x45", "4.2x50", "4.5x16", "4.5x19", "4.5x22", "4.5x25", "4.5x29", "4.5x32", "4.5x38", "4.5x41", "4.5x45", "4.8x16", "4.8x19", "4.8x22", "4.8x25", "4.8x32", "4.8x38", "4.8x45", "4.8x50"],
   "355": ["3.5x13", "3.5x16", "3.5x19", "3.5x22", "3.5x25", "3.5x32", "3.5x38", "3.9x13", "3.9x16", "3.9x19", "3.9x22", "3.9x25", "3.9x32", "3.9x38", "3.9x50", "4.2x13", "4.2x16", "4.2x19", "4.2x22", "4.2x25", "4.2x32", "4.2x38"],
   "356": ["6x30", "7x35", "8x40", "10x50"],
   "357": ["2.5x20", "2.5x25", "4x40", "4x45", "4x50", "4x60", "5x45", "5.5x45", "5.5x60", "5.5x70", "6.3x50", "6.3x60", "6.3x70", "6.3x80", "6.3x100", "7x80", "7x88", "8x100"],
@@ -8137,6 +8187,79 @@ function createSizeSelect(options, selected = '') {
   return select;
 }
 
+const DRILL_SCREW_CONFIG = {
+  334: { drillTypes: ['1+1 мм', '3 мм', '6 мм', '12.5 мм'], coatings: ['Оцинковка сине-белая', 'Оцинковка белая', 'Оцинковка желтая'], desc: 'Выберите покрытие, тип сверла и типоразмер.' },
+  335: { drillTypes: ['1+1 мм', '3 мм', '6 мм'], coatings: ['Оцинковка сине-белая', 'Оцинковка белая', 'Оцинковка желтая'], desc: 'Выберите покрытие, тип сверла и типоразмер.' },
+  337: { drillTypes: ['1+1 мм', '3 мм', '6 мм'], coatings: ['Оцинковка сине-белая', 'Оцинковка белая', 'Оцинковка желтая'], desc: 'Выберите покрытие, тип сверла и типоразмер.' },
+  338: { drillTypes: ['1+1 мм', '3 мм', '6 мм', '12.5 мм'], coatings: ['Оцинковка сине-белая', 'Оцинковка белая', 'Оцинковка желтая'], desc: 'Выберите покрытие, тип сверла и типоразмер.' },
+  341: { drillTypes: ['1+1 мм', '3 мм', '6 мм'], coatings: ['Оцинковка сине-белая', 'Оцинковка белая', 'Оцинковка желтая'], desc: 'Выберите покрытие, тип сверла и типоразмер.' },
+  342: { drillTypes: ['3 мм', '6 мм'], coatings: ['Оцинковка сине-белая', 'Оцинковка белая', 'Оцинковка желтая'], desc: 'Выберите покрытие, тип сверла и типоразмер.' },
+  344: { drillTypes: ['6 мм', '12.5 мм'], coatings: ['Оцинковка сине-белая', 'Оцинковка белая', 'Оцинковка желтая'], desc: 'Выберите покрытие, тип сверла и типоразмер.' },
+  345: { drillTypes: ['1+1 мм', '3 мм', '6 мм', '12.5 мм'], coatings: ['Фосфат черный', 'Фосфат серый', 'Оцинковка сине-белая', 'Оцинковка белая', 'Оцинковка желтая'], desc: 'Выберите покрытие, тип сверла и типоразмер.' },
+  361: { drillTypes: ['1+1 мм', '3 мм', '6 мм', '12.5 мм'], coatings: ['Оцинковка сине-белая', 'Оцинковка белая', 'Оцинковка желтая'], desc: 'Выберите покрытие, тип сверла и типоразмер.' }
+};
+
+function extractFastenerSizeOptions(card) {
+  const hay = String(card?.dataset?.search || '');
+  const matches = hay.match(/\b\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?x\d+(?:\.\d+)?\b/g) || [];
+  return Array.from(new Set(matches));
+}
+
+function normalizeCoatingLabel(value) {
+  let v = String(value || '').trim();
+  if (!v) return '';
+  v = v.replace(/\.$/, '').trim();
+  v = v.replace(/^оцинковка:?\s*/i, 'Оцинковка ');
+  v = v.replace(/^фосфат:?\s*/i, 'Фосфат ');
+  if (/^rohs zinc:?/i.test(v)) v = v.replace(/^rohs zinc:?\s*/i, 'ROHS zinc ');
+  return v.replace(/\s{2,}/g, ' ').trim();
+}
+
+function extractScrewCoatingOptions(card) {
+  const id = Number(card?.dataset?.id || 0);
+  const config = DRILL_SCREW_CONFIG[id];
+  if (config?.coatings?.length) return config.coatings;
+  const desc = String(card?.querySelector('.prod-desc')?.textContent || '');
+  const m = desc.match(/Покрытие:\s*(.*?)(?:\s*Головка:|\s*Шлиц:|\s*Резьба|\s*Применение:|$)/i);
+  if (!m) return [];
+  const raw = m[1].replace(/\.$/, '').trim();
+  const out = [];
+  raw.split(';').forEach(part => {
+    const seg = part.trim();
+    if (!seg) return;
+    const sub = seg.match(/^(Оцинковка|Фосфат|ROHS zinc)\s*:?\s*(.+)$/i);
+    if (sub) {
+      sub[2].split(',').forEach(piece => {
+        const label = normalizeCoatingLabel(`${sub[1]} ${piece}`);
+        if (label) out.push(label);
+      });
+    } else {
+      seg.split('/').forEach(piece => {
+        const label = normalizeCoatingLabel(piece);
+        if (label) out.push(label);
+      });
+    }
+  });
+  return Array.from(new Set(out));
+}
+
+function createPlainSelect(options, placeholder = 'выбрать…', selected = '') {
+  const select = document.createElement('select');
+  select.className = 'size-select';
+  const empty = document.createElement('option');
+  empty.value = '';
+  empty.textContent = placeholder;
+  select.appendChild(empty);
+  options.forEach(optText => {
+    const opt = document.createElement('option');
+    opt.value = optText;
+    opt.textContent = optText;
+    select.appendChild(opt);
+  });
+  if (selected) select.value = selected;
+  return select;
+}
+
 function createSizeVariantRow(id, options, values = {}) {
   const row = document.createElement('div');
   row.className = 'size-variant-row';
@@ -8276,6 +8399,108 @@ function initAbrasiveSizeSelectors() {
   });
 }
 
+function initDrillScrewSelectors() {
+  document.querySelectorAll('.product').forEach(card => {
+    const id = Number(card.dataset.id || 0);
+    const config = DRILL_SCREW_CONFIG[id];
+    if (!config) return;
+
+    const row = card.querySelector('.prod-inputs');
+    if (!row) return;
+
+    const noteWrap = row.querySelector('div[style*="flex:1"]');
+    const noteInput = card.querySelector(`.note-input[data-note="${id}"]`);
+    if (noteInput) noteInput.placeholder = 'комментарий по позиции…';
+
+    if (!row.querySelector(`[data-drill="${id}"]`)) {
+      const drillWrap = document.createElement('div');
+      drillWrap.className = 'size-wrap';
+      const label = document.createElement('label');
+      label.textContent = 'Тип сверла';
+      const select = createPlainSelect(config.drillTypes, 'выбрать…');
+      select.dataset.drill = String(id);
+      select.onchange = saveState;
+      drillWrap.appendChild(label);
+      drillWrap.appendChild(select);
+      if (noteWrap) row.insertBefore(drillWrap, noteWrap);
+      else row.appendChild(drillWrap);
+    }
+
+    if (!row.querySelector(`[data-size="${id}"]`)) {
+      const sizes = extractFastenerSizeOptions(card);
+      const sizeWrap = document.createElement('div');
+      sizeWrap.className = 'size-wrap';
+      const label = document.createElement('label');
+      label.textContent = 'Типоразмер';
+      const select = createPlainSelect(sizes, 'выбрать…');
+      select.dataset.size = String(id);
+      select.onchange = saveState;
+      sizeWrap.appendChild(label);
+      sizeWrap.appendChild(select);
+      if (noteWrap) row.insertBefore(sizeWrap, noteWrap);
+      else row.appendChild(sizeWrap);
+    }
+  });
+}
+
+function initScrewCoatingSelectors() {
+  document.querySelectorAll('.product[data-sku^="SCR-"]').forEach(card => {
+    const id = Number(card.dataset.id || 0);
+    const row = card.querySelector('.prod-inputs');
+    if (!row) return;
+    const coatings = extractScrewCoatingOptions(card);
+    if (!coatings.length) return;
+    if (row.querySelector(`[data-coating="${id}"]`)) return;
+    const noteWrap = row.querySelector('div[style*="flex:1"]');
+    const wrap = document.createElement('div');
+    wrap.className = 'size-wrap';
+    const label = document.createElement('label');
+    label.textContent = 'Покрытие';
+    const select = createPlainSelect(coatings, 'выбрать…');
+    select.dataset.coating = String(id);
+    select.onchange = saveState;
+    wrap.appendChild(label);
+    wrap.appendChild(select);
+    if (noteWrap) row.insertBefore(wrap, noteWrap);
+    else row.appendChild(wrap);
+  });
+}
+
+function formatScrewDescriptions() {
+  document.querySelectorAll('.product[data-sku^="SCR-"]').forEach(card => {
+    const desc = card.querySelector('.prod-desc');
+    if (!desc) return;
+    const id = Number(card.dataset.id || 0);
+    const isDrillConfig = Boolean(DRILL_SCREW_CONFIG[id]);
+    const text = String(desc.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!text) return;
+    const lines = text
+      .split(/\.\s+/)
+      .map(part => part.trim())
+      .filter(Boolean)
+      .filter(part => !/^Покрытие:/i.test(part))
+      .filter(part => !(isDrillConfig && /^Тип сверла:/i.test(part)))
+      .filter(part => !(isDrillConfig && /^Диаметр семейства:/i.test(part)))
+      .filter(part => !(isDrillConfig && /^Диапазон длины семейства:/i.test(part)))
+      .filter(part => !(isDrillConfig && /^Макс\.\s*толщина сверления:/i.test(part)))
+      .map(part => part.endsWith('.') ? part : `${part}.`);
+    desc.innerHTML = lines.join('<br>');
+  });
+}
+
+function formatAnchorDescriptions() {
+  document.querySelectorAll('.product[data-sku^="ANC-"] .prod-desc').forEach(desc => {
+    const text = String(desc.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!text) return;
+    const lines = text
+      .split(/\.\s+/)
+      .map(part => part.trim())
+      .filter(Boolean)
+      .map(part => part.endsWith('.') ? part : `${part}.`);
+    desc.innerHTML = lines.join('<br>');
+  });
+}
+
 // ━━━ ABRASIVE SHAPE BADGES ━━━
 const ABRASIVE_SHAPE_MAP = {
   1:{code:'41',label:'T41',desc:'плоский профиль'}, 2:{code:'42',label:'T42',desc:'утоплённый профиль'}, 3:{code:'41',label:'T41',desc:'плоский профиль'}, 4:{code:'41',label:'T41',desc:'плоский профиль'},
@@ -8380,12 +8605,38 @@ function initProductMetadata() {
   });
 }
 
+function groupDrillScrewCards() {
+  const sec = document.getElementById('cat-fasteners');
+  const anchor = document.getElementById('drill-screw-subsection');
+  if (!sec || !anchor) return;
+
+  const nonDrillTail = sec.querySelector('.product[data-sku="SCR-030"]');
+  if (nonDrillTail) {
+    nonDrillTail.after(anchor);
+  }
+
+  const order = ['SCR-005', 'SCR-006', 'SCR-008', 'SCR-009', 'SCR-012', 'SCR-013', 'SCR-015', 'SCR-016', 'SCR-031', 'SCR-032'];
+  let lastNode = anchor;
+
+  order.forEach((sku) => {
+    const card = sec.querySelector(`.product[data-sku="${sku}"]`);
+    if (!card) return;
+    lastNode.after(card);
+    lastNode = card;
+  });
+}
+
 // ━━━ INIT ━━━
 applyForcedMobileLayoutFromQuery();
 syncTopbarOffset();
 renderAbrasiveShapeBadges();
 initProductMetadata();
+groupDrillScrewCards();
 initAbrasiveSizeSelectors();
+initDrillScrewSelectors();
+initScrewCoatingSelectors();
+formatScrewDescriptions();
+formatAnchorDescriptions();
 initQtySteppers();
 initMobileFabBehavior();
 updateCategoryCounters();
