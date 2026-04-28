@@ -5503,6 +5503,49 @@ const catColors = {"abrasives": "#f59e0b", "chemicals": "#3b82f6", "heatshrink":
 cats["tile-spacers"] = "Разделители для плитки";
 catColors["tile-spacers"] = "#0ea5e9";
 
+// STRUCTURE GUARD: don't allow merging heatshrink and tapes nav entries again.
+function enforceHeatshrinkTapesSeparation() {
+  const issues = [];
+  const expectedHeat = 'Термоусадочные трубки';
+  const expectedTapes = 'Ленты';
+
+  if (!Object.prototype.hasOwnProperty.call(cats, 'heatshrink')) {
+    cats.heatshrink = expectedHeat;
+    issues.push('Отсутствовал ключ cats.heatshrink; восстановлен автоматически.');
+  }
+
+  if (!Object.prototype.hasOwnProperty.call(cats, 'tapes')) {
+    cats.tapes = expectedTapes;
+    issues.push('Отсутствовал ключ cats.tapes; восстановлен автоматически.');
+  }
+
+  if ((cats.tapes || '').toLowerCase().includes('термоусад')) {
+    cats.tapes = expectedTapes;
+    issues.push('cats.tapes содержал "термоусад"; возвращен в "Ленты".');
+  }
+
+  if (!catColors.heatshrink) {
+    catColors.heatshrink = '#8b5cf6';
+    issues.push('Отсутствовал цвет для heatshrink; добавлен #8b5cf6.');
+  }
+
+  if (!catColors.tapes) {
+    catColors.tapes = '#7c3aed';
+    issues.push('Отсутствовал цвет для tapes; добавлен #7c3aed.');
+  }
+
+  const hasHeatSection = !!document.getElementById('cat-heatshrink');
+  const hasTapesSection = !!document.getElementById('cat-tapes');
+  if (!hasHeatSection) issues.push('Не найден раздел #cat-heatshrink в DOM.');
+  if (!hasTapesSection) issues.push('Не найден раздел #cat-tapes в DOM.');
+
+  if (issues.length) {
+    console.error('[STRUCTURE_GUARD] Нарушено разделение Термоусадки и Лент:', issues);
+  }
+}
+
+enforceHeatshrinkTapesSeparation();
+
 const navCats = document.getElementById('navCats');
 const navScrollWrap = document.getElementById('navScrollWrap');
 
