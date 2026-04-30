@@ -4572,9 +4572,21 @@ function collectOrderLines() {
 }
 
 function findMissingSizeLines(lines) {
+  const requiredSizeIds = new Set();
+  document.querySelectorAll('.product').forEach(card => {
+    const id = String(card.dataset.id || '').trim();
+    if (!id) return;
+    const hasBaseSize = Boolean(card.querySelector(`[data-size="${id}"]`) || card.querySelector(`[data-size-custom="${id}"]`));
+    const hasVariantSize = Boolean(card.querySelector('.size-variant-select') || card.querySelector('.size-variant-custom-input'));
+    if (hasBaseSize || hasVariantSize) {
+      requiredSizeIds.add(id);
+    }
+  });
+
   return lines.filter(line => {
-    const hasSizeOptions = Boolean(ABRASIVE_SIZE_OPTIONS[Number(line.id)]);
-    return hasSizeOptions && !line.size;
+    const id = String(line.id || '').trim();
+    if (!id || !requiredSizeIds.has(id)) return false;
+    return !String(line.size || '').trim();
   });
 }
 
@@ -4971,7 +4983,7 @@ function exportCSV() {
   const missingSize = findMissingSizeLines(lines);
   if (missingSize.length) {
     const first = missingSize[0];
-    showToast(`⚠️ Укажите размер для артикула ${first.sku}`);
+    showToast(`⚠️ Укажите типоразмер для артикула ${first.sku}`);
     return;
   }
   lines.forEach(line => {
@@ -5007,7 +5019,7 @@ async function submitForm(triggerBtn = null) {
   const missingSize = findMissingSizeLines(rawLines);
   if (missingSize.length) {
     const first = missingSize[0];
-    showToast(`⚠️ Укажите размер для артикула ${first.sku}`);
+    showToast(`⚠️ Укажите типоразмер для артикула ${first.sku}`);
     return;
   }
   const products = rawLines.map(line => {
