@@ -438,6 +438,122 @@ body.cart-open{overflow:hidden}
 #cat-rags .prod-img img{width:auto!important;height:90%!important;max-width:100%!important;object-fit:contain!important;object-position:center center!important;display:block!important;margin:auto!important;background:#fff;padding:0!important}
 @media(max-width:760px){#cat-rags .product{grid-template-columns:110px minmax(0,1fr)!important;align-items:center!important}#cat-rags .prod-img{width:110px!important;height:95px!important;min-height:95px!important;align-self:center!important;display:flex!important;align-items:center!important;justify-content:center!important}}
 
+/* GEO_LAYOUT_MATCH_RAGS */
+#cat-geo .product{align-items:center!important}
+#cat-geo .prod-img{width:124px!important;min-height:106px!important;height:106px!important;align-self:center!important;display:flex!important;align-items:center!important;justify-content:center!important;background:#fff!important}
+#cat-geo .prod-img img{width:auto!important;height:90%!important;max-width:100%!important;object-fit:contain!important;object-position:center center!important;display:block!important;margin:auto!important;background:#fff;padding:0!important}
+#cat-geo .prod-inputs{display:grid!important;grid-template-columns:160px max-content minmax(320px,560px)!important;gap:10px!important;align-items:end!important}
+#cat-geo .prod-inputs > div{min-width:0}
+#cat-geo .unit-label{white-space:nowrap;display:flex;align-items:center;height:36px;margin-top:24px;padding-bottom:0;line-height:1}
+#cat-geo .note-input{width:100%!important;min-width:0!important;max-width:100%!important}
+#cat-geo .product[data-id="99"] .prod-inputs{
+  grid-template-columns:160px minmax(120px,150px) minmax(120px,150px) minmax(120px,150px) minmax(220px,1fr)!important;
+  gap:10px 12px!important;
+}
+#cat-geo .product[data-id="98"] .prod-inputs{
+  grid-template-columns:160px minmax(120px,150px) minmax(120px,150px) minmax(220px,1fr)!important;
+  gap:10px 12px!important;
+}
+#cat-geo .product[data-id="100"] .prod-inputs,
+#cat-geo .product[data-id="101"] .prod-inputs,
+#cat-geo .product[data-id="102"] .prod-inputs,
+#cat-geo .product[data-id="103"] .prod-inputs,
+#cat-geo .product[data-id="104"] .prod-inputs,
+#cat-geo .product[data-id="106"] .prod-inputs{
+  grid-template-columns:160px minmax(320px,1fr)!important;
+  gap:10px 12px!important;
+}
+#cat-geo .product[data-id="105"] .prod-inputs{
+  grid-template-columns:160px minmax(180px,240px) minmax(280px,1fr)!important;
+  gap:10px 12px!important;
+}
+#cat-geo .product[data-id="99"] .prod-inputs .unit-label{display:none!important}
+#cat-geo .product[data-id="98"] .prod-inputs .unit-label{display:none!important}
+#cat-geo .product[data-id="100"] .prod-inputs .unit-label,
+#cat-geo .product[data-id="101"] .prod-inputs .unit-label,
+#cat-geo .product[data-id="102"] .prod-inputs .unit-label,
+#cat-geo .product[data-id="103"] .prod-inputs .unit-label,
+#cat-geo .product[data-id="104"] .prod-inputs .unit-label,
+#cat-geo .product[data-id="105"] .prod-inputs .unit-label,
+#cat-geo .product[data-id="106"] .prod-inputs .unit-label{display:none!important}
+#cat-geo .product[data-id="99"] .prod-inputs .size-wrap .size-select{width:100%!important}
+#cat-geo .product[data-id="98"] .prod-inputs .size-wrap .size-select{width:100%!important}
+#cat-geo .product[data-id="105"] .prod-inputs .size-wrap .size-select{width:100%!important}
+/* BIG-BAG LEGEND */
+.bigbag-legend-title{margin:8px auto 6px;padding:8px 12px;border-radius:9px;border:1px solid #fdba74;background:#fff7ed;color:#9a3412;font-size:12px;font-weight:800;max-width:1120px}
+.bigbag-legend{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:10px;
+  width:100%;
+  max-width:none;
+  margin:0 0 10px;
+}
+.bigbag-item{
+  display:flex;
+  flex-direction:column!important;
+  align-items:center;
+  justify-content:flex-start;
+  gap:10px;
+  padding:8px 8px;
+  border:1px solid #fed7aa;
+  border-radius:10px;
+  background:#fff;
+  text-align:center;
+  min-height:178px;
+}
+.bigbag-item img{width:114px;height:114px;object-fit:contain;border-radius:10px;border:1px solid #e2e8f0;background:#fff}
+.bigbag-item span{font-size:13px;font-weight:700;color:#7c2d12;line-height:1.2}
+@media(max-width:1700px){
+  #cat-geo .product[data-id="99"] .prod-inputs{
+    grid-template-columns:160px minmax(120px,1fr) minmax(120px,1fr) minmax(120px,1fr)!important;
+  }
+  #cat-geo .product[data-id="98"] .prod-inputs{
+    grid-template-columns:160px minmax(120px,1fr) minmax(120px,1fr)!important;
+  }
+  #cat-geo .product[data-id="99"] .prod-inputs > div:last-child{
+    grid-column:1 / -1;
+  }
+  #cat-geo .product[data-id="98"] .prod-inputs > div:last-child{
+    grid-column:1 / -1;
+  }
+  #cat-geo .product[data-id="100"] .prod-inputs,
+  #cat-geo .product[data-id="101"] .prod-inputs,
+  #cat-geo .product[data-id="102"] .prod-inputs,
+  #cat-geo .product[data-id="103"] .prod-inputs,
+  #cat-geo .product[data-id="104"] .prod-inputs,
+  #cat-geo .product[data-id="106"] .prod-inputs{
+    grid-template-columns:160px minmax(220px,1fr)!important;
+  }
+  #cat-geo .product[data-id="105"] .prod-inputs{
+    grid-template-columns:160px minmax(160px,220px) minmax(220px,1fr)!important;
+  }
+  #cat-geo .product[data-id="100"] .prod-inputs > div:last-child,
+  #cat-geo .product[data-id="101"] .prod-inputs > div:last-child,
+  #cat-geo .product[data-id="102"] .prod-inputs > div:last-child,
+  #cat-geo .product[data-id="103"] .prod-inputs > div:last-child,
+  #cat-geo .product[data-id="104"] .prod-inputs > div:last-child,
+  #cat-geo .product[data-id="105"] .prod-inputs > div:last-child,
+  #cat-geo .product[data-id="106"] .prod-inputs > div:last-child{
+    grid-column:1 / -1;
+  }
+}
+@media(max-width:1400px){
+  .bigbag-legend{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:1050px){
+  .bigbag-legend{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .bigbag-legend{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bigbag-item{min-height:165px}
+  .bigbag-item img{width:98px;height:98px}
+}
+@media(max-width:760px){#cat-geo .product{grid-template-columns:110px minmax(0,1fr)!important;align-items:center!important}#cat-geo .prod-img{width:110px!important;height:95px!important;min-height:95px!important;align-self:center!important;display:flex!important;align-items:center!important;justify-content:center!important}#cat-geo .prod-inputs{display:flex!important;flex-direction:column!important;gap:6px!important;align-items:stretch!important}}
+
+
+.geo-subhead{margin:10px 0 8px;padding:8px 12px;border-radius:9px;border:1px solid #fed7aa;background:#fff7ed;color:#9a3412;font-size:12px;font-weight:800}
+
 </style>
 </head>
 <body>
@@ -3916,6 +4032,7 @@ body.cart-open{overflow:hidden}
 <h2 style="color:#f97316">🏗️ Геосинтетика и упаковка</h2>
 <span class="cat-count" style="color:#f97316">9 позиций</span>
 </div>
+<div class="geo-subhead">Геотекстиль и дренаж</div>
 <div class="product" data-id="98" data-search="геотекстиль нетканый иглопробивной (пп или пэт) 100-1000 г/м², прочность на разрыв 7.5-48 кн/м, для фильтрации, дренажа, разделения">
 <div class="prod-img">
 <img alt="" loading="lazy" src="images/geo-001.jpg" style="width:100%;height:100%;object-fit:cover"/>
@@ -3924,16 +4041,41 @@ body.cart-open{overflow:hidden}
 <div class="prod-top">
 <span class="prod-name">Геотекстиль нетканый иглопробивной (ПП или ПЭТ)</span>
 </div>
-<div class="prod-desc">100-1000 г/м², прочность на разрыв 7.5-48 кН/м, для фильтрации, дренажа, разделения</div>
+<div class="prod-desc">Прочность на разрыв: 7.5-48 кН/м.<br/>Материал: ПП или ПЭТ.<br/>Применение: фильтрация, дренаж, разделение слоев и защита основания.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="98" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">рулон 5м × 25-100м</span>
+<span class="unit-label">рулон</span>
+<div class="size-wrap">
+<label>Плотность</label>
+<select class="size-select" data-size="98" onchange="saveState()">
+<option value="">выбрать…</option>
+<option value="100 г/м²">100 г/м²</option>
+<option value="150 г/м²">150 г/м²</option>
+<option value="200 г/м²">200 г/м²</option>
+<option value="250 г/м²">250 г/м²</option>
+<option value="300 г/м²">300 г/м²</option>
+<option value="400 г/м²">400 г/м²</option>
+<option value="500 г/м²">500 г/м²</option>
+<option value="600 г/м²">600 г/м²</option>
+<option value="800 г/м²">800 г/м²</option>
+<option value="1000 г/м²">1000 г/м²</option>
+</select>
+</div>
+<div class="size-wrap">
+<label>Размер рулона</label>
+<select class="size-select" data-color="98" onchange="saveState()">
+<option value="">выбрать…</option>
+<option value="5.0 × 25 м">5.0 × 25 м</option>
+<option value="5.0 × 50 м">5.0 × 50 м</option>
+<option value="5.0 × 100 м">5.0 × 100 м</option>
+</select>
+</div>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="98" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="98" oninput="saveState()" placeholder="комментарий…" type="text"/>
 </div>
 </div>
 </div>
@@ -3946,16 +4088,42 @@ body.cart-open{overflow:hidden}
 <div class="prod-top">
 <span class="prod-name">Геотекстиль тканый полипропиленовый</span>
 </div>
-<div class="prod-desc">130-500 г/м², прочность 30-100 кН/м, ячейка 75-425 мкм, 9+ марок</div>
-<div class="prod-inputs">
+<div class="prod-desc">Прочность на разрыв: 30-100 кН/м.<br/>Ячейка (AOS): 75-425 мкм.<br/>Применение: разделение слоев, фильтрация и армирование оснований в дорожных и дренажных работах.</div>
+<div class="prod-inputs geo-002-inputs">
 <div>
 <label>Кол-во</label>
 <input class="qty-input" data-qty="99" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
 </div>
-<span class="unit-label">рулон 3.8-5.0м</span>
+<span class="unit-label">рулон</span>
+<div class="size-wrap">
+<label>Плотность</label>
+<select class="size-select" data-size="99" onchange="saveState()">
+<option value="">выбрать…</option>
+<option value="130 г/м²">130 г/м²</option>
+<option value="160 г/м²">160 г/м²</option>
+<option value="200 г/м²">200 г/м²</option>
+<option value="220 г/м²">220 г/м²</option>
+<option value="240 г/м²">240 г/м²</option>
+<option value="340 г/м²">340 г/м²</option>
+<option value="430 г/м²">430 г/м²</option>
+<option value="500 г/м²">500 г/м²</option>
+</select>
+</div>
+<div class="size-wrap">
+<label>Ячейка (AOS)</label>
+<select class="size-select" data-cell="99" onchange="saveState()">
+<option value="">выбрать…</option>
+</select>
+</div>
+<div class="size-wrap">
+<label>Размер рулона</label>
+<select class="size-select" data-color="99" onchange="saveState()">
+<option value="">выбрать…</option>
+</select>
+</div>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="99" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="99" oninput="saveState()" placeholder="комментарий…" type="text"/>
 </div>
 </div>
 </div>
@@ -3968,7 +4136,7 @@ body.cart-open{overflow:hidden}
 <div class="prod-top">
 <span class="prod-name">Геотекстиль тканый из высокопрочного полиэстера</span>
 </div>
-<div class="prod-desc">Прочность до 600 кН/м, минимальная ползучесть, для постоянных сооружений</div>
+<div class="prod-desc">Материал: высокопрочный полиэстер (PET).<br/>Прочность: до 600 кН/м, низкая ползучесть.<br/>Применение: постоянные армирующие конструкции и стабилизация оснований.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -3977,7 +4145,7 @@ body.cart-open{overflow:hidden}
 <span class="unit-label">рулон по заказу</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="100" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="100" oninput="saveState()" placeholder="параметры по запросу…" type="text"/>
 </div>
 </div>
 </div>
@@ -3990,7 +4158,7 @@ body.cart-open{overflow:hidden}
 <div class="prod-top">
 <span class="prod-name">Геокомпозит дренажный</span>
 </div>
-<div class="prod-desc">3D дренажное ядро + нетканый фильтр, высокая пропускная способность</div>
+<div class="prod-desc">Конструкция: 3D дренажное ядро + фильтрующий геотекстиль.<br/>Свойство: высокая водоотводящая способность.<br/>Применение: дренаж в фундаментах, подпорных стенах, полигонах и тоннелях.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -3999,20 +4167,20 @@ body.cart-open{overflow:hidden}
 <span class="unit-label">рулон по заказу</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="101" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="101" oninput="saveState()" placeholder="параметры по запросу…" type="text"/>
 </div>
 </div>
 </div>
 </div>
 <div class="product" data-id="102" data-search="геомешки и геоконтейнеры пп тканые/нетканые, uv-стабилизированные, заполняются песком/грунтом на месте">
 <div class="prod-img">
-<img alt="" loading="lazy" src="images/geo-003.jpg" style="width:100%;height:100%;object-fit:cover"/>
+<img alt="" loading="lazy" src="images/geo-005.jpg" style="width:100%;height:100%;object-fit:cover"/>
 </div>
 <div class="prod-body">
 <div class="prod-top">
 <span class="prod-name">Геомешки и геоконтейнеры</span>
 </div>
-<div class="prod-desc">ПП тканые/нетканые, UV-стабилизированные, заполняются песком/грунтом на месте</div>
+<div class="prod-desc">Материал: ПП тканые/нетканые полотна, UV-стабилизированные.<br/>Заполнение: песок, грунт, инертный материал на площадке.<br/>Применение: берегоукрепление, удержание грунта и локальная противоэрозионная защита.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -4021,11 +4189,12 @@ body.cart-open{overflow:hidden}
 <span class="unit-label">шт.</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="102" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="102" oninput="saveState()" placeholder="тип, размер, спецификация…" type="text"/>
 </div>
 </div>
 </div>
 </div>
+<div class="geo-subhead">Армирование и стабилизация</div>
 <div class="product" data-id="103" data-search="георешётка биаксиальная из полипропилена прочность 15-40 кн/м в обоих направлениях, ячейка 38/65 мм, кпд узлов ≥95%">
 <div class="prod-img">
 <img alt="" loading="lazy" src="images/geo-006.jpg" style="width:100%;height:100%;object-fit:cover"/>
@@ -4034,7 +4203,7 @@ body.cart-open{overflow:hidden}
 <div class="prod-top">
 <span class="prod-name">Георешётка биаксиальная из полипропилена</span>
 </div>
-<div class="prod-desc">Прочность 15-40 кН/м в обоих направлениях, ячейка 38/65 мм, КПД узлов ≥95%</div>
+<div class="prod-desc">Материал: полипропиленовая двуосная решетка.<br/>Прочность: 15-40 кН/м в обоих направлениях.<br/>Применение: армирование оснований, стабилизация насыпей и дорожных конструкций.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -4043,7 +4212,7 @@ body.cart-open{overflow:hidden}
 <span class="unit-label">рулон 3.95м</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="103" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="103" oninput="saveState()" placeholder="параметры по запросу…" type="text"/>
 </div>
 </div>
 </div>
@@ -4056,7 +4225,7 @@ body.cart-open{overflow:hidden}
 <div class="prod-top">
 <span class="prod-name">Геоячейки объёмные из ПЭВП</span>
 </div>
-<div class="prod-desc">Сотовые панели ПЭВП, глубина 75-300 мм, UV-стабилизированные, поставка в сложенном виде</div>
+<div class="prod-desc">Материал: UV-стабилизированный ПЭВП (HDPE).<br/>Конструкция: объемные сотовые панели, поставка в сложенном виде.<br/>Применение: укрепление склонов, откосов, каналов и слабых грунтов.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -4065,29 +4234,7 @@ body.cart-open{overflow:hidden}
 <span class="unit-label">пачка панелей</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="104" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<div class="product" data-id="105" data-search="мягкие контейнеры (мкр / биг-бэги) и тканые мешки полипропиленовые мкр и мешки различной грузоподъёмности">
-<div class="prod-img">
-<img alt="" loading="lazy" src="images/geo-008.jpg" style="width:100%;height:100%;object-fit:cover"/>
-</div>
-<div class="prod-body">
-<div class="prod-top">
-<span class="prod-name">Мягкие контейнеры (МКР / биг-бэги) и тканые мешки</span>
-</div>
-<div class="prod-desc">Полипропиленовые МКР и мешки различной грузоподъёмности</div>
-<div class="prod-inputs">
-<div>
-<label>Кол-во</label>
-<input class="qty-input" data-qty="105" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
-</div>
-<span class="unit-label">шт.</span>
-<div style="flex:1">
-<label>Примечание</label>
-<input class="note-input" data-note="105" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="104" oninput="saveState()" placeholder="параметры по запросу…" type="text"/>
 </div>
 </div>
 </div>
@@ -4100,7 +4247,7 @@ body.cart-open{overflow:hidden}
 <div class="prod-top">
 <span class="prod-name">Геомембрана ПЭВП</span>
 </div>
-<div class="prod-desc">HDPE плёнка для гидроизоляции водоёмов, полигонов, резервуаров</div>
+<div class="prod-desc">Материал: HDPE геомембрана.<br/>Назначение: гидроизоляционный барьер.<br/>Применение: водоемы, полигоны, резервуары и инженерные защитные экраны.</div>
 <div class="prod-inputs">
 <div>
 <label>Кол-во</label>
@@ -4109,7 +4256,51 @@ body.cart-open{overflow:hidden}
 <span class="unit-label">уп.</span>
 <div style="flex:1">
 <label>Примечание</label>
-<input class="note-input" data-note="106" oninput="saveState()" placeholder="размер, спецификация…" type="text"/>
+<input class="note-input" data-note="106" oninput="saveState()" placeholder="параметры по запросу…" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="geo-subhead">Мягкие контейнеры / биг-бэги</div>
+<div class="bigbag-legend-title">Тип формы биг-бэга</div>
+<div class="bigbag-legend">
+<div class="bigbag-item"><img alt="" loading="lazy" src="images/bigbag-legend/01-standard.jpg"/><span>Стандартный</span></div>
+<div class="bigbag-item"><img alt="" loading="lazy" src="images/bigbag-legend/02-circular.jpg"/><span>Циркулярный</span></div>
+<div class="bigbag-item"><img alt="" loading="lazy" src="images/bigbag-legend/03-baffle.jpg"/><span>С перегородками (Baffle)</span></div>
+<div class="bigbag-item"><img alt="" loading="lazy" src="images/bigbag-legend/04-full-loop.jpg"/><span>Полный контур петель</span></div>
+<div class="bigbag-item"><img alt="" loading="lazy" src="images/bigbag-legend/05-single-loop.jpg"/><span>Одна подъемная петля</span></div>
+<div class="bigbag-item"><img alt="" loading="lazy" src="images/bigbag-legend/06-side-seam.jpg"/><span>Боковые шовные петли</span></div>
+</div>
+<div class="product" data-id="105" data-search="мягкие контейнеры (мкр / биг-бэги) и тканые мешки полипропиленовые мкр и мешки различной грузоподъёмности">
+<div class="prod-img">
+<img alt="" loading="lazy" src="images/geo-008.jpg" style="width:100%;height:100%;object-fit:cover"/>
+</div>
+<div class="prod-body">
+<div class="prod-top">
+<span class="prod-name">Мягкие контейнеры (МКР / биг-бэги) и тканые мешки</span>
+</div>
+<div class="prod-desc">Материал: полипропиленовые тканые контейнеры и мешки.<br/>Назначение: сыпучие материалы, хранение и транспортировка.<br/>Применение: стройка, химия, агро- и логистические задачи.</div>
+<div class="prod-inputs">
+<div>
+<label>Кол-во</label>
+<input class="qty-input" data-qty="105" min="0" oninput="onQtyChange(this)" placeholder="—" type="number"/>
+</div>
+<span class="unit-label">шт.</span>
+<div class="size-wrap">
+<label>Форма</label>
+<select class="size-select" data-size="105" onchange="saveState()">
+<option value="">выбрать…</option>
+<option value="Стандартный">Стандартный</option>
+<option value="Циркулярный">Циркулярный</option>
+<option value="С перегородками (Baffle)">С перегородками (Baffle)</option>
+<option value="Полный контур петель">Полный контур петель</option>
+<option value="Одна подъемная петля">Одна подъемная петля</option>
+<option value="Боковые шовные петли">Боковые шовные петли</option>
+</select>
+</div>
+<div style="flex:1">
+<label>Примечание</label>
+<input class="note-input" data-note="105" oninput="saveState()" placeholder="тип, размер, спецификация…" type="text"/>
 </div>
 </div>
 </div>
@@ -4457,7 +4648,9 @@ function collectOrderLines() {
     const baseSizeCustom = card.querySelector(`[data-size-custom="${id}"]`)?.value || '';
     const baseSize = normalizeSelectedSize(baseSizeSelected, baseSizeCustom);
     const baseColor = card.querySelector(`[data-color="${id}"]`)?.value || '';
-    const baseNote = card.querySelector(`[data-note="${id}"]`)?.value || '';
+    const baseCell = card.querySelector(`[data-cell="${id}"]`)?.value || '';
+    const baseNoteRaw = card.querySelector(`[data-note="${id}"]`)?.value || '';
+    const baseNote = [baseCell ? `ячейка: ${baseCell}` : '', baseNoteRaw].filter(Boolean).join(' | ');
 
     if (toQtyNumber(baseQty) > 0) {
       lines.push(createOrderLine(card, { qty: baseQty, size: baseSize, note: baseNote, color: baseColor }));
@@ -4510,6 +4703,7 @@ function saveState() {
     const size = card.querySelector(`[data-size="${id}"]`)?.value || '';
     const sizeCustom = card.querySelector(`[data-size-custom="${id}"]`)?.value || '';
     const color = card.querySelector(`[data-color="${id}"]`)?.value || '';
+    const cell = card.querySelector(`[data-cell="${id}"]`)?.value || '';
     const variants = [];
 
     card.querySelectorAll('.size-variant-row').forEach(row => {
@@ -4521,8 +4715,8 @@ function saveState() {
       }
     });
 
-    if (qty || note || size || sizeCustom || color || variants.length) {
-      state.items[id] = { qty, note, size, sizeCustom, color, variants };
+    if (qty || note || size || sizeCustom || color || cell || variants.length) {
+      state.items[id] = { qty, note, size, sizeCustom, color, cell, variants };
     }
   });
 
@@ -4567,6 +4761,7 @@ function loadState() {
       const sizeEl = document.querySelector(`[data-size="${id}"]`);
       const sizeCustomEl = document.querySelector(`[data-size-custom="${id}"]`);
       const colorEl = document.querySelector(`[data-color="${id}"]`);
+      const cellEl = document.querySelector(`[data-cell="${id}"]`);
       if (qtyEl && data.qty) qtyEl.value = data.qty;
       if (noteEl) {
         const mergedNote = [data.params || '', data.note || ''].filter(Boolean).join(' | ');
@@ -4576,6 +4771,7 @@ function loadState() {
         assignSizeControlValue(sizeEl, sizeCustomEl, options, data.size || '', data.sizeCustom || '');
       }
       if (colorEl && data.color) colorEl.value = data.color;
+      if (cellEl && data.cell) cellEl.value = data.cell;
 
       if (Array.isArray(data.variants) && data.variants.length) {
         const card = document.querySelector(`.product[data-id="${id}"]`);
@@ -4609,6 +4805,7 @@ function clearAll() {
     el.disabled = true;
   });
   document.querySelectorAll('[data-color]').forEach(el => { el.value = ''; });
+  document.querySelectorAll('[data-cell]').forEach(el => { el.value = ''; });
   document.querySelectorAll('.size-variant-row').forEach(el => el.remove());
   document.querySelectorAll('[data-save]').forEach(el => { el.value = ''; });
   document.querySelectorAll('.product').forEach(el => el.classList.remove('has-qty'));
@@ -6577,6 +6774,62 @@ function renderAbrasiveShapeBadges() {
   });
 }
 
+const GEO_002_COMPAT = {
+  '130 г/м²': { cell: ['75 мкм'], roll: ['3.8 × 132 м', '5.0 × 100 м'] },
+  '160 г/м²': { cell: ['75 мкм'], roll: ['3.8 × 132 м', '5.0 × 100 м'] },
+  '200 г/м²': { cell: ['75 мкм'], roll: ['3.8 × 132 м', '5.0 × 100 м'] },
+  '220 г/м²': { cell: ['150 мкм'], roll: ['3.8 × 132 м', '5.0 × 100 м'] },
+  '240 г/м²': { cell: ['75 мкм', '150 мкм'], roll: ['3.8 × 132 м', '5.0 × 100 м'] },
+  '340 г/м²': { cell: ['250 мкм'], roll: ['3.8 × 132 м', '5.0 × 100 м'] },
+  '430 г/м²': { cell: ['425 мкм'], roll: ['3.8 × 66 м', '5.0 × 50 м'] },
+  '500 г/м²': { cell: ['425 мкм'], roll: ['3.8 × 60 м', '5.0 × 50 м'] }
+};
+
+function refillSelectWithOptions(select, options, preserveValue = '') {
+  if (!select) return;
+  const keep = preserveValue || select.value || '';
+  select.innerHTML = '<option value="">выбрать…</option>';
+  options.forEach(value => {
+    const op = document.createElement('option');
+    op.value = value;
+    op.textContent = value;
+    select.appendChild(op);
+  });
+  select.value = options.includes(keep) ? keep : '';
+}
+
+function initGeo002DependentSelectors() {
+  const card = document.querySelector('.product[data-id="99"]');
+  if (!card) return;
+
+  const densityEl = card.querySelector('[data-size="99"]');
+  const cellEl = card.querySelector('[data-cell="99"]');
+  const rollEl = card.querySelector('[data-color="99"]');
+  if (!densityEl || !cellEl || !rollEl) return;
+
+  const applyCompat = () => {
+    const key = densityEl.value || '';
+    const conf = GEO_002_COMPAT[key];
+    if (!conf) {
+      refillSelectWithOptions(cellEl, []);
+      refillSelectWithOptions(rollEl, []);
+      return;
+    }
+    refillSelectWithOptions(cellEl, conf.cell);
+    refillSelectWithOptions(rollEl, conf.roll);
+  };
+
+  if (!densityEl.dataset.geo002Bound) {
+    densityEl.addEventListener('change', () => {
+      applyCompat();
+      saveState();
+    });
+    densityEl.dataset.geo002Bound = '1';
+  }
+
+  applyCompat();
+}
+
 function initProductMetadata() {
   document.querySelectorAll('.cat-section').forEach(sec => {
     const catKey = sec.dataset.cat || '';
@@ -6602,10 +6855,12 @@ syncTopbarOffset();
 renderAbrasiveShapeBadges();
 initProductMetadata();
 initAbrasiveSizeSelectors();
+initGeo002DependentSelectors();
 initQtySteppers();
 initMobileFabBehavior();
 updateCategoryCounters();
 loadState();
+initGeo002DependentSelectors();
 renderCartDrawer();
 window.addEventListener('resize', syncTopbarOffset);
 </script>
