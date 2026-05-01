@@ -4971,7 +4971,7 @@ function renderCartDrawer() {
     })()
     : '';
 
-  itemsEl.innerHTML = itemsHtml + warningHtml;
+  itemsEl.innerHTML = warningHtml + itemsHtml;
   itemsEl.querySelectorAll('[data-go-problem-id]').forEach(btn => {
     btn.addEventListener('click', () => {
       goToProblemCard(btn.getAttribute('data-go-problem-id'));
