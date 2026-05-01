@@ -4478,6 +4478,7 @@ function enhanceQtyInput(input) {
   if (!input || input.dataset.qtyEnhanced === '1') return;
   const parent = input.parentElement;
   if (!parent) return;
+  const isVariantQty = input.classList.contains('qty-variant-input');
 
   input.dataset.qtyEnhanced = '1';
   input.type = 'number';
@@ -4510,9 +4511,15 @@ function enhanceQtyInput(input) {
   };
 
   parent.replaceChild(stepper, input);
-  stepper.appendChild(clearBtn);
-  stepper.appendChild(input);
-  stepper.appendChild(incBtn);
+  if (isVariantQty) {
+    stepper.appendChild(incBtn);
+    stepper.appendChild(input);
+    stepper.appendChild(clearBtn);
+  } else {
+    stepper.appendChild(clearBtn);
+    stepper.appendChild(input);
+    stepper.appendChild(incBtn);
+  }
 
   updateQtyStepperControl(input);
 }
