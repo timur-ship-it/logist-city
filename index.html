@@ -4351,6 +4351,7 @@ const MOQ_BY_PRODUCT_ID = Object.freeze({});
 const MOQ_BY_CATEGORY = Object.freeze({
   ppe: 6000
 });
+const CUSTOM_SIZE_COMMENT_OPTION_VALUE = 'Свой размер (см. комментарий)';
 
 function isCustomSizeToken(value) {
   return String(value || '').trim() === CUSTOM_SIZE_TOKEN;
@@ -4368,6 +4369,45 @@ function toggleCustomSizeInput(selectEl, customInputEl) {
   const show = isCustomSizeToken(selectEl?.value);
   customInputEl.style.display = show ? '' : 'none';
   customInputEl.disabled = !show;
+}
+
+function ensureCustomSizeCommentOption(selectEl) {
+  if (!selectEl) return;
+  const hasOption = Array.from(selectEl.options).some(
+    opt => String(opt.value || '').trim() === CUSTOM_SIZE_COMMENT_OPTION_VALUE
+  );
+  if (hasOption) return;
+  const option = document.createElement('option');
+  option.value = CUSTOM_SIZE_COMMENT_OPTION_VALUE;
+  option.textContent = 'Свой размер';
+  selectEl.appendChild(option);
+}
+
+function ensureSizeCommentHint(card, id) {
+  if (!card || !id) return;
+  const noteInput = card.querySelector(`[data-note="${id}"]`);
+  if (!noteInput) return;
+  const host = noteInput.closest('div');
+  if (!host) return;
+  if (host.querySelector('.size-comment-hint')) return;
+  const hint = document.createElement('div');
+  hint.className = 'size-comment-hint';
+  hint.style.fontSize = '11px';
+  hint.style.color = '#64748b';
+  hint.style.marginTop = '4px';
+  hint.textContent = 'Если вашего размера нет в списке, выберите «Свой размер» и укажите его в комментарии.';
+  host.appendChild(hint);
+}
+
+function initSizeGuidance() {
+  document.querySelectorAll('.product').forEach(card => {
+    const id = card.dataset.id;
+    if (!id) return;
+    const sizeSelect = card.querySelector(`select[data-size="${id}"], select[data-hs-size="${id}"]`);
+    if (!sizeSelect) return;
+    ensureCustomSizeCommentOption(sizeSelect);
+    ensureSizeCommentHint(card, id);
+  });
 }
 
 function assignSizeControlValue(selectEl, customInputEl, options = [], savedValue = '', savedCustom = '') {
@@ -4859,7 +4899,7 @@ function renderCartDrawer() {
   }).join('');
 
   const warningHtml = missingSize.length
-    ? `<div class="cart-warning">Для части позиций не выбран размер. Перед отправкой выберите значение в поле «Размер».</div>`
+    ? `<div class="cart-warning">Для части позиций не выбран типоразмер. Перед отправкой выберите значение в поле «Типоразмер». Если вашего размера нет в списке, выберите «Свой размер» и укажите его в комментарии.</div>`
     : '';
 
   itemsEl.innerHTML = itemsHtml + warningHtml;
@@ -4983,7 +5023,7 @@ function exportCSV() {
   const missingSize = findMissingSizeLines(lines);
   if (missingSize.length) {
     const first = missingSize[0];
-    showToast(`⚠️ Укажите типоразмер для артикула ${first.sku}`);
+    showToast(`⚠️ Укажите типоразмер для артикула ${first.sku}. Если вашего размера нет в списке, выберите «Свой размер» и укажите его в комментарии.`);
     return;
   }
   lines.forEach(line => {
@@ -5019,7 +5059,7 @@ async function submitForm(triggerBtn = null) {
   const missingSize = findMissingSizeLines(rawLines);
   if (missingSize.length) {
     const first = missingSize[0];
-    showToast(`⚠️ Укажите типоразмер для артикула ${first.sku}`);
+    showToast(`⚠️ Укажите типоразмер для артикула ${first.sku}. Если вашего размера нет в списке, выберите «Свой размер» и укажите его в комментарии.`);
     return;
   }
   const products = rawLines.map(line => {
@@ -6769,7 +6809,12 @@ syncTopbarOffset();
 renderAbrasiveShapeBadges();
 initProductMetadata();
 initAbrasiveSizeSelectors();
-initGeo002DependentSelectors();
+initDrillScrewSelectors();
+initScrewCoatingSelectors();
+initHeatshrinkCards();
+initSizeGuidance();
+formatScrewDescriptions();
+formatAnchorDescriptions();
 initQtySteppers();
 initMobileFabBehavior();
 updateCategoryCounters();
