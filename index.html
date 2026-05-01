@@ -5330,14 +5330,15 @@ function buildTargetSheetName(companyName, dateLabel) {
 }
 
 function buildSheetRouting(companyName) {
-  const date = formatOrderDateParts(new Date());
   const safeCompany = sanitizeSheetTabPart(companyName, 'Компания');
+  const date = formatOrderDateParts(new Date());
   return {
-    strategy: 'company_date_tabs',
+    // Fixed routing to one sheet to avoid creating many tabs with dynamic names.
+    strategy: 'fixed_sheet',
     companyLabel: safeCompany,
     dateIso: date.iso,
     dateLabel: date.ru,
-    targetSheetName: buildTargetSheetName(safeCompany, date.ru)
+    targetSheetName: 'Заявки'
   };
 }
 
