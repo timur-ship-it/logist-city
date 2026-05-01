@@ -4224,7 +4224,7 @@ body.cart-open{overflow:hidden}
 <button class="fab-btn secondary" onclick="saveState(); showToast('💾 Черновик сохранён')">💾 Сохранить</button>
 <button class="fab-btn secondary" onclick="exportCSV()">📊 CSV</button>
 <button class="fab-btn primary" id="submitBtn" onclick="submitForm(this)">📨 Отправить заявку</button>
-<button class="fab-btn danger" onclick="if(confirm('Очистить все введённые данные?')){clearAll()}">🗑️</button>
+<button class="fab-btn danger" onclick="if(confirm('Очистить все введённые данные?')){clearAll()}">🗑️ Очистить</button>
 </div>
 <button class="cart-fab" id="cartFabBtn" onclick="toggleCartDrawer()" type="button">
 <span aria-hidden="true">🧺</span>
@@ -4617,7 +4617,7 @@ function collectOrderLines() {
   return lines;
 }
 
-function findMissingSizeLines(lines) {
+function collectRequiredSizeIds() {
   const requiredSizeIds = new Set();
   document.querySelectorAll('.product').forEach(card => {
     const id = String(card.dataset.id || '').trim();
@@ -4628,12 +4628,18 @@ function findMissingSizeLines(lines) {
       requiredSizeIds.add(id);
     }
   });
+  return requiredSizeIds;
+}
 
-  return lines.filter(line => {
-    const id = String(line.id || '').trim();
-    if (!id || !requiredSizeIds.has(id)) return false;
-    return !String(line.size || '').trim();
-  });
+function isLineMissingSize(line, requiredSizeIds = collectRequiredSizeIds()) {
+  const id = String(line?.id || '').trim();
+  if (!id || !requiredSizeIds.has(id)) return false;
+  return !String(line?.size || '').trim();
+}
+
+function findMissingSizeLines(lines) {
+  const requiredSizeIds = collectRequiredSizeIds();
+  return lines.filter(line => isLineMissingSize(line, requiredSizeIds));
 }
 
 function cardHasAnyQty(card) {
@@ -4896,11 +4902,13 @@ document.addEventListener('keydown', (event) => {
 function renderCartDrawer() {
   const lines = collectOrderLines();
   const stats = getCartStats(lines);
-  const missingSize = findMissingSizeLines(lines);
-  const missingSizeSet = new Set(missingSize);
-  const orderedLines = lines
-    .filter(line => missingSizeSet.has(line))
-    .concat(lines.filter(line => !missingSizeSet.has(line)));
+  const requiredSizeIds = collectRequiredSizeIds();
+  const missingSize = lines.filter(line => isLineMissingSize(line, requiredSizeIds));
+  const orderedLines = [...lines].sort((a, b) => {
+    const aMissing = isLineMissingSize(a, requiredSizeIds) ? 1 : 0;
+    const bMissing = isLineMissingSize(b, requiredSizeIds) ? 1 : 0;
+    return bMissing - aMissing;
+  });
 
   const itemsEl = document.getElementById('cartItems');
   const summaryEl = document.getElementById('cartSummary');
