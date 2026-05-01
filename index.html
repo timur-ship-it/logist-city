@@ -4794,7 +4794,8 @@ function loadState() {
     // Items
     Object.entries(state.items || {}).forEach(([id, data]) => {
       const numericId = Number(id);
-      const options = ABRASIVE_SIZE_OPTIONS[numericId] || [];
+      const card = document.querySelector(`.product[data-id="${id}"]`);
+      const options = getSizeOptionsForCard(card, numericId);
       const qtyEl = document.querySelector(`[data-qty="${id}"]`);
       const noteEl = document.querySelector(`[data-note="${id}"]`);
       const sizeEl = document.querySelector(`[data-size="${id}"]`);
@@ -4813,7 +4814,6 @@ function loadState() {
       if (cellEl && data.cell) cellEl.value = data.cell;
 
       if (Array.isArray(data.variants) && data.variants.length) {
-        const card = document.querySelector(`.product[data-id="${id}"]`);
         const list = card?.querySelector(`.size-variants-list[data-variants-for="${id}"]`);
         if (card && list) {
           data.variants.forEach(v => {
@@ -4822,7 +4822,6 @@ function loadState() {
         }
       }
 
-      const card = document.querySelector(`.product[data-id="${id}"]`);
       refreshCardState(card);
       if (qtyEl) updateQtyStepperControl(qtyEl);
     });
@@ -6629,6 +6628,30 @@ Object.keys(ABRASIVE_SIZE_OPTIONS).forEach(key => {
 });
 // APC2026_DELTA_SIZE_OPTIONS_END
 
+function getSizeOptionsForCard(card, id) {
+  const key = String(id || card?.dataset?.id || '').trim();
+  if (!key) return [];
+
+  const fromMap = ABRASIVE_SIZE_OPTIONS[key] || ABRASIVE_SIZE_OPTIONS[Number(key)];
+  let options = Array.isArray(fromMap) ? [...fromMap] : [];
+
+  if (!options.length && card) {
+    const sizeSelect = card.querySelector(`select[data-size="${key}"], select[data-size="${Number(key)}"]`);
+    if (sizeSelect) {
+      const fromSelect = Array.from(sizeSelect.options)
+        .map(opt => String(opt.value || '').trim())
+        .filter(value =>
+          value &&
+          value !== CUSTOM_SIZE_TOKEN &&
+          value !== CUSTOM_SIZE_COMMENT_OPTION_VALUE
+        );
+      options = normalizeSizeOptions(fromSelect);
+    }
+  }
+
+  return options;
+}
+
 function createSizeSelect(options, selected = '') {
   const select = document.createElement('select');
   select.className = 'size-select';
@@ -6726,18 +6749,7 @@ function initAbrasiveSizeSelectors() {
     if (!row) return;
 
     const existingSizeSelect = row.querySelector(`[data-size="${id}"]`);
-    let options = Array.isArray(ABRASIVE_SIZE_OPTIONS[id]) ? [...ABRASIVE_SIZE_OPTIONS[id]] : [];
-
-    if (existingSizeSelect) {
-      const fromSelect = Array.from(existingSizeSelect.options)
-        .map(opt => String(opt.value || '').trim())
-        .filter(value =>
-          value &&
-          value !== CUSTOM_SIZE_TOKEN &&
-          value !== CUSTOM_SIZE_COMMENT_OPTION_VALUE
-        );
-      if (!options.length) options = fromSelect;
-    }
+    const options = getSizeOptionsForCard(card, id);
 
     if (!options.length && !existingSizeSelect) return;
 
@@ -6793,7 +6805,7 @@ function initAbrasiveSizeSelectors() {
       addBtn.className = 'add-size-btn';
       addBtn.textContent = '+ Добавить новый размер';
       addBtn.onclick = () => {
-        list.appendChild(createSizeVariantRow(id, options));
+        list.appendChild(createSizeVariantRow(id, getSizeOptionsForCard(card, id)));
       };
 
       const list = document.createElement('div');
