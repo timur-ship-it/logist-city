@@ -137,7 +137,7 @@ body.cart-open{overflow:hidden}
 .product.layout-unified .prod-inputs .field-size-primary{grid-column:2;grid-row:1}
 .product.layout-unified .prod-inputs .field-size-secondary{grid-column:3;grid-row:1}
 .product.layout-unified .prod-inputs .field-note{
-  grid-column:2 / 4;
+  grid-column:1 / 4;
   grid-row:2;
 }
 
@@ -554,6 +554,26 @@ body.cart-open{overflow:hidden}
 #cat-geo .product[data-id="99"] .prod-inputs .size-wrap .size-select{width:100%!important}
 #cat-geo .product[data-id="98"] .prod-inputs .size-wrap .size-select{width:100%!important}
 #cat-geo .product[data-id="105"] .prod-inputs .size-wrap .size-select{width:100%!important}
+
+/* Unified override: use GEO-001-like layout for all unified cards */
+#cat-rags .product.layout-unified .prod-inputs,
+#cat-geo .product.layout-unified .prod-inputs,
+.product.layout-unified .prod-inputs{
+  display:grid!important;
+  grid-template-columns:160px minmax(280px,1fr) minmax(280px,1fr)!important;
+  gap:10px 12px!important;
+  align-items:start!important;
+}
+.product.layout-unified .prod-inputs.has-tertiary-size{
+  grid-template-columns:160px minmax(170px,1fr) minmax(170px,1fr) minmax(220px,1fr)!important;
+}
+.product.layout-unified .prod-inputs .field-qty{grid-column:1;grid-row:1}
+.product.layout-unified .prod-inputs .field-size-primary{grid-column:2;grid-row:1}
+.product.layout-unified .prod-inputs .field-size-secondary{grid-column:3;grid-row:1}
+.product.layout-unified .prod-inputs .field-size-tertiary{grid-column:4;grid-row:1}
+.product.layout-unified .prod-inputs .field-unit{display:none!important}
+.product.layout-unified .prod-inputs .field-note{grid-column:1 / -1!important;grid-row:2}
+
 /* BIG-BAG LEGEND */
 .bigbag-legend-title{margin:8px auto 6px;padding:8px 12px;border-radius:9px;border:1px solid #fdba74;background:#fff7ed;color:#9a3412;font-size:12px;font-weight:800;max-width:1120px}
 .bigbag-legend{
@@ -6791,10 +6811,11 @@ function initUnifiedCardLayout() {
     const row = card.querySelector('.prod-inputs');
     if (!row) return;
 
-    const clearClasses = ['field-qty', 'field-unit', 'field-size-primary', 'field-size-secondary', 'field-note'];
-    row.querySelectorAll('.field-qty,.field-unit,.field-size-primary,.field-size-secondary,.field-note').forEach(el => {
+    const clearClasses = ['field-qty', 'field-unit', 'field-size-primary', 'field-size-secondary', 'field-size-tertiary', 'field-note'];
+    row.querySelectorAll('.field-qty,.field-unit,.field-size-primary,.field-size-secondary,.field-size-tertiary,.field-note').forEach(el => {
       clearClasses.forEach(cls => el.classList.remove(cls));
     });
+    row.classList.remove('has-secondary-size', 'has-tertiary-size');
 
     const qtyWrap = row.querySelector(`[data-qty="${id}"]`)?.closest('div') || null;
     const unitLabel = row.querySelector('.unit-label');
@@ -6806,7 +6827,10 @@ function initUnifiedCardLayout() {
     if (unitLabel) unitLabel.classList.add('field-unit');
     if (sizeWraps[0]) sizeWraps[0].classList.add('field-size-primary');
     if (sizeWraps[1]) sizeWraps[1].classList.add('field-size-secondary');
+    if (sizeWraps[2]) sizeWraps[2].classList.add('field-size-tertiary');
     if (noteWrap) noteWrap.classList.add('field-note');
+    if (sizeWraps.length >= 2) row.classList.add('has-secondary-size');
+    if (sizeWraps.length >= 3) row.classList.add('has-tertiary-size');
 
     card.classList.toggle('layout-unified', Boolean(hasSizeSelector && qtyWrap && noteWrap));
   });
