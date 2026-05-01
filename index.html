@@ -187,6 +187,12 @@ body.cart-open{overflow:hidden}
 .cart-item-sku{font-size:10px;font-weight:800;color:#3730a3;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:3px 7px;white-space:nowrap}
 .cart-item-meta{margin-top:6px;font-size:12px;color:#475569;line-height:1.45}
 .cart-warning{margin:10px 0 0;border-radius:10px;padding:9px 10px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;font-size:12px;font-weight:700}
+.cart-warning-list{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.cart-warning-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.6);border:1px solid #fed7aa}
+.cart-warning-item-label{font-size:11px;line-height:1.35;color:#7c2d12;font-weight:700}
+.cart-warning-go{border:1px solid #fb923c;background:#fff;color:#9a3412;font-size:11px;font-weight:800;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.cart-warning-go:hover{background:#ffedd5}
+.product.problem-jump-target{border-color:#fb923c!important;box-shadow:0 0 0 3px rgba(251,146,60,.22),0 8px 24px rgba(2,6,23,.12)!important}
 .cart-footer{border-top:1px solid #e2e8f0;background:#fff;padding:10px 12px calc(12px + env(safe-area-inset-bottom))}
 .cart-summary{font-size:12px;font-weight:700;color:#334155;margin-bottom:8px}
 .cart-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -4852,6 +4858,37 @@ function toggleCartDrawer() {
   else openCartDrawer();
 }
 
+function goToProblemCard(rawId) {
+  const id = String(rawId || '').trim();
+  if (!id) return;
+
+  const card = document.querySelector(`.product[data-id="${id}"]`);
+  if (!card) {
+    showToast('⚠️ Карточка позиции не найдена');
+    return;
+  }
+
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput && searchInput.value) {
+    searchInput.value = '';
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  closeCartDrawer();
+
+  const top = window.scrollY + card.getBoundingClientRect().top - getTopbarOffset();
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+
+  card.classList.remove('problem-jump-target');
+  window.setTimeout(() => card.classList.add('problem-jump-target'), 120);
+  window.setTimeout(() => card.classList.remove('problem-jump-target'), 2200);
+
+  const focusTarget = card.querySelector(`[data-size="${id}"], [data-size-custom="${id}"], .size-variant-select, .size-custom-input`);
+  if (focusTarget && typeof focusTarget.focus === 'function') {
+    window.setTimeout(() => focusTarget.focus({ preventScroll: true }), 260);
+  }
+}
+
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') closeCartDrawer();
 });
@@ -4899,10 +4936,35 @@ function renderCartDrawer() {
   }).join('');
 
   const warningHtml = missingSize.length
-    ? `<div class="cart-warning">Для части позиций не выбран типоразмер. Перед отправкой выберите значение в поле «Типоразмер». Если вашего размера нет в списке, выберите «Свой размер» и укажите его в комментарии.</div>`
+    ? (() => {
+      const uniqueMissing = [];
+      const seen = new Set();
+      missingSize.forEach(line => {
+        const id = String(line.id || '').trim();
+        if (!id || seen.has(id)) return;
+        seen.add(id);
+        uniqueMissing.push(line);
+      });
+      const listHtml = uniqueMissing.map(line => {
+        const id = String(line.id || '').trim();
+        const label = `${line.sku || line.id} — ${line.name || 'Позиция'}`;
+        return `<div class="cart-warning-item">
+<div class="cart-warning-item-label">${escapeHtml(label)}</div>
+<button type="button" class="cart-warning-go" data-go-problem-id="${escapeHtml(id)}">Перейти</button>
+</div>`;
+      }).join('');
+      return `<div class="cart-warning">Для части позиций не выбран типоразмер. Перед отправкой выберите значение в поле «Типоразмер». Если вашего размера нет в списке, выберите «Свой размер» и укажите его в комментарии.
+<div class="cart-warning-list">${listHtml}</div>
+</div>`;
+    })()
     : '';
 
   itemsEl.innerHTML = itemsHtml + warningHtml;
+  itemsEl.querySelectorAll('[data-go-problem-id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      goToProblemCard(btn.getAttribute('data-go-problem-id'));
+    });
+  });
 }
 
 // ━━━ NAVIGATION ━━━
