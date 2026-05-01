@@ -5085,6 +5085,8 @@ function exportCSV() {
   const missingSize = findMissingSizeLines(lines);
   if (missingSize.length) {
     const first = missingSize[0];
+    renderCartDrawer();
+    openCartDrawer();
     showToast(`⚠️ Укажите типоразмер для артикула ${first.sku}. Если вашего размера нет в списке, выберите «Свой размер» и укажите его в комментарии.`);
     return;
   }
@@ -5121,6 +5123,8 @@ async function submitForm(triggerBtn = null) {
   const missingSize = findMissingSizeLines(rawLines);
   if (missingSize.length) {
     const first = missingSize[0];
+    renderCartDrawer();
+    openCartDrawer();
     showToast(`⚠️ Укажите типоразмер для артикула ${first.sku}. Если вашего размера нет в списке, выберите «Свой размер» и укажите его в комментарии.`);
     return;
   }
