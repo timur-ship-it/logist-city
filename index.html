@@ -4897,6 +4897,10 @@ function renderCartDrawer() {
   const lines = collectOrderLines();
   const stats = getCartStats(lines);
   const missingSize = findMissingSizeLines(lines);
+  const missingSizeSet = new Set(missingSize);
+  const orderedLines = lines
+    .filter(line => missingSizeSet.has(line))
+    .concat(lines.filter(line => !missingSizeSet.has(line)));
 
   const itemsEl = document.getElementById('cartItems');
   const summaryEl = document.getElementById('cartSummary');
@@ -4918,7 +4922,7 @@ function renderCartDrawer() {
     return;
   }
 
-  const itemsHtml = lines.map(line => {
+  const itemsHtml = orderedLines.map(line => {
     const meta = [
       `Кол-во: ${escapeHtml(line.qty)} ${escapeHtml(line.unit || '')}`.trim(),
       line.size ? `Размер: ${escapeHtml(line.size)}` : '',
