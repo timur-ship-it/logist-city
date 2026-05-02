@@ -220,8 +220,11 @@ body.cart-open{overflow:hidden}
 .cart-warning-list{margin-top:8px;display:flex;flex-direction:column;gap:6px}
 .cart-warning-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.6);border:1px solid #fed7aa}
 .cart-warning-item-label{font-size:11px;line-height:1.35;color:#7c2d12;font-weight:700}
+.cart-warning-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
 .cart-warning-go{border:1px solid #fb923c;background:#fff;color:#9a3412;font-size:11px;font-weight:800;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
 .cart-warning-go:hover{background:#ffedd5}
+.cart-warning-remove{border:1px solid #fca5a5;background:#fff;color:#b91c1c;font-size:11px;font-weight:800;padding:5px 9px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.cart-warning-remove:hover{background:#fee2e2}
 .product.problem-jump-target{border-color:#fb923c!important;box-shadow:0 0 0 3px rgba(251,146,60,.22),0 8px 24px rgba(2,6,23,.12)!important}
 .cart-footer{border-top:1px solid #e2e8f0;background:#fff;padding:10px 12px calc(12px + env(safe-area-inset-bottom))}
 .cart-summary{font-size:12px;font-weight:700;color:#334155;margin-bottom:8px}
@@ -5051,11 +5054,17 @@ function renderCartDrawer() {
   }
 
   const itemsHtml = orderedLines.map(line => {
+    const isSizeRequired = requiredSizeIds.has(String(line.id || '').trim());
     const meta = [
       `Кол-во: ${escapeHtml(line.qty)} ${escapeHtml(line.unit || '')}`.trim(),
-      line.size ? `Размер: ${escapeHtml(line.size)}` : '',
+      line.size
+        ? `Размер: ${escapeHtml(line.size)}`
+        : (isSizeRequired ? 'Размер: не выбран' : ''),
       line.color ? `Цвет: ${escapeHtml(line.color)}` : '',
-      line.note ? `Примечание: ${escapeHtml(line.note)}` : ''
+      line.note ? `Примечание: ${escapeHtml(line.note)}` : '',
+      line.__entryType === 'variant' && Number.isInteger(line.__variantIndex)
+        ? `Доп. строка: #${line.__variantIndex + 1}`
+        : ''
     ].filter(Boolean).join(' • ');
 
     const lineId = String(line.id || '').trim();
@@ -5077,20 +5086,24 @@ function renderCartDrawer() {
 
   const warningHtml = missingSize.length
     ? (() => {
-      const uniqueMissing = [];
-      const seen = new Set();
-      missingSize.forEach(line => {
+      const listHtml = missingSize.map(line => {
         const id = String(line.id || '').trim();
-        if (!id || seen.has(id)) return;
-        seen.add(id);
-        uniqueMissing.push(line);
-      });
-      const listHtml = uniqueMissing.map(line => {
-        const id = String(line.id || '').trim();
+        const lineEntryType = String(line.__entryType || 'base');
+        const lineVariantIndex = Number.isInteger(line.__variantIndex) ? line.__variantIndex : -1;
+        const detailParts = [
+          line.size ? `Размер: ${line.size}` : 'Размер: не выбран',
+          line.color ? `Цвет: ${line.color}` : '',
+          line.__entryType === 'variant' && Number.isInteger(line.__variantIndex)
+            ? `Доп. строка #${line.__variantIndex + 1}`
+            : ''
+        ].filter(Boolean).join(' • ');
         const label = `${line.sku || line.id} — ${line.name || 'Позиция'}`;
         return `<div class="cart-warning-item">
-<div class="cart-warning-item-label">${escapeHtml(label)}</div>
+<div class="cart-warning-item-label">${escapeHtml(label)}${detailParts ? `<br>${escapeHtml(detailParts)}` : ''}</div>
+<div class="cart-warning-actions">
 <button type="button" class="cart-warning-go" data-go-problem-id="${escapeHtml(id)}">Перейти</button>
+<button type="button" class="cart-warning-remove" data-remove-problem-id="${escapeHtml(id)}" data-remove-problem-entry="${escapeHtml(lineEntryType)}" data-remove-problem-variant-index="${lineVariantIndex}">Удалить</button>
+</div>
 </div>`;
       }).join('');
       return `<div class="cart-warning">Для части позиций не выбран типоразмер. Перед отправкой выберите значение в поле «Типоразмер». Если вашего размера нет в списке, выберите «Свой размер» и укажите его в комментарии.
@@ -5117,6 +5130,15 @@ function renderCartDrawer() {
   itemsEl.querySelectorAll('[data-go-problem-id]').forEach(btn => {
     btn.addEventListener('click', () => {
       goToProblemCard(btn.getAttribute('data-go-problem-id'));
+    });
+  });
+  itemsEl.querySelectorAll('[data-remove-problem-id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      removeCartLine(
+        btn.getAttribute('data-remove-problem-id'),
+        btn.getAttribute('data-remove-problem-entry'),
+        btn.getAttribute('data-remove-problem-variant-index')
+      );
     });
   });
 }
