@@ -1,0 +1,16 @@
+[
+  {
+    "scenario": "missing_company",
+    "toast": "⚠️ Укажите название компании",
+    "blocked": true,
+    "postRequests": 0
+  },
+  {
+    "scenario": "missing_required_select",
+    "toast": "⚠️ Заполните обязательные параметры (Размер) для артикула ABR-001.",
+    "blocked": true,
+    "cartOpen": true,
+    "cartWarningPresent": true,
+    "postRequests": 0
+  }
+]

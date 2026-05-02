@@ -1,0 +1,92 @@
+{
+  "site": "https://timur-ship-it.github.io/logist-city/",
+  "runs": [
+    {
+      "run": 1,
+      "at": "2026-05-02T20:57:14.423Z",
+      "picked": [
+        {
+          "id": "1",
+          "name": "",
+          "selectCount": 1
+        },
+        {
+          "id": "2",
+          "name": "",
+          "selectCount": 1
+        },
+        {
+          "id": "3",
+          "name": "",
+          "selectCount": 1
+        }
+      ],
+      "toast": "✅ Заявка REQ-20260503-005934 отправлена! 3 позиций",
+      "api": {
+        "matched": true,
+        "status": 302,
+        "url": "https://script.google.com/macros/s/AKfycbxyjqXGolhSOAFRdVZFIfDJ6G-xN54VfbrjrueFFp66HGstF3BsAgpvnv8rTRfBiJ2w4A/exec",
+        "body": "",
+        "json": null
+      }
+    },
+    {
+      "run": 2,
+      "at": "2026-05-02T20:57:22.588Z",
+      "picked": [
+        {
+          "id": "1",
+          "name": "",
+          "selectCount": 1
+        },
+        {
+          "id": "2",
+          "name": "",
+          "selectCount": 1
+        },
+        {
+          "id": "3",
+          "name": "",
+          "selectCount": 1
+        }
+      ],
+      "toast": "✅ Заявка REQ-20260503-005941 отправлена! 3 позиций",
+      "api": {
+        "matched": true,
+        "status": 302,
+        "url": "https://script.google.com/macros/s/AKfycbxyjqXGolhSOAFRdVZFIfDJ6G-xN54VfbrjrueFFp66HGstF3BsAgpvnv8rTRfBiJ2w4A/exec",
+        "body": "",
+        "json": null
+      }
+    },
+    {
+      "run": 3,
+      "at": "2026-05-02T20:57:29.371Z",
+      "picked": [
+        {
+          "id": "1",
+          "name": "",
+          "selectCount": 1
+        },
+        {
+          "id": "2",
+          "name": "",
+          "selectCount": 1
+        },
+        {
+          "id": "3",
+          "name": "",
+          "selectCount": 1
+        }
+      ],
+      "toast": "",
+      "api": {
+        "matched": true,
+        "status": 302,
+        "url": "https://script.google.com/macros/s/AKfycbxyjqXGolhSOAFRdVZFIfDJ6G-xN54VfbrjrueFFp66HGstF3BsAgpvnv8rTRfBiJ2w4A/exec",
+        "body": "",
+        "json": null
+      }
+    }
+  ]
+}

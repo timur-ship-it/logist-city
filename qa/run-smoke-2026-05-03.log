@@ -1,0 +1,9 @@
+PASS: Page loaded with core form controls
+PASS: Validation blocks empty submit
+PASS: Search filters products
+PASS: Add product without size and check cart count
+PASS: Draft persists after reload
+FAIL: Size-required product blocks submit without size -> Toast did not contain "типоразмер" within 6000ms
+PASS: Submit succeeds when required size is selected
+SUMMARY: 6 passed, 1 failed
+FAIL_DETAIL: Size-required product blocks submit without size -> Toast did not contain "типоразмер" within 6000ms
