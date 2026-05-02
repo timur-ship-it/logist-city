@@ -1,0 +1,8 @@
+PASS: Page loaded with core form controls
+PASS: Validation blocks empty submit
+PASS: Search filters products
+PASS: Add product without size and check cart count
+PASS: Draft persists after reload
+PASS: Size-required product blocks submit without size
+PASS: Submit succeeds when required size is selected
+SUMMARY: 7 passed, 0 failed
