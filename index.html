@@ -4651,7 +4651,7 @@ function resolveLineMoq(card, size = '') {
   return 0;
 }
 
-function createOrderLine(card, { qty = '', size = '', color = '', note = '' } = {}) {
+function createOrderLine(card, { qty = '', size = '', color = '', note = '', requiredFields = {}, missingFields = [], extraSpecs = [] } = {}) {
   return {
     id: card.dataset.id,
     sku: resolveLineSku(card, size),
@@ -4665,7 +4665,10 @@ function createOrderLine(card, { qty = '', size = '', color = '', note = '' } = 
     unit: card.querySelector('.unit-label')?.textContent || '',
     size: String(size || '').trim(),
     color: String(color || card.querySelector(`[data-color="${card.dataset.id}"]`)?.value || '').trim(),
-    note: String(note || '').trim()
+    note: String(note || '').trim(),
+    requiredFields: requiredFields && typeof requiredFields === 'object' ? requiredFields : {},
+    missingFields: Array.isArray(missingFields) ? missingFields : [],
+    extraSpecs: Array.isArray(extraSpecs) ? extraSpecs : []
   };
 }
 
@@ -4675,30 +4678,47 @@ function collectOrderLines() {
   document.querySelectorAll('.product').forEach(card => {
     const id = card.dataset.id;
     const baseQty = card.querySelector(`[data-qty="${id}"]`)?.value || '';
-    const baseSizeSelected = card.querySelector(`[data-size="${id}"]`)?.value || '';
-    const baseSizeCustom = card.querySelector(`[data-size-custom="${id}"]`)?.value || '';
-    const baseSize = normalizeSelectedSize(baseSizeSelected, baseSizeCustom);
-    const baseColor = card.querySelector(`[data-color="${id}"]`)?.value || '';
+    const baseRequired = getBaseRequiredSelection(card, id);
+    const baseSize = String(baseRequired.values.size || '').trim();
+    const baseColor = getCardColorValue(card, id);
     const baseCell = card.querySelector(`[data-cell="${id}"]`)?.value || '';
     const baseNoteRaw = card.querySelector(`[data-note="${id}"]`)?.value || '';
     const baseNote = [baseCell ? `ячейка: ${baseCell}` : '', baseNoteRaw].filter(Boolean).join(' | ');
+    const baseExtraSpecs = baseRequired.specs.filter(spec => spec.label !== 'Размер' && spec.label !== 'Типоразмер');
 
     if (toQtyNumber(baseQty) > 0) {
       lines.push({
-        ...createOrderLine(card, { qty: baseQty, size: baseSize, note: baseNote, color: baseColor }),
+        ...createOrderLine(card, {
+          qty: baseQty,
+          size: baseSize,
+          note: baseNote,
+          color: baseColor,
+          requiredFields: baseRequired.values,
+          missingFields: baseRequired.missing,
+          extraSpecs: baseExtraSpecs
+        }),
         __entryType: 'base',
         __variantIndex: -1
       });
     }
 
+    const variantDefs = getRequiredSelectDefs(card, id);
     card.querySelectorAll('.size-variant-row').forEach((row, variantIndex) => {
       const qty = row.querySelector('.qty-variant-input')?.value || '';
       if (toQtyNumber(qty) <= 0) return;
-      const sizeSelected = row.querySelector('.size-variant-select')?.value || '';
-      const sizeCustom = row.querySelector('.size-variant-custom-input')?.value || '';
-      const size = normalizeSelectedSize(sizeSelected, sizeCustom);
+      const variantSelection = getVariantRequiredSelection(row, variantDefs);
+      const size = String(variantSelection.values.size || '').trim();
+      const extraSpecs = variantSelection.specs.filter(spec => spec.label !== 'Размер' && spec.label !== 'Типоразмер');
       lines.push({
-        ...createOrderLine(card, { qty, size, note: '', color: baseColor }),
+        ...createOrderLine(card, {
+          qty,
+          size,
+          note: '',
+          color: baseColor,
+          requiredFields: variantSelection.values,
+          missingFields: variantSelection.missing,
+          extraSpecs
+        }),
         __entryType: 'variant',
         __variantIndex: variantIndex
       });
@@ -4713,9 +4733,8 @@ function collectRequiredSizeIds() {
   document.querySelectorAll('.product').forEach(card => {
     const id = String(card.dataset.id || '').trim();
     if (!id) return;
-    const hasBaseSize = Boolean(card.querySelector(`[data-size="${id}"]`) || card.querySelector(`[data-size-custom="${id}"]`));
-    const hasVariantSize = Boolean(card.querySelector('.size-variant-select') || card.querySelector('.size-variant-custom-input'));
-    if (hasBaseSize || hasVariantSize) {
+    const hasRequiredSelects = getRequiredSelectDefs(card, id).length > 0;
+    if (hasRequiredSelects) {
       requiredSizeIds.add(id);
     }
   });
@@ -4723,6 +4742,7 @@ function collectRequiredSizeIds() {
 }
 
 function isLineMissingSize(line, requiredSizeIds = collectRequiredSizeIds()) {
+  if (Array.isArray(line?.missingFields) && line.missingFields.length > 0) return true;
   const id = String(line?.id || '').trim();
   if (!id || !requiredSizeIds.has(id)) return false;
   return !String(line?.size || '').trim();
@@ -4731,6 +4751,12 @@ function isLineMissingSize(line, requiredSizeIds = collectRequiredSizeIds()) {
 function findMissingSizeLines(lines) {
   const requiredSizeIds = collectRequiredSizeIds();
   return lines.filter(line => isLineMissingSize(line, requiredSizeIds));
+}
+
+function getMissingFieldsText(line) {
+  const fields = Array.isArray(line?.missingFields) ? line.missingFields.filter(Boolean) : [];
+  if (!fields.length) return 'обязательные параметры';
+  return fields.join(', ');
 }
 
 function cardHasAnyQty(card) {
@@ -4767,8 +4793,18 @@ function saveState() {
       const vSize = row.querySelector('.size-variant-select')?.value || '';
       const vSizeCustom = row.querySelector('.size-variant-custom-input')?.value || '';
       const vQty = row.querySelector('.qty-variant-input')?.value || '';
-      if (vSize || vSizeCustom || vQty) {
-        variants.push({ size: vSize, sizeCustom: vSizeCustom, qty: vQty });
+      const vFields = {};
+      row.querySelectorAll('.size-variant-select[data-variant-field-key]').forEach(selectEl => {
+        const key = String(selectEl.dataset.variantFieldKey || '').trim();
+        if (!key) return;
+        const customEl = row.querySelector(`.size-variant-custom-input[data-variant-field-custom-key="${key}"]`);
+        const value = customEl
+          ? normalizeSelectedSize(selectEl.value || '', customEl.value || '')
+          : String(selectEl.value || '').trim();
+        vFields[key] = value;
+      });
+      if (vSize || vSizeCustom || vQty || Object.keys(vFields).length) {
+        variants.push({ size: vSize, sizeCustom: vSizeCustom, qty: vQty, fields: vFields });
       }
     });
 
@@ -5055,12 +5091,19 @@ function renderCartDrawer() {
 
   const itemsHtml = orderedLines.map(line => {
     const isSizeRequired = requiredSizeIds.has(String(line.id || '').trim());
+    const extraSpecsText = (Array.isArray(line.extraSpecs) ? line.extraSpecs : [])
+      .map(spec => `${spec.label}: ${spec.value}`)
+      .join(' • ');
     const meta = [
       `Кол-во: ${escapeHtml(line.qty)} ${escapeHtml(line.unit || '')}`.trim(),
       line.size
         ? `Размер: ${escapeHtml(line.size)}`
         : (isSizeRequired ? 'Размер: не выбран' : ''),
       line.color ? `Цвет: ${escapeHtml(line.color)}` : '',
+      extraSpecsText ? escapeHtml(extraSpecsText) : '',
+      Array.isArray(line.missingFields) && line.missingFields.length
+        ? `Не выбрано: ${escapeHtml(line.missingFields.join(', '))}`
+        : '',
       line.note ? `Примечание: ${escapeHtml(line.note)}` : '',
       line.__entryType === 'variant' && Number.isInteger(line.__variantIndex)
         ? `Доп. строка: #${line.__variantIndex + 1}`
@@ -5090,9 +5133,15 @@ function renderCartDrawer() {
         const id = String(line.id || '').trim();
         const lineEntryType = String(line.__entryType || 'base');
         const lineVariantIndex = Number.isInteger(line.__variantIndex) ? line.__variantIndex : -1;
+        const missingLabels = Array.isArray(line.missingFields) ? line.missingFields : [];
+        const extraSpecsText = (Array.isArray(line.extraSpecs) ? line.extraSpecs : [])
+          .map(spec => `${spec.label}: ${spec.value}`)
+          .join(' • ');
         const detailParts = [
           line.size ? `Размер: ${line.size}` : 'Размер: не выбран',
           line.color ? `Цвет: ${line.color}` : '',
+          extraSpecsText ? extraSpecsText : '',
+          missingLabels.length ? `Не выбрано: ${missingLabels.join(', ')}` : '',
           line.__entryType === 'variant' && Number.isInteger(line.__variantIndex)
             ? `Доп. строка #${line.__variantIndex + 1}`
             : ''
@@ -5106,7 +5155,7 @@ function renderCartDrawer() {
 </div>
 </div>`;
       }).join('');
-      return `<div class="cart-warning">Для части позиций не выбран типоразмер. Перед отправкой выберите значение в поле «Типоразмер». Если вашего размера нет в списке, выберите «Свой размер» и укажите его в комментарии.
+      return `<div class="cart-warning">Для части позиций не выбраны обязательные параметры. Перед отправкой заполните все обязательные выпадающие списки (кроме поля «Цвет»).
 <div class="cart-warning-list">${listHtml}</div>
 </div>`;
     })()
@@ -5263,12 +5312,16 @@ function exportCSV() {
     const first = missingSize[0];
     renderCartDrawer();
     openCartDrawer();
-    showToast(`⚠️ Укажите типоразмер для артикула ${first.sku}. Если вашего размера нет в списке, выберите «Свой размер» и укажите его в комментарии.`);
+    showToast(`⚠️ Заполните обязательные параметры (${getMissingFieldsText(first)}) для артикула ${first.sku}.`);
     return;
   }
   lines.forEach(line => {
     const desc = line.description.replace(/,/g, ';');
-    csv += `"${line.id}","${line.sku}","${line.category}","${line.name}","${line.type || ''}","${desc}","${line.qty}","${line.unit}","${line.size || ''}","${line.color || ''}","${line.note || ''}"\n`;
+    const sizeCol = [
+      line.size || '',
+      ...(Array.isArray(line.extraSpecs) ? line.extraSpecs.map(spec => `${spec.label}: ${spec.value}`) : [])
+    ].filter(Boolean).join(' | ');
+    csv += `"${line.id}","${line.sku}","${line.category}","${line.name}","${line.type || ''}","${desc}","${line.qty}","${line.unit}","${sizeCol}","${line.color || ''}","${line.note || ''}"\n`;
   });
 
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -5301,13 +5354,14 @@ async function submitForm(triggerBtn = null) {
     const first = missingSize[0];
     renderCartDrawer();
     openCartDrawer();
-    showToast(`⚠️ Укажите типоразмер для артикула ${first.sku}. Если вашего размера нет в списке, выберите «Свой размер» и укажите его в комментарии.`);
+    showToast(`⚠️ Заполните обязательные параметры (${getMissingFieldsText(first)}) для артикула ${first.sku}.`);
     return;
   }
   const products = rawLines.map(line => {
     const spec = [
       line.type ? `Форма профиля: ${line.type}` : '',
       line.size ? `Размер: ${line.size}` : '',
+      ...(Array.isArray(line.extraSpecs) ? line.extraSpecs.map(spec => `${spec.label}: ${spec.value}`) : []),
       line.color ? `Цвет: ${line.color}` : ''
     ].filter(Boolean).join(', ');
     const article = line.sku || line.id;
@@ -6744,6 +6798,119 @@ function getSizeOptionsForCard(card, id) {
   return options;
 }
 
+function getSelectLabelText(selectEl) {
+  return String(
+    selectEl?.closest('.size-wrap')?.querySelector('label')?.textContent || ''
+  ).trim();
+}
+
+function isColorLabelText(labelText) {
+  return /цвет/i.test(String(labelText || '').trim());
+}
+
+function getSelectFieldKey(selectEl, id, fallbackIndex = 0) {
+  const sid = String(id || '').trim();
+  if (!selectEl || !sid) return `extra_${fallbackIndex}`;
+  if (selectEl.matches(`[data-size="${sid}"], [data-hs-size="${sid}"]`)) return 'size';
+  if (selectEl.matches(`[data-cell="${sid}"]`)) return 'cell';
+  if (selectEl.matches(`[data-color="${sid}"]`)) return 'color';
+  return `extra_${fallbackIndex}`;
+}
+
+function getRequiredSelectDefs(card, id) {
+  const sid = String(id || card?.dataset?.id || '').trim();
+  const row = card?.querySelector('.prod-inputs');
+  if (!sid || !row) return [];
+
+  const selects = Array.from(row.querySelectorAll('.size-wrap > select.size-select'));
+  const defs = selects.map((selectEl, idx) => {
+    const label = getSelectLabelText(selectEl) || 'Параметр';
+    const key = getSelectFieldKey(selectEl, sid, idx);
+    const options = normalizeSizeOptions(
+      Array.from(selectEl.options)
+        .map(opt => String(opt.value || '').trim())
+        .filter(value =>
+          value &&
+          value !== CUSTOM_SIZE_TOKEN &&
+          value !== CUSTOM_SIZE_COMMENT_OPTION_VALUE
+        )
+    );
+    return {
+      index: idx,
+      key,
+      label,
+      required: !isColorLabelText(label),
+      allowCustom: key === 'size' && Boolean(card.querySelector(`[data-size-custom="${sid}"]`)),
+      options
+    };
+  }).filter(def => def.required);
+
+  defs.sort((a, b) => {
+    if (a.key === 'size' && b.key !== 'size') return -1;
+    if (a.key !== 'size' && b.key === 'size') return 1;
+    return 0;
+  });
+  return defs;
+}
+
+function getBaseRequiredSelection(card, id) {
+  const sid = String(id || '').trim();
+  const defs = getRequiredSelectDefs(card, sid);
+  const rowSelects = Array.from(card.querySelectorAll('.prod-inputs .size-wrap > select.size-select'));
+  const values = {};
+  const missing = [];
+  const specs = [];
+
+  defs.forEach(def => {
+    const selectEl = card.querySelector(`.prod-inputs .size-wrap > select.size-select[data-${def.key}="${sid}"]`)
+      || (def.key === 'size' ? card.querySelector(`[data-size="${sid}"], [data-hs-size="${sid}"]`) : null)
+      || (def.key === 'cell' ? card.querySelector(`[data-cell="${sid}"]`) : null)
+      || (def.key === 'color' ? card.querySelector(`[data-color="${sid}"]`) : null)
+      || rowSelects[def.index];
+
+    let value = String(selectEl?.value || '').trim();
+    if (def.allowCustom) {
+      const customValue = card.querySelector(`[data-size-custom="${sid}"]`)?.value || '';
+      value = normalizeSelectedSize(value, customValue);
+    }
+
+    values[def.key] = value;
+    if (!value) missing.push(def.label);
+    if (value) specs.push({ label: def.label, value });
+  });
+
+  return { defs, values, missing, specs };
+}
+
+function getVariantRequiredSelection(row, defs = []) {
+  const values = {};
+  const missing = [];
+  const specs = [];
+
+  defs.forEach((def, idx) => {
+    const selectEl = row.querySelector(`.size-variant-select[data-variant-field-key="${def.key}"]`)
+      || (idx === 0 ? row.querySelector('.size-variant-select') : null);
+    const customEl = row.querySelector(`.size-variant-custom-input[data-variant-field-custom-key="${def.key}"]`)
+      || (idx === 0 ? row.querySelector('.size-variant-custom-input') : null);
+    let value = String(selectEl?.value || '').trim();
+    if (def.allowCustom) value = normalizeSelectedSize(value, customEl?.value || '');
+    values[def.key] = value;
+    if (!value) missing.push(def.label);
+    if (value) specs.push({ label: def.label, value });
+  });
+
+  return { values, missing, specs };
+}
+
+function getCardColorValue(card, id) {
+  const sid = String(id || '').trim();
+  const colorEl = card.querySelector(`[data-color="${sid}"]`);
+  if (!colorEl) return '';
+  const label = getSelectLabelText(colorEl);
+  if (!isColorLabelText(label)) return '';
+  return String(colorEl.value || '').trim();
+}
+
 function createSizeSelect(options, selected = '') {
   const select = document.createElement('select');
   select.className = 'size-select';
@@ -6774,36 +6941,69 @@ function createSizeVariantRow(id, options, values = {}) {
   const row = document.createElement('div');
   row.className = 'size-variant-row';
 
-  const rawSize = String(values.size || '').trim();
-  const rawCustomSize = String(values.sizeCustom || '').trim();
-  let selectedSize = rawSize;
-  let customSize = rawCustomSize;
-  if (rawSize && rawSize !== CUSTOM_SIZE_TOKEN && !options.includes(rawSize)) {
-    selectedSize = CUSTOM_SIZE_TOKEN;
-    customSize = customSize || rawSize;
-  }
+  const card = document.querySelector(`.product[data-id="${id}"]`);
+  const defs = getRequiredSelectDefs(card, id);
+  const fields = values.fields && typeof values.fields === 'object' ? values.fields : {};
+  const fieldDefs = defs.length
+    ? defs
+    : [{ key: 'size', label: 'Размер', allowCustom: true, options }];
 
   const sizeField = document.createElement('div');
   sizeField.className = 'size-field';
 
-  const sizeSelect = createSizeSelect(options, selectedSize);
-  sizeSelect.classList.add('size-variant-select');
-  sizeSelect.dataset.sizeExtra = String(id);
-  sizeSelect.onchange = () => {
-    toggleCustomSizeInput(sizeSelect, sizeCustomInput);
-    saveState();
-  };
+  fieldDefs.forEach((def, idx) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'size-wrap';
 
-  const sizeCustomInput = document.createElement('input');
-  sizeCustomInput.type = 'text';
-  sizeCustomInput.className = 'note-input size-custom-input size-variant-custom-input';
-  sizeCustomInput.dataset.sizeCustomExtra = String(id);
-  sizeCustomInput.placeholder = 'свой размер (например 125×1.0×22.23)';
-  sizeCustomInput.value = customSize;
-  sizeCustomInput.oninput = saveState;
-  toggleCustomSizeInput(sizeSelect, sizeCustomInput);
-  sizeField.appendChild(sizeSelect);
-  sizeField.appendChild(sizeCustomInput);
+    const label = document.createElement('label');
+    label.textContent = def.label;
+
+    const rawSaved = String(
+      fields[def.key] || (def.key === 'size' ? values.size || '' : '')
+    ).trim();
+    const rawSavedCustom = String(values.sizeCustom || '').trim();
+    let selected = rawSaved;
+    let custom = def.key === 'size' ? rawSavedCustom : '';
+
+    if (def.allowCustom && rawSaved && rawSaved !== CUSTOM_SIZE_TOKEN && !def.options.includes(rawSaved)) {
+      selected = CUSTOM_SIZE_TOKEN;
+      custom = custom || rawSaved;
+    }
+
+    const select = createSizeSelect(def.options, selected);
+    select.classList.add('size-variant-select');
+    select.dataset.sizeExtra = String(id);
+    select.dataset.variantFieldKey = def.key;
+    select.onchange = () => {
+      const customInput = wrap.querySelector('.size-variant-custom-input');
+      toggleCustomSizeInput(select, customInput);
+      saveState();
+    };
+
+    wrap.appendChild(label);
+    wrap.appendChild(select);
+
+    if (def.allowCustom) {
+      const customInput = document.createElement('input');
+      customInput.type = 'text';
+      customInput.className = 'note-input size-custom-input size-variant-custom-input';
+      customInput.dataset.sizeCustomExtra = String(id);
+      customInput.dataset.variantFieldCustomKey = def.key;
+      customInput.placeholder = 'свой размер (например 125×1.0×22.23)';
+      customInput.value = custom;
+      customInput.oninput = saveState;
+      toggleCustomSizeInput(select, customInput);
+      wrap.appendChild(customInput);
+    } else {
+      select.querySelector(`option[value="${CUSTOM_SIZE_TOKEN}"]`)?.remove();
+    }
+
+    if (idx === 0) {
+      select.classList.add('size-variant-select-primary');
+    }
+
+    sizeField.appendChild(wrap);
+  });
 
   const qtyInput = document.createElement('input');
   qtyInput.type = 'number';
@@ -6820,9 +7020,9 @@ function createSizeVariantRow(id, options, values = {}) {
   removeBtn.textContent = '×';
   removeBtn.title = 'Удалить строку размера';
   removeBtn.onclick = () => {
-    const card = row.closest('.product');
+    const cardEl = row.closest('.product');
     row.remove();
-    refreshCardState(card);
+    refreshCardState(cardEl);
     saveState();
   };
 
