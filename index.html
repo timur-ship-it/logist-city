@@ -4691,7 +4691,9 @@ function collectOrderLines() {
     const baseCell = card.querySelector(`[data-cell="${id}"]`)?.value || '';
     const baseNoteRaw = card.querySelector(`[data-note="${id}"]`)?.value || '';
     const baseNote = [baseCell ? `ячейка: ${baseCell}` : '', baseNoteRaw].filter(Boolean).join(' | ');
-    const baseExtraSpecs = baseRequired.specs.filter(spec => spec.label !== 'Размер' && spec.label !== 'Типоразмер');
+    const baseExtraSpecs = baseRequired.specs.filter(
+      spec => spec.label !== 'Размер' && spec.label !== 'Типоразмер' && !isColorLabelText(spec.label)
+    );
 
     if (toQtyNumber(baseQty) > 0) {
       lines.push({
@@ -4709,19 +4711,22 @@ function collectOrderLines() {
       });
     }
 
-    const variantDefs = getRequiredSelectDefs(card, id);
+    const variantDefs = getCardSelectDefs(card, id);
     card.querySelectorAll('.size-variant-row').forEach((row, variantIndex) => {
       const qty = row.querySelector('.qty-variant-input')?.value || '';
       if (toQtyNumber(qty) <= 0) return;
       const variantSelection = getVariantRequiredSelection(row, variantDefs);
       const size = String(variantSelection.values.size || '').trim();
-      const extraSpecs = variantSelection.specs.filter(spec => spec.label !== 'Размер' && spec.label !== 'Типоразмер');
+      const variantColor = String(variantSelection.values.color || '').trim();
+      const extraSpecs = variantSelection.specs.filter(
+        spec => spec.label !== 'Размер' && spec.label !== 'Типоразмер' && !isColorLabelText(spec.label)
+      );
       lines.push({
         ...createOrderLine(card, {
           qty,
           size,
           note: '',
-          color: baseColor,
+          color: variantColor || baseColor,
           requiredFields: variantSelection.values,
           missingFields: variantSelection.missing,
           extraSpecs
@@ -4740,7 +4745,7 @@ function collectRequiredSizeIds() {
   document.querySelectorAll('.product').forEach(card => {
     const id = String(card.dataset.id || '').trim();
     if (!id) return;
-    const hasRequiredSelects = getRequiredSelectDefs(card, id).length > 0;
+    const hasRequiredSelects = getValidationSelectDefs(card, id).length > 0;
     if (hasRequiredSelects) {
       requiredSizeIds.add(id);
     }
@@ -6824,7 +6829,7 @@ function getSelectFieldKey(selectEl, id, fallbackIndex = 0) {
   return `extra_${fallbackIndex}`;
 }
 
-function getRequiredSelectDefs(card, id) {
+function getCardSelectDefs(card, id) {
   const sid = String(id || card?.dataset?.id || '').trim();
   const row = card?.querySelector('.prod-inputs');
   if (!sid || !row) return [];
@@ -6850,7 +6855,7 @@ function getRequiredSelectDefs(card, id) {
       allowCustom: key === 'size' && Boolean(card.querySelector(`[data-size-custom="${sid}"]`)),
       options
     };
-  }).filter(def => def.required);
+  });
 
   defs.sort((a, b) => {
     if (a.key === 'size' && b.key !== 'size') return -1;
@@ -6860,9 +6865,13 @@ function getRequiredSelectDefs(card, id) {
   return defs;
 }
 
+function getValidationSelectDefs(card, id) {
+  return getCardSelectDefs(card, id).filter(def => def.required);
+}
+
 function getBaseRequiredSelection(card, id) {
   const sid = String(id || '').trim();
-  const defs = getRequiredSelectDefs(card, sid);
+  const defs = getCardSelectDefs(card, sid);
   const rowSelects = Array.from(card.querySelectorAll('.prod-inputs .size-wrap > select.size-select'));
   const values = {};
   const missing = [];
@@ -6882,7 +6891,7 @@ function getBaseRequiredSelection(card, id) {
     }
 
     values[def.key] = value;
-    if (!value) missing.push(def.label);
+    if (def.required && !value) missing.push(def.label);
     if (value) specs.push({ label: def.label, value });
   });
 
@@ -6902,7 +6911,7 @@ function getVariantRequiredSelection(row, defs = []) {
     let value = String(selectEl?.value || '').trim();
     if (def.allowCustom) value = normalizeSelectedSize(value, customEl?.value || '');
     values[def.key] = value;
-    if (!value) missing.push(def.label);
+    if (def.required && !value) missing.push(def.label);
     if (value) specs.push({ label: def.label, value });
   });
 
@@ -6949,7 +6958,7 @@ function createSizeVariantRow(id, options, values = {}) {
   row.className = 'size-variant-row';
 
   const card = document.querySelector(`.product[data-id="${id}"]`);
-  const defs = getRequiredSelectDefs(card, id);
+  const defs = getCardSelectDefs(card, id);
   const fields = values.fields && typeof values.fields === 'object' ? values.fields : {};
   const fieldDefs = defs.length
     ? defs
