@@ -111,18 +111,21 @@ body.cart-open{overflow:hidden}
 .add-size-btn{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer}
 .add-size-btn:hover{border-color:#93c5fd;color:#1d4ed8}
 .size-variants-list{display:flex;flex-direction:column;gap:6px}
-.size-variant-row{display:grid;grid-template-columns:136px minmax(0,1.35fr) 34px;gap:8px;align-items:start}
+.size-variant-row{display:grid;grid-template-columns:136px minmax(0,1.35fr) 34px;gap:8px;align-items:center}
 .size-variant-row .size-field{
   min-width:0;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:8px;
-  align-items:end;
+  align-items:center;
+  align-self:center;
 }
 .size-variant-row .size-field .size-wrap{min-width:0;flex:0 0 auto}
 .size-variant-row .size-select{min-width:0}
 .size-variant-row .qty-stepper{width:100%;max-width:none;min-width:0}
-.remove-variant-btn{border:1px solid #fecaca;background:#fff1f2;color:#be123c;border-radius:8px;cursor:pointer;height:32px;font-size:16px;line-height:1;align-self:start}
+.size-variant-row .qty-stepper,
+.size-variant-row .qty-variant-input{align-self:center}
+.remove-variant-btn{border:1px solid #fecaca;background:#fff1f2;color:#be123c;border-radius:8px;cursor:pointer;height:32px;font-size:16px;line-height:1;align-self:center}
 .remove-variant-btn:hover{background:#ffe4e6}
 
 /* Unified layout for cards with size selectors across categories */
@@ -505,7 +508,7 @@ body.cart-open{overflow:hidden}
 .note-input{min-width:0}
 .size-variants{width:100%;overflow:hidden}
 .size-variants-list{width:100%}
-.size-variant-row{width:100%;grid-template-columns:136px minmax(0,1.35fr) 34px;align-items:start}
+.size-variant-row{width:100%;grid-template-columns:136px minmax(0,1.35fr) 34px;align-items:center}
 .size-variant-row > *{min-width:0}
 @media(max-width:1024px), (hover:none) and (pointer:coarse){
   .prod-inputs{align-items:stretch}
