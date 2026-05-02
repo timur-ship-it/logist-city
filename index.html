@@ -209,6 +209,13 @@ body.cart-open{overflow:hidden}
 .cart-item-name{font-size:13px;font-weight:800;color:#0f172a;line-height:1.35}
 .cart-item-sku{font-size:10px;font-weight:800;color:#3730a3;background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:3px 7px;white-space:nowrap}
 .cart-item-meta{margin-top:6px;font-size:12px;color:#475569;line-height:1.45}
+.cart-item-actions{margin-top:8px;display:flex;justify-content:flex-end;gap:8px}
+.cart-item-action{border:1px solid #cbd5e1;background:#fff;color:#334155;font-size:11px;font-weight:800;padding:5px 10px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.cart-item-action:hover{background:#f8fafc}
+.cart-item-action.go{border-color:#93c5fd;color:#1d4ed8}
+.cart-item-action.go:hover{background:#eff6ff}
+.cart-item-action.remove{border-color:#fca5a5;color:#b91c1c}
+.cart-item-action.remove:hover{background:#fee2e2}
 .cart-warning{margin:10px 0 0;border-radius:10px;padding:9px 10px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;font-size:12px;font-weight:700}
 .cart-warning-list{margin-top:8px;display:flex;flex-direction:column;gap:6px}
 .cart-warning-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.6);border:1px solid #fed7aa}
@@ -4674,16 +4681,24 @@ function collectOrderLines() {
     const baseNote = [baseCell ? `ячейка: ${baseCell}` : '', baseNoteRaw].filter(Boolean).join(' | ');
 
     if (toQtyNumber(baseQty) > 0) {
-      lines.push(createOrderLine(card, { qty: baseQty, size: baseSize, note: baseNote, color: baseColor }));
+      lines.push({
+        ...createOrderLine(card, { qty: baseQty, size: baseSize, note: baseNote, color: baseColor }),
+        __entryType: 'base',
+        __variantIndex: -1
+      });
     }
 
-    card.querySelectorAll('.size-variant-row').forEach(row => {
+    card.querySelectorAll('.size-variant-row').forEach((row, variantIndex) => {
       const qty = row.querySelector('.qty-variant-input')?.value || '';
       if (toQtyNumber(qty) <= 0) return;
       const sizeSelected = row.querySelector('.size-variant-select')?.value || '';
       const sizeCustom = row.querySelector('.size-variant-custom-input')?.value || '';
       const size = normalizeSelectedSize(sizeSelected, sizeCustom);
-      lines.push(createOrderLine(card, { qty, size, note: '', color: baseColor }));
+      lines.push({
+        ...createOrderLine(card, { qty, size, note: '', color: baseColor }),
+        __entryType: 'variant',
+        __variantIndex: variantIndex
+      });
     });
   });
 
@@ -4967,6 +4982,39 @@ function goToProblemCard(rawId) {
   }
 }
 
+function removeCartLine(rawId, entryType = '', variantIndex = '') {
+  const id = String(rawId || '').trim();
+  if (!id) return;
+
+  const card = document.querySelector(`.product[data-id="${id}"]`);
+  if (!card) {
+    showToast('⚠️ Карточка позиции не найдена');
+    return;
+  }
+
+  const normalizedType = String(entryType || '').trim();
+  const parsedVariantIndex = Number.parseInt(String(variantIndex || ''), 10);
+
+  if (normalizedType === 'variant' && Number.isInteger(parsedVariantIndex) && parsedVariantIndex >= 0) {
+    const rows = Array.from(card.querySelectorAll('.size-variant-row'));
+    const targetRow = rows[parsedVariantIndex];
+    if (targetRow) {
+      targetRow.remove();
+    }
+  } else {
+    const qtyEl = card.querySelector(`[data-qty="${id}"]`);
+    if (qtyEl) {
+      qtyEl.value = '';
+      updateQtyStepperControl(qtyEl);
+    }
+  }
+
+  refreshCardState(card);
+  saveState();
+  renderCartDrawer();
+  showToast('🗑️ Позиция удалена из корзины');
+}
+
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') closeCartDrawer();
 });
@@ -5010,12 +5058,20 @@ function renderCartDrawer() {
       line.note ? `Примечание: ${escapeHtml(line.note)}` : ''
     ].filter(Boolean).join(' • ');
 
+    const lineId = String(line.id || '').trim();
+    const lineEntryType = String(line.__entryType || 'base');
+    const lineVariantIndex = Number.isInteger(line.__variantIndex) ? line.__variantIndex : -1;
+
     return `<div class="cart-item">
 <div class="cart-item-top">
 <div class="cart-item-name">${escapeHtml(line.name)}</div>
 <div class="cart-item-sku">${escapeHtml(line.sku || line.id)}</div>
 </div>
 <div class="cart-item-meta">${meta}</div>
+<div class="cart-item-actions">
+<button type="button" class="cart-item-action go" data-go-item-id="${escapeHtml(lineId)}">Перейти</button>
+<button type="button" class="cart-item-action remove" data-remove-item-id="${escapeHtml(lineId)}" data-remove-entry="${escapeHtml(lineEntryType)}" data-remove-variant-index="${lineVariantIndex}">Удалить</button>
+</div>
 </div>`;
   }).join('');
 
@@ -5044,6 +5100,20 @@ function renderCartDrawer() {
     : '';
 
   itemsEl.innerHTML = warningHtml + itemsHtml;
+  itemsEl.querySelectorAll('[data-go-item-id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      goToProblemCard(btn.getAttribute('data-go-item-id'));
+    });
+  });
+  itemsEl.querySelectorAll('[data-remove-item-id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      removeCartLine(
+        btn.getAttribute('data-remove-item-id'),
+        btn.getAttribute('data-remove-entry'),
+        btn.getAttribute('data-remove-variant-index')
+      );
+    });
+  });
   itemsEl.querySelectorAll('[data-go-problem-id]').forEach(btn => {
     btn.addEventListener('click', () => {
       goToProblemCard(btn.getAttribute('data-go-problem-id'));
